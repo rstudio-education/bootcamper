@@ -15,13 +15,13 @@ For the "your turn" exercises we'll use RStudio Cloud. Join the workspace
 
 | Time          | Activity                     |
 | :------------ | :--------------------------- |
-| 09:00 - 10:00 | [The whole game](https://rstudio-education.github.io/bootcamper/slides/01-whole-game/01-whole-game.html#1)   |
+| 09:00 - 10:00 | [The whole game](https://rstudio-education.github.io/bootcamper/slides/01-whole-game/01-whole-game.html)   |
 | 10:00 - 10:30 | `r emo::ji("coffee")` Coffee break |
-| 10:30 - 12:00 | Visualize data               |
+| 10:30 - 12:00 | [Visualize data](https://rstudio-education.github.io/bootcamper/slides/02-visualize-data/02-visualize-data.html)  |
 | 12:00 - 13:00 | `r emo::ji("plate_with_cutlery")` Lunch break |
-| 13:00 - 14:30 | Transform data               |
+| 13:00 - 14:30 | [Transform data](https://rstudio-education.github.io/bootcamper/slides/03-transform-data/03-transform-data.html)  |
 | 14:30 - 15:00 | `r emo::ji("coffee")` Coffee break |
-| 15:00 - 16:30 | Tidy data                    |
+| 15:00 - 16:30 | [Tidy data](https://rstudio-education.github.io/bootcamper/slides/04-tidy-data/04-tidy-data.html)       |
 
 ### Day 2
 
