@@ -1,8 +1,11 @@
-bootcamper
-================
 
-Materials for the 2-day internal R
-bootcamp.
+## Hello R\!
+
+Materials for the 2-day internal R bootcamp can be found below.
+
+For the “your turn” exercises we’ll use RStudio Cloud. Join the
+workspace
+[here](https://rstd.io/bootcamper-cloud).
 
 ## Schedule
 
