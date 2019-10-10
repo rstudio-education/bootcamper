@@ -444,7 +444,7 @@ ncbikecrash %>%
 - Knit the document, and work on Exercises 2 and 3
 
 ```{r echo=FALSE}
-countdown(minutes = 5, seconds = 00)
+countdown(minutes = 10, seconds = 00)
 ```
 
 .footnote[
