@@ -1,0 +1,1117 @@
+---
+title: "Transform data <br> `r emo::ji('wrench')`"
+output:
+  xaringan::moon_reader:
+    css: "../slides.css"
+    lib_dir: libs
+    nature:
+      ratio: "16:9"
+      highlightLines: true
+      highlightStyle: solarized-light
+      countIncrementalSlides: false
+---
+
+```{r child = "../setup.Rmd"}
+```
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(scales)
+```
+
+class: center, middle
+
+# Data wrangling and summarizing 
+# with **dplyr**
+
+---
+
+## A grammar of data wrangling...
+
+... based on the concepts of functions as verbs that manipulate data frames
+
+.pull-left[
+```{r dplyr-part-of-tidyverse, echo=FALSE, out.width="80%", fig.align = "center", caption = "dplyr is part of the tidyverse"}
+knitr::include_graphics("img/dplyr-part-of-tidyverse.png")
+```
+]
+.pull-right[
+.midi[
+- `select`: pick columns by name
+- `arrange`: reorder rows
+- `slice`: pick rows using index(es)
+- `filter`: pick rows matching criteria
+- `distinct`: filter for unique rows
+- `mutate`: add new variables
+- `summarise`: reduce variables to values
+- `pull`: grab a column as a vector
+- ... (many more)
+]
+]
+
+---
+
+## Rules of **dplyr** functions
+
+- First argument is *always* a data frame
+- Subsequent arguments say what to do with that data frame
+- Always return a data frame
+- Don't modify in place
+
+---
+
+## Bike crashes in NC 2007 - 2014
+
+```{r message=FALSE}
+ncbikecrash <- read_csv("data/ncbikecrash.csv")
+glimpse(ncbikecrash)
+```
+
+
+---
+
+## Variables
+
+```{r}
+names(ncbikecrash)
+```
+
+---
+
+## Select columns
+
+.midi[
+```{r}
+select(ncbikecrash, county, bike_age)
+```
+]
+
+--
+
+.question[
+What if we wanted to select these columns, and then arrange the data in ascending order of biker age?
+]
+
+---
+
+## Data wrangling, step-by-step
+
+.midi[
+.pull-left[
+Select:
+```{r}
+ncbikecrash %>%
+  select(county, bike_age)
+```
+]
+.pull-right[
+Select, then arrange:
+```{r}
+ncbikecrash %>%
+  select(county, bike_age) %>%
+  arrange(bike_age)
+```
+]
+]
+
+---
+
+class: center, middle
+
+# Pipes
+
+---
+
+## What is a pipe?
+
+In programming, a pipe is a technique for passing information from one process to another.
+
+--
+
+.pull-left[
+- Start with the data frame `ncbikecrash`, and pass it to the `select()` function,
+]
+.pull-right[
+```{r}
+ncbikecrash %>% #<<
+  select(county, bike_age) %>%
+  arrange(bike_age)
+```
+]
+
+---
+
+## What is a pipe?
+
+In programming, a pipe is a technique for passing information from one process to another.
+
+.pull-left[
+- Start with the data frame `ncbikecrash`, and pass it to the `select()` function,
+- then we select the variables `county` and `bike_age`,
+]
+.pull-right[
+```{r}
+ncbikecrash %>%
+  select(county, bike_age) %>% #<<
+  arrange(bike_age)
+```
+]
+
+---
+
+## What is a pipe?
+
+In programming, a pipe is a technique for passing information from one process to another.
+
+.pull-left[
+- Start with the data frame `ncbikecrash`, and pass it to the `select()` function,
+- then we select the variables `county` and `bike_age`,
+- and then we arrange the data frame by `bike_age` in ascending order.
+]
+.pull-right[
+```{r}
+ncbikecrash %>%
+  select(county, bike_age) %>%
+  arrange(bike_age) #<<
+```
+]
+
+---
+
+## Aside
+
+The pipe operator is implemented in the package **magrittr**, though we don't need to load this package explicitly since **tidyverse** does this for us.
+
+<br>
+
+--
+
+.question[
+Any guesses as to why the package is called magrittr?
+]
+
+--
+
+.pull-left[
+```{r magritte, echo=FALSE, out.width="100%", fig.align = "center", caption = "Magritte's pipe"}
+knitr::include_graphics("img/magritte.jpg")
+```
+]
+.pull-right[
+```{r magrittr, echo=FALSE, out.width="100%", fig.align = "center", caption = "magrittr's pipe"}
+knitr::include_graphics("img/magrittr.jpg")
+```
+]
+
+---
+
+## How does a pipe work?
+
+- You can think about the following sequence of actions - find key, 
+unlock car, start car, drive to school, park.
+- Expressed as a set of nested functions in R pseudocode this would look like:
+```{r eval=FALSE}
+park(drive(start_car(find("keys")), to = "campus"))
+```
+- Writing it out using pipes give it a more natural (and easier to read) 
+structure:
+```{r eval=FALSE}
+find("keys") %>%
+  start_car() %>%
+  drive(to = "campus") %>%
+  park()
+```
+
+---
+
+## What about other arguments?
+
+Use the dot to
+
+- send results to a function argument other than first one or 
+- use the previous result for multiple arguments
+
+```{r fig.height=1.8, fig.width = 3.75}
+starwars %>%
+  filter(species == "Human") %>%
+  lm(mass ~ height, data = .) #<<
+```
+
+---
+
+## A note on piping and layering
+
+- The `%>%` operator in **dplyr** functions is called the pipe operator. This means you "pipe" the output of the previous line of code as the first input of the next line of code.
+- The `+` operator in **ggplot2** functions is used for "layering". This means you create the plot in layers, separated by `+`.
+- Many of the styling principles are consistent across `%>%` and `+`:
+  - always a space before
+  - always a line break after (for pipelines with more than 2 lines)
+
+---
+
+class: center, middle
+
+# Data wrangling with dplyr
+
+---
+
+## `select` to keep variables
+
+```{r}
+ncbikecrash %>%
+  select(locality, speed_limit) #<<
+```
+
+---
+
+## `select` to exclude variables
+
+```{r}
+ncbikecrash %>%
+  select(-object_id) #<<
+```
+
+---
+
+## `select` a range of variables
+
+```{r}
+ncbikecrash %>%
+  select(city:locality) #<<
+```
+
+---
+
+## `select` variables with certain characteristics
+
+```{r}
+ncbikecrash %>%
+  select(starts_with("bike_")) #<<
+```
+
+---
+
+## `select` variables with certain characteristics
+
+```{r}
+ncbikecrash %>%
+  select(ends_with("age")) #<<
+```
+
+---
+
+## Select helpers
+
+- `starts_with()`: Starts with a prefix
+- `ends_with()`: Ends with a suffix
+- `contains()`: Contains a literal string
+- `num_range()`: Matches a numerical range like x01, x02, x03
+- `one_of()`: Matches variable names in a character vector
+- `everything()`: Matches all variables
+- `last_col()`: Select last variable, possibly with an offset
+- `matches()`: Matches a regular expression (a sequence of symbols/characters expressing a string/pattern to be searched for within text)
+
+.footnote[
+See help for any of these functions for more info, e.g. `?everything`.
+]
+
+---
+
+## `arrange` in ascending / descending order
+
+.pull-left[
+```{r}
+ncbikecrash %>%
+  select(ends_with("age")) %>%
+  arrange(bike_age) #<<
+```
+]
+.pull-right[
+```{r}
+ncbikecrash %>%
+  select(ends_with("age")) %>%
+  arrange(desc(bike_age)) #<<
+```
+]
+
+---
+
+## `slice` for certain row numbers
+
+First five
+
+```{r}
+ncbikecrash %>%
+  slice(1:5) #<<
+```
+
+---
+
+## `slice` for certain row numbers
+
+Last five
+ 
+```{r}
+last_row <- nrow(ncbikecrash)
+ncbikecrash %>%
+  slice((last_row - 4):last_row) #<<
+```
+
+---
+
+## `filter` to select a subset of rows
+
+Crashes in Durham County
+
+```{r}
+ncbikecrash %>%
+  filter(county == "Durham") #<<
+```
+
+---
+
+## `filter` for many conditions at once
+
+Crashes in Durham County where biker is 0-5 years old
+
+```{r}
+ncbikecrash %>%
+  filter( #<<
+    county == "Durham",     #<<
+    bike_age_group == "0-5" #<<
+    ) #<<
+```
+
+---
+
+## Logical operators in R
+
+operator    | definition                   || operator     | definition
+------------|------------------------------||--------------|----------------
+`<`         | less than                    ||`x`&nbsp;&#124;&nbsp;`y`     | `x` OR `y` 
+`<=`        |	less than or equal to        ||`is.na(x)`    | test if `x` is `NA`
+`>`         | greater than                 ||`!is.na(x)`   | test if `x` is not `NA`
+`>=`        |	greater than or equal to     ||`x %in% y`    | test if `x` is in `y`
+`==`        |	exactly equal to             ||`!(x %in% y)` | test if `x` is not in `y`
+`!=`        |	not equal to                 ||`!x`          | not `x`
+`x & y`     | `x` AND `y`                  ||              |
+
+---
+
+## `r emo::ji("computer")` Your turn
+
+- Go to RStudio Cloud and start the second assignment: `03 - Transform Data`
+- Open the first R Markdown file: `01-bike-crashes.Rmd`
+- Knit the document, and work on Exercise 1
+
+```{r echo=FALSE}
+countdown(minutes = 3, seconds = 00)
+```
+
+.footnote[
+RStudio Cloud workspace for this bootcamp  
+is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
+]
+
+---
+
+## `distinct` to filter for unique rows
+
+... and `arrange` to order alphabetically
+
+.pull-left[
+```{r}
+ncbikecrash %>% 
+  distinct(county) %>% #<<
+  arrange(county)
+```
+]
+.pull-right[
+```{r}
+ncbikecrash %>% 
+  select(county, city) %>% 
+  distinct() %>% #<<
+  arrange(county, city)
+```
+]
+
+---
+
+## `r emo::ji("computer")` Your turn
+
+- Go to RStudio Cloud and start the second assignment: `03 - Transform Data`
+- Open the first R Markdown file: `01-bike-crashes.Rmd`
+- Knit the document, and work on Exercises 2 and 3
+
+```{r echo=FALSE}
+countdown(minutes = 5, seconds = 00)
+```
+
+.footnote[
+RStudio Cloud workspace for this bootcamp  
+is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
+]
+
+---
+
+class: center, middle
+
+# Fisheries
+
+---
+
+Fisheries and Aquaculture Department of the Food and Agriculture Organization of 
+the United Nations collects data on fisheries production of countries. The (not-so-great) visualization belows shows the distribution of fishery harvest 
+of countries for 2016, by capture and aquaculture.
+
+```{r echo=FALSE, out.width="70%", fig.align="center"}
+knitr::include_graphics("img/fisheries.png")
+```
+
+.footnote[
+- Countries whose total harvest was less than 100,000 tons are not 
+included in the visualization.
+- Source: https://en.wikipedia.org/wiki/Fishing_industry_by_country
+]
+
+---
+
+.question[
+What are some ways you would improve this visualization?
+]
+
+```{r echo=FALSE, out.width="60%", fig.align="center"}
+knitr::include_graphics("img/fisheries.png")
+```
+
+--
+
+- Calculate summary statistics at the continent level and visualize them.
+- Map the data.
+
+---
+
+## Data prep
+
+```{r include=FALSE}
+fisheries <- read_csv("data/fisheries.csv")
+continents <- read_csv("data/continents.csv")
+```
+
+Filter out countries whose total harvest was less than 100,000 tons since they 
+are not included in the visualization:
+
+```{r}
+fisheries <- fisheries %>%
+  filter(total > 100000)
+
+fisheries
+```
+
+---
+
+class: center, middle
+
+# Data joins
+
+---
+
+.pull-left[
+```{r}
+fisheries %>% select(country)
+```
+]
+.pull-right[
+```{r}
+continents
+```
+]
+
+---
+
+## Joining data frames
+
+```
+*_join(x, y)
+```
+
+- `inner_join()`: all rows from x where there are matching values in y, return 
+all combination of multiple matches in the case of multiple matches
+- `left_join()`: all rows from x
+- `right_join()`: all rows from y
+- `full_join()`: all rows from both x and y
+- `semi_join()`: all rows from x where there are matching values in y, keeping just columns from x.
+- `anti_join()`: return all rows from x where there are not matching values in y, never duplicate rows of x
+- ...
+ 
+---
+
+## Setup
+
+For the next few slides...
+
+.pull-left[
+```{r echo=FALSE}
+x <- tibble(value = c(1, 2, 3))
+```
+```{r}
+x
+```
+]
+.pull-right[
+```{r echo=FALSE}
+y <- tibble(value = c(1, 2, 4))
+```
+```{r}
+y
+```
+]
+
+---
+
+## `inner_join()`
+
+.pull-left[
+```{r}
+inner_join(x, y)
+```
+]
+.pull-right[
+```{r echo=FALSE}
+knitr::include_graphics("img/inner-join.gif")
+```
+]
+
+---
+
+## `left_join()`
+
+.pull-left[
+```{r}
+left_join(x, y)
+```
+]
+.pull-right[
+```{r echo=FALSE}
+knitr::include_graphics("img/left-join.gif")
+```
+]
+
+---
+
+## `right_join()`
+
+.pull-left[
+```{r}
+right_join(x, y)
+```
+]
+.pull-right[
+```{r echo=FALSE}
+knitr::include_graphics("img/right-join.gif")
+```
+]
+
+---
+
+## `full_join()`
+
+.pull-left[
+```{r}
+full_join(x, y)
+```
+]
+.pull-right[
+```{r echo=FALSE}
+knitr::include_graphics("img/full-join.gif")
+```
+]
+
+---
+
+## `semi_join()`
+
+.pull-left[
+```{r}
+semi_join(x, y)
+```
+]
+.pull-right[
+```{r echo=FALSE}
+knitr::include_graphics("img/semi-join.gif")
+```
+]
+
+---
+
+## `anti_join()`
+
+.pull-left[
+```{r}
+anti_join(x, y)
+```
+]
+.pull-right[
+```{r echo=FALSE}
+knitr::include_graphics("img/anti-join.gif")
+```
+]
+
+---
+
+.question[
+We want to keep all rows and columns from `fisheries` and add a column for 
+corresponding continents. Which join function should we use?
+]
+
+.pull-left[
+```{r}
+fisheries %>% select(country)
+```
+]
+.pull-right[
+```{r}
+continents
+```
+]
+
+---
+
+## Join fisheries and continents 
+
+```{r}
+fisheries <- left_join(fisheries, continents) 
+```
+
+--
+
+.question[
+How does `left_join()` know to join the two data frames by `country`?
+]
+
+Hint:
+
+```{r}
+names(fisheries)
+names(continents)
+```
+
+---
+
+## Check the data
+
+```{r}
+fisheries %>%
+  filter(is.na(continent))
+```
+
+---
+
+## Implement fixes
+
+```{r}
+fisheries <- fisheries %>%
+  mutate(continent = case_when(
+    country == "Democratic Republic of the Congo" ~ "Africa",
+    country == "Hong Kong"                        ~ "Asia",
+    country == "Myanmar"                          ~ "Asia",
+    TRUE                                          ~ continent
+    )
+  )
+```
+
+...and check again
+
+```{r}
+fisheries %>%
+  filter(is.na(continent))
+```
+
+---
+
+.question[
+What does the following code do?
+]
+
+```{r eval=FALSE}
+fisheries %>%
+  mutate(aquaculture_perc = aquaculture / total)
+```
+
+---
+
+## `r emo::ji("computer")` Your turn
+
+- Go to RStudio Cloud and start the second assignment: `03 - Transform Data`
+- Open the first R Markdown file: `02-fisheries.Rmd`
+- Knit the document and work on the exercise
+
+```{r echo=FALSE}
+countdown(minutes = 5, seconds = 00)
+```
+
+.footnote[
+RStudio Cloud workspace for this bootcamp  
+is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
+]
+
+---
+
+```{r include=FALSE}
+fisheries <- fisheries %>%
+  mutate(aquaculture_perc = aquaculture / total)
+
+fisheries_summary <- fisheries %>%
+  group_by(continent) %>%
+  summarise(
+    min_ap  = min(aquaculture_perc),
+    mean_ap = mean(aquaculture_perc),
+    max_ap  = max(aquaculture_perc)
+  )
+```
+
+## Visualize continent summary stats
+
+```{r fig.height=4,fig.width=10}
+ggplot(fisheries_summary, aes(x = continent, y = mean_ap)) +
+  geom_col()
+```
+
+---
+
+## Improve visualization
+
+```{r eval=FALSE}
+ggplot(fisheries_summary, 
+       aes(x = reorder(continent, mean_ap), y = mean_ap)) + #<<
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous(labels = percent) + #<<
+  labs(
+    x = "", y = "",
+    title = "Average share of aquaculture by continent",
+    subtitle = "out of total fisheries harvest, 2016",
+    caption = "Source: bit.ly/2VrawTt"
+  ) +
+  theme_minimal() #<<
+```
+
+---
+
+```{r echo=FALSE}
+ggplot(fisheries_summary, 
+       aes(x = reorder(continent, mean_ap), y = mean_ap)) + #<<
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous(labels = percent) + #<<
+  labs(
+    x = "", y = "",
+    title = "Average share of aquaculture by continent",
+    subtitle = "out of total fisheries harvest, 2016",
+    caption = "Source: bit.ly/2VrawTt"
+  ) +
+  theme_minimal() #<<
+```
+
+---
+
+## Improve visualization further
+
+```{r eval=FALSE}
+ggplot(fisheries_summary, 
+       aes(x = reorder(continent, mean_ap), y = mean_ap)) +
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) + #<<
+  labs(
+    x = "", y = "",
+    title = "Average share of aquaculture by continent",
+    subtitle = "out of total fisheries harvest, 2016",
+    caption = "Source: bit.ly/2VrawTt"
+  ) +
+  theme_minimal()
+```
+
+---
+
+```{r echo=FALSE}
+ggplot(fisheries_summary, 
+       aes(x = reorder(continent, mean_ap), y = mean_ap)) +
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) + #<<
+  labs(
+    x = "", y = "",
+    title = "Average share of aquaculture by continent",
+    subtitle = "out of total fisheries harvest, 2016",
+    caption = "Source: bit.ly/2VrawTt"
+  ) +
+  theme_minimal()
+```
+
+---
+
+class: center, middle
+
+# Mapping
+
+---
+
+## Mapping the fisheries data
+
+- Obtain country boundaries and store as a data frame
+- Join the fisheries and country boundaries data frames
+- Plot the country boundaries, and fill by fisheries harvest data
+
+---
+
+## `map_data()`
+
+The `map_data()` function easily turns data from the maps package in to a data frame suitable for plotting with ggplot2:
+
+```{r}
+map_data("world")
+```
+
+---
+
+# A few fixes for better matching
+
+.question[
+What does the following code do?
+]
+
+```{r}
+world_map <- map_data("world") %>%
+  mutate(region = case_when(
+    region == "UK"           ~ "United Kingdom",
+    region == "USA"          ~ "United States",
+    subregion == "Hong Kong" ~ "Hong Kong",
+    TRUE                     ~ region
+    )
+  )
+```
+
+---
+
+## Map the world
+
+.midi[
+```{r fig.height=5, fig.width=12}
+ggplot(world_map, aes(x = long, y = lat, group = group)) +
+  geom_polygon(fill = "gray") +
+  theme_minimal()
+```
+]
+
+
+---
+
+## Join fisheries and world map
+
+.pull-left[
+```{r}
+fisheries %>% select(country)
+```
+]
+.pull-right[
+```{r}
+world_map %>% select(region)
+```
+]
+
+---
+
+## Join fisheries and world map
+
+```{r}
+fisheries_map <- left_join(fisheries, world_map, 
+                           by = c("country" = "region"))
+```
+
+```{r}
+glimpse(fisheries_map)
+```
+
+---
+
+## Mapping fisheries
+
+.midi[
+```{r fig.height=4.5, fig.width=12}
+ggplot(fisheries_map, mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = capture)) +
+  scale_fill_viridis_c() +
+  theme_minimal()
+```
+]
+
+---
+
+.question[
+What is misleading about the following map?
+]
+
+.midi[
+```{r echo=FALSE, fig.height=6, fig.width=12, fig.align="center"}
+ggplot(fisheries_map, mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = capture)) +
+  scale_fill_viridis_c() +
+  theme_minimal()
+```
+]
+
+---
+
+## Putting it altogether
+
+```{r eval=FALSE}
+ggplot() +
+  geom_polygon(world_map, 
+               mapping = aes(x = long, y = lat, group = group), 
+               fill = "lightgray") + #<<
+  geom_polygon(fisheries_map, 
+               mapping = aes(x = long, y = lat, group = group, 
+                             fill = capture)) + #<<
+  scale_fill_viridis_c() +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(
+    x = "", y = "",
+    title = "Fisheries harvest by capture, 2016",
+    subtitle = "Capture measured in tonnes",
+    caption = "Source: bit.ly/2VrawTt"
+  )
+```
+
+---
+
+```{r echo=FALSE, fig.height=7, fig.width=12, fig.align="center"}
+ggplot() +
+  geom_polygon(world_map, 
+               mapping = aes(x = long, y = lat, group = group), 
+               fill = "lightgray") +
+  geom_polygon(fisheries_map, 
+               mapping = aes(x = long, y = lat, group = group, 
+                             fill = capture)) +
+  scale_fill_viridis_c() +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(
+    x = "", y = "",
+    title = "Fisheries harvest by capture, 2016",
+    subtitle = "Capture measured in tonnes",
+    caption = "Source: bit.ly/2VrawTt"
+  )
+```
+
+---
+
+## Log scale
+
+```{r eval=FALSE}
+ggplot() +
+  geom_polygon(world_map, 
+               mapping = aes(x = long, y = lat, group = group), 
+               fill = "lightgray") +
+  geom_polygon(fisheries_map, 
+               mapping = aes(x = long, y = lat, group = group, 
+                                            fill = log(capture))) + #<<
+  scale_fill_viridis_c() +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(
+    x = "", y = "",
+    title = "Fisheries harvest by capture, 2016",
+    subtitle = "Capture measured in logged tonnes",
+    caption = "Source: bit.ly/2VrawTt"
+  )
+```
+
+---
+
+## Log scale
+
+```{r echo=FALSE, fig.height=7, fig.width=12, fig.align="center"}
+ggplot() +
+  geom_polygon(world_map, mapping = aes(x = long, y = lat, group = group), fill = "lightgray") +
+  geom_polygon(fisheries_map, mapping = aes(x = long, y = lat, group = group, fill = log(capture))) +
+  scale_fill_viridis_c() +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(
+    x = "", y = "",
+    title = "Fisheries harvest by capture, 2016",
+    subtitle = "Capture measured in logged tonnes",
+    caption = "Source: bit.ly/2VrawTt"
+  )
+```
+
+---
+
+## Aquaculture
+
+```{r eval=FALSE}
+ggplot() +
+  geom_polygon(world_map, 
+               mapping = aes(x = long, y = lat, group = group), 
+               fill = "lightgray") +
+  geom_polygon(fisheries_map, 
+               mapping = aes(x = long, y = lat, group = group, 
+                             fill = log(aquaculture+1))) + #<<
+  scale_fill_viridis_c() +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(
+    x = "", y = "",
+    title = "Fisheries harvest by aquaculture, 2016",
+    subtitle = "Aquaculture measured in logged tonnes",
+    fill = "log(aquaculture)",
+    caption = "Source: bit.ly/2VrawTt"
+  )
+```
+
+---
+
+```{r echo=FALSE, fig.height=7, fig.width=12, fig.align="center"}
+ggplot() +
+  geom_polygon(world_map, mapping = aes(x = long, y = lat, group = group), fill = "lightgray") +
+  geom_polygon(fisheries_map, mapping = aes(x = long, y = lat, group = group, fill = log(aquaculture+1))) +
+  scale_fill_viridis_c() +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(
+    x = "", y = "",
+    title = "Fisheries harvest by aquaculture, 2016",
+    subtitle = "Aquaculture measured in logged tonnes",
+    fill = "log(aquaculture)",
+    caption = "Source: bit.ly/2VrawTt"
+  )
+```
+
+---
+
+```{r echo=FALSE, fig.height=7, fig.width=12, fig.align="center"}
+fisheries_map <- fisheries_map %>%
+  mutate(
+    aquaculture_perc = aquaculture / total
+  )
+
+ggplot() +
+  geom_polygon(world_map, 
+               mapping = aes(x = long, y = lat, group = group), 
+               fill = "lightgray") +
+  geom_polygon(fisheries_map, 
+               mapping = aes(x = long, y = lat, group = group, 
+                             fill = aquaculture_perc)) +
+  scale_fill_viridis_c(labels = percent_format(accuracy = 1)) +
+  theme_minimal() +
+  theme(legend.position = "bottom", legend.key.width = unit(2, "lines")) +
+  labs(
+    x = "", y = "",
+    title = "Average share of aquaculture by country",
+    subtitle = "out of total fisheries harvest, 2016",
+    caption = "Source: bit.ly/2VrawTt",
+    fill = "Aquaculture %"
+  )
+```

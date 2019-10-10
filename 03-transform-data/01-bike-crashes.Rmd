@@ -1,0 +1,114 @@
+---
+title: "NC bike crashes"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+ncbikecrash <- read_csv("data/ncbikecrash.csv")
+```
+
+## Exercises
+
+#### Exercise 1.
+
+Fill in the blanks for filtering for crashes **not** in Durham County where crash 
+year is after 2014 and `bike_position` is not `NA`.
+
+**Note:** You will need to set `eval=TRUE` when you have an answer you want to try out.
+
+```{r filter, eval=FALSE}
+ncbikecrash %>%
+  filter(
+    county ____ "Durham", 
+    crash_year ____ 2014,
+    ____
+    )
+```
+
+#### Exercise 2.
+
+How many bike crashes occurred in residential development areas where the 
+driver was between 0 and 19 years old?
+
+```{r residential-young-driver}
+
+```
+
+#### Exercise 3.
+
+Create a frequency table of the estimated speed of the car (`driver_est_speed`) 
+involved in the crash. What is the most common estimated speed range in the 
+dataset?
+
+**Note:** Don't forget to label your R chunk as well (where it says `label-me`). 
+Your label should be short, informative, and shouldn't include spaces. It also 
+shouldn't repeat a previuous label, otherwise R Markdown will give you an 
+error about repeated R chunk labels.
+
+```{r label-me}
+
+```
+
+
+## Data dictionary
+
+Below is the full data dictionary. Note that it is long (there are lots of variables in the data), but we will be using a limited sed of the variables for our analysis.
+
+- `object_id`: Crash ID
+- `city`: City of crash
+- `county`: County of crash
+- `region`: Region of crash
+- `development`: Development area of crash
+- `locality`: Locality of crash
+- `on_road`: Road where crash happened
+- `rural_urban`: Whether crash happened on rural or urban road
+- `speed_limit`: Speed limit where crash happened
+- `traffic_control`: Type of traffic control where crash happened
+- `weather`: Weather at the time of crash
+- `workzone`: Whether crash happened in a work zone
+- `bike_age`: Age of biker
+- `bike_age_group`: Age group of biker
+- `bike_alcohol`: Whether biker had alcohol
+- `bike_alcohol_drugs`: Whether biker had alcohol or drugs
+- `bike_direction`: Direction of bike at the time of crash
+- `bike_injury`: Injury of biker
+- `bike_position`: Position of bike at the time of crash
+- `bike_race`: Race of biker
+- `bike_sex`: Sex of biker
+- `driver_age`: Age of driver
+- `driver_age_group`: Age group of driver
+- `driver_alcohol`: Whether driver had alcohol
+- `driver_alcohol_drugs`: Whether driver had alcohol or drugs
+- `driver_est_speed`: Estimated speed of driver
+- `driver_injury`: Injury of driver
+- `driver_race`: Race of driver
+- `driver_sex`: Sex of driver
+- `driver_vehicle_type`: Type of vehicle involved in crash
+- `crash_alcohol`: Whether alcohol was involved in crash
+- `crash_date`: Date of crash
+- `crash_day`: Day of crash
+- `crash_group`: Type of crash
+- `crash_hour`: Hour of crash
+- `crash_location`: Location of crash
+- `crash_month`: Month of crash
+- `crash_severity`: Severity of crash
+- `crash_time`: Time of crash
+- `crash_type`: Type of crash
+- `crash_year`: Year of crash
+- `ambulance_req`: Whether ambulance was required
+- `hit_run`: Whether accident was a hit and run
+- `light_condition`: Light condition at the time of crash
+- `road_character`: Road characteristics
+- `road_class`: Road class
+- `road_condition`: Road condition
+- `road_configuration`: Road configuration
+- `road_defects`: Road defects
+- `road_feature`: Road feature
+- `road_surface`: Road surface
+- `num_lanes`: Number of lanes
+- `geo_point`: Latitude and longitude of crash
