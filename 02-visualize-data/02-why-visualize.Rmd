@@ -1,0 +1,65 @@
+---
+title: "Why visualize?"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: yes
+---
+
+```{r load-packages, include=FALSE}
+library(tidyverse)
+library(datasauRus)
+```
+
+The data frame we will be working with today is called `datasaurus_dozen` and it's in the `datasauRus` package. Actually, this single data frame contains 13 datasets, designed to show us  why data visualisation is important and how summary statistics alone can be misleading. The different datasets are maked by the `dataset` variable.
+
+## Datasets
+
+To find out more about the dataset, type the following in your Console: `?datasaurus_dozen`. A question mark before the name of an object will always bring up its help file. This command must be ran in the Console.
+
+We can also `glimpse()` at the data frame:
+
+```{r}
+glimpse(datasaurus_dozen)
+```
+
+Let's focus on the `dataset` variable first:
+
+```{r datasets}
+datasaurus_dozen %>%
+  count(dataset)
+```
+
+This tells us that there are 13 datasets, each with 142 observations.
+
+There's a lot going on here, so let's unpack it a bit. First, the pipe operator: `%>%`, takes what comes before it and sends it as the first argument to what comes after it. So here, take the `datasaurus_dozen` data frame and count the number 
+of observations for each level of the `dataset` variable in that data frame.
+
+## Summary statistics
+
+Next, let's calculate summary statistics for each dataset, such as mean x and y, 
+standard deviation of x and y, and finally the correlation between x and y.
+We'll do this in one swoop 
+
+```{r correlation}
+datasaurus_dozen %>%
+  group_by(dataset) %>%
+  summarize(
+    mean_x = mean(x),
+    mean_y = mean(y),
+    sd_x = sd(x),
+    sd_y = sd(y),
+    r = cor(x, y)
+    )
+```
+
+## Visualizations
+
+Create a visualization of y vs. x, faceted by dataset. How similar or different 
+are these datasets?
+
+```{r plot}
+# add your code for the visualization here
+```
+
