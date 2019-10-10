@@ -220,6 +220,30 @@ knitr::include_graphics("img/rmarkdown-anatomy.png")
 
 class: center, middle
 
+```{r echo=FALSE,out.width="50%"}
+knitr::include_graphics("img/tidyverse.png")
+```
+
+
+---
+
+## tidyverse
+
+.pull-left[
+The tidyverse is an opinionated collection of R packages designed for data science. 
+All packages share an underlying design philosophy, grammar, and data structures.
+]
+.pull-right[
+```{r echo=FALSE}
+knitr::include_graphics("img/tidyverse-packages.png")
+```
+]
+
+
+---
+
+class: center, middle
+
 # Getting help in R
 
 ---

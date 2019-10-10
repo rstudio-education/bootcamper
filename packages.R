@@ -8,4 +8,4 @@ install.packages("skimr")
 install.packages("ggbeeswarm")
 install.packages("datasauRus")
 install.packages("maps")
-
+install.packages("rsconnect")
