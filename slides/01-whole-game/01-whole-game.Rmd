@@ -1,6 +1,5 @@
 ---
 title: "The whole game <br> `r emo::ji('space_invader')`"
-author: "Dr. Çetinkaya-Rundel"
 output:
   xaringan::moon_reader:
     css: "../slides.css"
@@ -8,7 +7,7 @@ output:
     nature:
       ratio: "16:9"
       highlightLines: true
-      highlightStyle: solarized-dark
+      highlightStyle: solarized-light
       countIncrementalSlides: false
 ---
 
