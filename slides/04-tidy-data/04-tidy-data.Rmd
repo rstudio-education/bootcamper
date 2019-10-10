@@ -222,13 +222,14 @@ knitr::include_graphics("img/tidyr-longer-wider.gif")
 ## `pivot_longer()`
 
 ```{r eval=FALSE}
-pivot_longer(data, cols, names_to = "name")
+pivot_longer(data, cols, names_to = "name", values_to = "value")
 ```
 
 - The first argument is `data` as usual.
 - The second argument, `cols`, is where you specify which columns to pivot 
 into longer format -- in this case all columns except for the `faculty_type` 
 - The third argument, `names_to`, is a string specifying the name of the column to create from the data stored in the column names of data -- in this case `year`
+- The fourth argument, `values_to`, is a string specifying the name of the column to create from the data stored in cell values, in this case `percentage`
 
 ---
 
@@ -236,19 +237,56 @@ into longer format -- in this case all columns except for the `faculty_type`
 
 ```{r}
 staff_long <- staff %>%
-  pivot_longer(cols = -faculty_type, names_to = "year") %>%
-  mutate(value = as.numeric(value))
+  pivot_longer(cols = -faculty_type, names_to = "year", values_to = "percentage") %>%
+  mutate(percentage = as.numeric(percentage))
 
 staff_long
 ```
 
 ---
 
-## Visualize staff data
+.question[
+This doesn't look quite right, how would you fix it?
+]
+
+.small[
+```{r}
+staff_long %>%
+  ggplot(aes(x = year, y = percentage, color = faculty_type)) +
+  geom_col(position = "dodge") + 
+  coord_flip()
+```
+]
+
+---
+
+.small[
+```{r}
+staff_long %>%
+  ggplot(aes(x = year, y = percentage, fill = faculty_type)) +
+  geom_col(position = "dodge") + 
+  coord_flip()
+```
+]
+
+---
+
+## Some improvement...
+
+```{r}
+staff_long %>%
+  ggplot(aes(x = year, y = percentage, fill = faculty_type)) +
+  geom_col() +
+  coord_flip()
+```
+
+---
+
+## More improvement
 
 ```{r fig.width=7}
 staff_long %>%
-  ggplot(aes(x = year, y = value, group = faculty_type, color = faculty_type)) +
+  ggplot(aes(x = year, y = percentage, group = faculty_type, color = faculty_type)) +
   geom_line()
 ```
 
