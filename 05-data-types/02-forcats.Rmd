@@ -1,0 +1,37 @@
+---
+title: "Forcats"
+output: html_document
+---
+
+Load packages:
+
+```{r message=FALSE}
+library(tidyverse)
+```
+
+Load data:
+
+```{r load-data}
+cat_lovers <- read_csv("data/cat-lovers.csv")
+```
+
+Implement changes from earlier:
+
+```{r recode}
+cat_lovers <- cat_lovers %>% #<<
+  mutate(
+    number_of_cats = case_when(
+      name == "Ginger Clark" ~ "2",
+      name == "Doug Bass"    ~ "3",
+      TRUE                   ~ number_of_cats
+      ),
+    number_of_cats = as.numeric(number_of_cats)
+    )
+```
+
+Recreate visualization:
+
+```{r plot}
+
+```
+
