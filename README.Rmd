@@ -27,7 +27,7 @@ For the "your turn" exercises we'll use RStudio Cloud. Join the workspace
 
 | Time          | Activity                     |
 | :------------ | :--------------------------- |
-| 09:00 - 10:00 | Data types                   |
+| 09:00 - 10:00 | [Data types](https://rstudio-education.github.io/bootcamper/slides/05-data-types/05-data-types.html)                   |
 | 10:00 - 10:30 | `r emo::ji("coffee")` Coffee break |
 | 10:30 - 12:00 | Import data                  |
 | 12:00 - 13:00 | `r emo::ji("plate_with_cutlery")` Lunch break |
