@@ -1,0 +1,625 @@
+---
+title: "bootcamper::day one review"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+```
+
+## Data frames
+
+The following data frame contains prices and other attributes of 500 diamonds.
+
+```{r dataframe, echo = FALSE}
+set.seed(1234)
+diamonds %>%
+  sample_n(500)
+```
+
+### Question 1
+
+```{r q1, echo=FALSE}
+question(
+    "What does each row in this data frame represent?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("A diamond", correct = TRUE),
+    answer("Price of a diamond"),
+    answer("500 diamonds")
+  )
+```
+
+### Question 2
+
+```{r q2, echo=FALSE}
+question(
+    "Question 7. Which of the following is the correct code for accessing the `price` variable in the `diamonds` data frame?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("`diamonds$price`", correct = TRUE),
+    answer("`diamonds %>% price`"),
+    answer("`diamonds + price`"),
+    answer("`diamonds , price`")
+  )
+```
+
+### Question 3
+
+```{r q3, echo=FALSE}
+question(
+    "Question 8. Which of the following will yield the number of rows (observations) in this data frame?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("`nrow(diamonds)`", correct = TRUE),
+    answer("`nrow(price)`"),
+    answer("`nrow(diamonds$price)`"),
+    answer("`nrow(500)`"),
+    answer("`nrow()diamonds`")
+  )
+```
+
+### Dataset: diamonds
+
+Run the code below to plot a histogram of prices of diamonds. Then, answer the following questions.  
+
+```{r prepare-plot, echo=FALSE}
+set.seed(1234)
+diamonds <- diamonds %>%
+  sample_n(500)
+```
+
+```{r plot, exercise=TRUE, exercise.setup = "prepare-plot"}
+ggplot(data = diamonds, mapping = aes(x = price)) +
+  geom_histogram(binwidth = 1000)
+```
+
+### Question 4
+
+```{r q4, echo=FALSE}
+question(
+    "Which of the following is false about the code above that produces the plot shown?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("The x-axis is mapped to the variable `price`."),
+    answer("The data frame is called `diamonds`."),
+    answer("Increasing the binwidth would result in narrower bars.", correct = TRUE)
+)
+```
+
+### Question 5
+
+```{r q5, echo=FALSE}
+question(
+    "Which of the following is definitely true about the distribution of prices of diamonds?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("There are diamonds higher priced than $15,000, but only a small number of them.", correct = TRUE),
+    answer("There are no diamonds priced below $1,000."),
+    answer("There are more diamonds priced above $5,000 than below $5,000."),
+    answer("There are more than 150 diamonds priced exactly at $1,000.")
+  )
+```
+
+## ggplot2
+
+### Question 6
+
+```{r q6, echo=FALSE}
+question(
+    "Fill in the blank: The **gg** in the name of the package **ggplot2** stands for _____",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("grammar of graphics", correct = TRUE),
+    answer("graphs and geoms"),
+    answer("geometric graphs"),
+    answer("generalized graphics")
+  )
+```
+
+### Question 7
+
+Run the following ggplot2 code to create a simple visualization.
+
+```{r mpg-ggplot, exercise = TRUE}
+ggplot(diamonds, mapping = aes(x = carat, y = price, color = clarity)) +
+  geom_point() +
+  labs(
+    title = "Diamond prices",
+    subtitle = "Over 50,000 round cut diamonds",
+    y = "Carat",
+    x = "Price",
+    color = "Clarity"
+  )
+```
+
+```{r q7, echo=FALSE}
+question(
+    "Which of the following is **true** based on the code and the visualization it produces?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    correct = "Correct! Price is on the y-axis and carat is on the x-axis.",
+    answer("The labels of the x and y axes are swapped.", correct = TRUE),
+    answer("The name of the data frame that contains the variables being plotted is `carat`."),
+    answer("`aes` stands for 'advanced encryption standard'."),
+    answer("Swapping the order of `geom` and `labs` layers would change the plot.")
+  )
+```
+
+### Dataset: mpg 
+
+The questions in the next section use the `mpg` dataset, which contains a subset of the fuel economy data that the Environmental Protection Agency makes available on [fueleconomy.gov](http://fueleconomy.gov).
+
+The variable descriptions are as follows:
+
+- `manufacturer`: manufacturer name
+- `model`: model name
+- `displ`: engine displacement, in litres
+- `year`: year of manufacture
+- `cyl`: number of cylinders
+- `trans`: type of transmission
+- `drv`: `f` = front-wheel drive, `r` = rear wheel drive, `4` = 4-wheel drive
+- `cty`: city miles per gallon
+- `hwy`: highway miles per gallon
+- `fl`: fuel type
+- `class`: "type" of car
+
+### Question 8
+
+Using the `mpg` dataset, fill in the blanks below to make a scatter plot of `class` vs. `drv`. 
+
+```{r useless-scatterplot, exercise=TRUE}
+ggplot(data = ___, mapping = aes(x = ___, y = ___)) +
+  geom_point()
+```
+
+```{r q8, echo=FALSE}
+question(
+    "The plot is not very useful. Which of the following would be better for representing the relationship between these two variables?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    correct = "Correct! We use a segmented bar plot to display the relationshiop between two categorical variables.",
+    answer("Segmented bar plot", correct = TRUE),
+    answer("Histogram"),
+    answer("Side-by-side box plots"),
+    answer("A single box plot"),
+    answer("Density plot")
+  )
+```
+
+### Question 9
+
+Suppose we want to create a scatter plot of highway vs. city mileage of cars, where points are colored by the engine displacement of the car. If you run the code above, you will observe that the coloring isn't working properly.
+
+```{r barplot-fill, exercise=TRUE}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy, fill = displ)) +
+  geom_point()
+```
+
+```{r q9, echo=FALSE}
+question(
+    "What change should be made to the code so the points can be colored by engine displacement?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("`displ` should be mapped to `color`", correct = TRUE),
+    answer("`displ` should be mapped to `size`"),
+    answer("`displ` should be mapped to `shape`"),
+    answer("`displ` should be mapped to `x`"),
+    answer("`displ` should be mapped to `y`")
+  )
+```
+
+### Question 10
+
+```{r ggplot-style, exercise = TRUE}
+ggplot(data=mpg%>%filter(cty<30),mapping=aes(x = drv, fill = class))+geom_bar() +scale_fill_viridis_d()
+```
+
+```{r q10, echo=FALSE}
+question(
+    "Which of the following is not a change that needs to be made to align the code above with the tidyverse style guidelines?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    correct = "While in general we use line breaks around the pipe operator, here the use of the pipe operator is making the code more complex to read. Instead we should first do the appropriate filtering, and then pipe the filtered data frame into the `ggplot()` function.",
+    answer("Need line breaks after `%>%`", correct = TRUE),
+    answer("Need spaces around ` = `"),
+    answer("Need spaces around ` + `"),
+    answer("Need line breaks after `+`"),
+    answer("Need to move the filter statement out of `ggplot()`, i.e. `mpg %>% filter(cty<30) %>% ggplot(...)` ")
+  )
+```
+
+### Question 11
+
+Take a look at the code for creating two separate plots below:
+
+```{r eval=FALSE}
+# Plot A
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() + 
+  geom_smooth()
+
+# Plot B
+ggplot() + 
+  geom_point(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_smooth(data = mpg, mapping = aes(x = displ, y = hwy))
+```
+
+```{r q11, echo=FALSE}
+question(
+    "Will these two graphs look different?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    correct = "Correct! While the code for Plot B is more redundant, it will yield the same result.",
+    answer("No, they will look the same.", correct = TRUE),
+    answer("Yes, they will look different.")
+  )
+```
+
+### Question 12
+
+The following scatterplot shows the relationship between city and highway mileage of cars, and the shapes indicate the class of car.
+
+```{r shape, exercise=TRUE, warning=FALSE}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, shape = class)) + 
+  geom_point(alpha = 0.8)
+```
+
+```{r q12, echo=FALSE}
+question(
+    "Which of the following would improve the plot?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    correct = "Correct! ggplot2 will only use six shapes at a time. By default, additional groups will go unplotted when you use the shape aesthetic. For variables with more than 6 levels consider specifying shapes manually if you must have them. Or better yet, consider mapping the variable to a difference aesthetic.",
+    answer("Map class to color instead of shape.", correct = TRUE),
+    answer("Map class to size instead of shape."),
+    answer("Map class to fill instead of shape."),
+    answer("The plot needs no improvement, there is nothing wrong with it.")
+  )
+```
+
+### Question 13
+
+The code below is used to create a faceted scatter plot. 
+
+Note that `drv` has three levels (four-wheel, front-wheel, and read-wheel drive) and `cyl` has four levels (4, 5, 6,and 8 cylinders).
+
+```{r facets, eval=FALSE}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_point(alpha = 0.8) +
+  facet_grid(drv ~ cyl)
+```
+
+```{r q13, echo=FALSE}
+question(
+    "Which of the following is false?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    correct = "Correct! We define the `facet grid as `(rows ~ columns)`.",
+    answer("In the facet grid `drv` will span the columns and `cyl` will span the rows.", correct = TRUE),
+    answer("This will result in a facet grid with twelve plots."),
+    answer("To flip the variables making up the rows and columns of the facet grid, we simply need to swap the order of `drv` and `cyl` in the `facet_grid()` function"),
+    answer("If there are no cars with a particular combination of drive type and number of cylinders (e.g. a car that has 4 cylinders and rear-wheel drive), the facet for this combination will display no points.")
+  )
+```
+
+## What's happening?
+
+### Question 14
+
+Take a look at the data frame below:
+
+```{r echo=FALSE}
+df <- tribble(
+  ~x, ~y,
+  1,  1,
+  1,  1,
+  1,  2,
+  2,  2
+)
+
+df
+```
+
+The plot below uses this data frame. Run the code to view the plot.
+
+```{r define-df, include=FALSE}
+df <- tribble(
+  ~x, ~y,
+  1,  1,
+  1,  1,
+  1,  2,
+  2,  2
+)
+```
+
+
+```{r unjittered, exercise=TRUE, exercise.setup = "define-df"}
+ggplot(data = df, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
+
+```{r q14, echo=FALSE}
+question(
+    "Which of the following is **true**?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("The plot could be improved with replacing `geom_point()` with `geom_jitter()`.", correct = TRUE),
+    answer("The plot could be improved with replacing `geom_point()` with `geom_histogram()`."),
+    answer("The plot could be improved with replacing `geom_point()` with `geom_density()`."),
+    answer("There is nothing wrong with this plot.")
+  )
+```
+
+### Question 10
+
+```{r q15, echo=FALSE}
+question(
+    "What happens if you map the same continuous variable to both x and y in a scatterplot?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    correct = "Correct! This line is the y = x line, where the x and y-coordinates of any given point has the same value.",
+    answer("You get points on a straight, diagonal line.", correct = TRUE),
+    answer("You get points on a straight, horizontal line."),
+    answer("You get points on a straight, vertical line."),
+    answer("You get a completely random scatter.")
+  )
+```
+
+## Tidy data
+
+### Question 16
+
+```{r q16, echo=FALSE}
+question(
+    "Which of the following is not an attribute of tidy data?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("Each column must be a vector, not a list.", correct = TRUE),
+    answer("Each variable must have its own column."),
+    answer("Each observation must have its own row."),
+    answer("Each value must have its own cell.")
+  )
+```
+
+### Question 17
+
+Suppose a class has 100 students in it, and data on the students in this class 
+are stored in a tidy data frame, where each row represents a student. Of these 
+students 60 of them are Year 1 students, and this information is stored in a 
+variable called `year`. Among these Year 1 students there are some who are 
+majoring in Maths, some in Physics, and some in Informatics. There are no Year 1 
+students majoring in any other discipline. And this information is stored in a 
+variable called `major`.
+
+```{r q17, echo=FALSE}
+question(
+    "Which of the following is necessarily true about the class roster data frame described above?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("The variable `major` is categorical with three levels", 
+           message = "What if there are students from other majors in other years?"),
+    answer("The variable `year` is categorical with two levels", 
+           message = "What if there are students from many other years?"),
+    answer("The data frame has 100 rows.", correct = TRUE),
+    answer("The data frame has three columns.", 
+           message = "What if the data frame has more than just year and major information?")
+  )
+```
+
+
+## Pipes
+
+### Question 18
+
+```{r q18, echo=FALSE}
+question(
+    "Which of the following is the pipe operator in R?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("`%>%`", correct = TRUE),
+    answer("`+`"),
+    answer("`|`", message = "`|` is the pipe operator in Unix, but in R it means 'or'"),
+    answer("`>`"),
+    answer("`>%>`")
+  )
+```
+
+### Question 19
+
+Take a look at the two chunks of code below.
+
+```{r eval=FALSE}
+# Chunk 1
+diamonds %>%
+  ggplot(mapping = aes(x = carat, y = price)) +
+  geom_point()
+```
+
+```{r eval=FALSE}
+# Chunk 2
+ggplot(data = diamonds, mapping = aes(x = carat, y = price)) +
+  geom_point()
+```
+
+
+```{r q19, echo=FALSE}
+question(
+    "What, if any, difference would you expect to see between the plots created by these two chunks of code?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("No difference, they will yield exactly the same result.", correct = TRUE),
+    answer("Chunk 2 plots the diamonds dataset, it's unclear which dataset Chunk 1 plots."),
+    answer("Chunk 1 plots the diamonds dataset, it's unclear which dataset Chunk 2 plots.")
+  )
+```
+
+## Pipelines
+
+Take a look at the pipeline below, and answer Questions 5 and 6 based on this pipeline.
+
+```{r eval=FALSE}
+mpg %>%
+  filter(manufacturer == "audi") %>%
+  group_by(model) %>%
+  summarise(mean_cty = mean(cty))
+```
+
+- We start with the data frame called `mpg`, which has 234 rows and 11 columns.
+- Then, we filter the data for cars manufactured by Audi, and and there are 18 such cars in the data. 
+- Then, we group the data by model of the car, and there are 3 models of cars (A4, A4 Quattro, and A6 Quattro) manufactured by Audi. 
+- And finally we summarise the data by calculating mean city mileage for each group. 
+- The result of the pipeline, as usual, will be a data frame.
+
+### Question 20
+
+```{r q20, echo=FALSE}
+question(
+    "How many rows will this data frame have?",
+    random_answer_order = FALSE, allow_retry = TRUE,
+    answer("1"),
+    answer("3", correct = TRUE),
+    answer("6"),
+    answer("18"),
+    answer("234"),
+    correct = "There are three groups, so the resulting data frame will have three 
+            rows, one for each group."
+  )
+```
+
+### Question 21
+
+```{r q21, echo=FALSE}
+question(
+    "Fill in the blank:
+    
+    The resulting dataframe will have ____",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("1 column, called `mean_cty`.", correct = TRUE),
+    answer("2 columns, called `model` and `mean_cty`."),
+    answer("11 columns, one for each variable in the original `mpg` data frame."),
+    answer("234 columns, one for each row in the original `mpg` data frame."),
+    correct = "The resulting data frame will have 3 rows and 2 columns, each 
+            row representing one model of car manufactured by Audi, and 
+            displaying the mean city mileage for that model."
+  )
+```
+
+## dplyr
+
+### Question 22
+
+The following chunk of code uses the `msleep` data frame, which has information 
+on how much certain mammals sleep (stored in a variable called `sleep_total`), 
+whether they are omnivore, carnivore, or herbivore (stored in a variable called 
+`vore`), and their brain and body weights. You can find out more about the variables [here](https://ggplot2.tidyverse.org/reference/msleep.html).
+
+Here we create a new variable called `carni_or_not` that denotes whether the 
+animal is a carnivore or not, but doesn't distinguish between herbivore and 
+carnivore.
+
+Run the chunk of code, and you'll observe that you get an error.
+
+```{r plot-msleep-nosave, exercise=TRUE}
+msleep %>%
+  mutate(
+    carni_or_not = if_else(vore == "carnivore", "carnivore", "not carnivore")
+  )
+
+ggplot(data = msleep, mapping = aes(x = sleep_total, y = brainwt, color = carni_or_not)) +
+  geom_point()
+```
+
+```{r q22, echo=FALSE}
+question(
+    "What is the source of this error?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("The mutated data frame with the new `carni_or_not` variable is not
+           saved, and hence the `ggplot()` function is using the original 
+           `msleep` data frame that does not have this variable.", correct = TRUE),
+    answer("The name of the new variable `carni_or_not` is spelled incorrectly."),
+    answer("The name of the dataframe `msleep` is spelled incorrectly."),
+    answer("The new variable `carni_or_not` should have been mapped to the `fill` aesthetic, 
+           not to `color`.")
+  )
+```
+
+### Question 23
+
+Your friend takes your code from the previous exercise and helps you correct it.
+
+They come up wih the following correction and are very confident that it will work.
+
+```{r plot-msleep-noplus, eval=FALSE}
+msleep %>%
+  mutate(
+    carni_or_not = if_else(vore == "carnivore", "carnivore", "not carnivore")
+  ) %>%
+  ggplot(mapping = aes(x = sleep_total, y = brainwt, color = carni_or_not)) %>%
+  geom_point()
+```
+
+```{r q23, echo=FALSE}
+question(
+    "But you know it won't! Why not?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("They should have used `+` not `%>%` between ggplot2 layers.", correct = TRUE),
+    answer("They should have used `%>%` not `+` to pipe the data into the `ggplot()` function."),
+    answer("The `ggplot()` function is missing the `data` argument."),
+    answer("The mutated data frame should have been saved over `msleep` first.")
+  )
+```
+
+### Question 24
+
+Suppose you accidentally include the name of a variable multiple times in a 
+`select()` call, e.g.
+
+```{r select-twice-msleep, eval=FALSE}
+msleep %>%
+  select(vore, vore)
+```
+
+
+```{r q24, echo=FALSE}
+question(
+    "What happens if you run the code above?",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("You get a data frame with one column: `vore`.", correct = TRUE),
+    answer("You get a data frame with two columns: `vore` and `vore"),
+    answer("You get an error."),
+    answer("The get a warning.")
+  )
+```
+
+### Question 25
+
+The names of the variables in the `msleep` data frame are as follows:
+
+```{r names-msleep}
+names(msleep)
+```
+
+You are asked to select the variables whose names start with `sleep`, so you come up 
+with the following code, which works:
+
+```{r select-helper-lower, exercise=TRUE}
+msleep %>%
+  select(starts_with("sleep"))
+```
+
+Your friend, however, comes up with the following. And claims that it also works,
+and gives the same result as your code.
+
+```{r select-helper-upper, eval=FALSE}
+msleep %>%
+  select(starts_with("SLEEP"))
+```
+
+```{r q25, echo=FALSE}
+question(
+    "Do you think your friend's code will give the same result? Why, or why not? 
+    (Hint: You might want to look at the help for `starts_with`, which you can find [here](https://tidyselect.r-lib.org/reference/select_helpers.html),",
+    random_answer_order = TRUE, allow_retry = TRUE,
+    answer("Yes, it will work, and give a data frame with 83 rows and 3 columns, because the `starts_with` has an argument called `ignore.case` which is set to `TRUE` by default, meaning that it ignores case when matching character strings.", correct = TRUE),
+    answer("Yes, it will work, and give a data frame with 83 rows and 3 columns, because R is not case sensitive."),
+    answer("No, it won't work and give an error."),
+    answer("No, it won't work, and give a data frame with 83 rows and 0 columns.")
+  )
+```
+
+## Reflect
+
+Think about one or two questions you didn't get right initially but were able 
+to solve after a few tries. What was difficult about them? What did you 
+ultimately learn? 
+
+OR
+
+If you got every single question correct on the first try, think of one question 
+you would still like clarified on the topics covered in this quiz and share it 
+on the Slack channel.
+
