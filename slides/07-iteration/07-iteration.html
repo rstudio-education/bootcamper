@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Iteration   👯</title>
+    <meta charset="utf-8" />
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <link rel="stylesheet" href="../slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Iteration <br> 👯
+
+---
+
+
+
+
+
+layout: true
+  
+&lt;div class="my-footer"&gt;
+&lt;span&gt;
+&lt;a href="https://rstd.io/bootcamper" target="_blank"&gt;rstd.io/bootcamper
+&lt;/a&gt;
+&lt;/span&gt;
+&lt;/div&gt; 
+
+---
+
+
+
+
+class: center, middle
+
+# Copying and pasting...
+
+---
+
+## January data
+
+
+```r
+sales_01 &lt;- read_excel("data-raw/01-sales.xlsx")
+```
+
+```
+## New names:
+## * `` -&gt; ...2
+```
+
+```r
+sales_01
+```
+
+```
+## # A tibble: 12 x 2
+##    `43466`                                                            ...2 
+##    &lt;chr&gt;                                                              &lt;chr&gt;
+##  1 This file contains information on sales.                           &lt;NA&gt; 
+##  2 Data are organized by brand name, and for each brand we have the … &lt;NA&gt; 
+##  3 &lt;NA&gt;                                                               &lt;NA&gt; 
+##  4 Brand 1                                                            n    
+##  5 1234                                                               3    
+##  6 8721                                                               9    
+##  7 1822                                                               2    
+##  8 Brand 2                                                            n    
+##  9 3333                                                               1    
+## 10 2156                                                               9    
+## 11 3987                                                               6    
+## 12 3216                                                               4
+```
+
+---
+
+## Let's try again
+
+
+```r
+sales_01 &lt;- read_excel("data-raw/01-sales.xlsx", skip = 3)
+sales_01
+```
+
+```
+## # A tibble: 8 x 2
+##   `Brand 1` n    
+##   &lt;chr&gt;     &lt;chr&gt;
+## 1 1234      3    
+## 2 8721      9    
+## 3 1822      2    
+## 4 Brand 2   n    
+## 5 3333      1    
+## 6 2156      9    
+## 7 3987      6    
+## 8 3216      4
+```
+
+---
+
+## And again
+
+
+```r
+sales_01 &lt;- read_excel("data-raw/01-sales.xlsx", skip = 3,
+                    col_names = c("id", "n"))
+sales_01
+```
+
+```
+## # A tibble: 9 x 2
+##   id      n    
+##   &lt;chr&gt;   &lt;chr&gt;
+## 1 Brand 1 n    
+## 2 1234    3    
+## 3 8721    9    
+## 4 1822    2    
+## 5 Brand 2 n    
+## 6 3333    1    
+## 7 2156    9    
+## 8 3987    6    
+## 9 3216    4
+```
+
+---
+
+
+```r
+sales_01 &lt;- sales_01 %&gt;%
+  mutate(month = 1)
+sales_01
+```
+
+```
+## # A tibble: 9 x 3
+##   id      n     month
+##   &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
+## 1 Brand 1 n         1
+## 2 1234    3         1
+## 3 8721    9         1
+## 4 1822    2         1
+## 5 Brand 2 n         1
+## 6 3333    1         1
+## 7 2156    9         1
+## 8 3987    6         1
+## 9 3216    4         1
+```
+
+---
+
+## February data
+
+
+```r
+sales_02 &lt;- read_excel("data-raw/02-sales.xlsx", skip = 3,
+                    col_names = c("id", "n")) %&gt;%
+  mutate(month = 2)
+sales_02
+```
+
+```
+## # A tibble: 9 x 3
+##   id      n     month
+##   &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
+## 1 Brand 1 n         2
+## 2 1234    8         2
+## 3 8721    2         2
+## 4 1822    3         2
+## 5 Brand 2 n         2
+## 6 3333    1         2
+## 7 2156    3         2
+## 8 3987    6         2
+## 9 3216    5         2
+```
+
+---
+
+## March data
+
+
+```r
+sales_03 &lt;- read_excel("data-raw/03-sales.xlsx", skip = 3,
+                    col_names = c("id", "n")) %&gt;%
+  mutate(month = 3)
+sales_03
+```
+
+```
+## # A tibble: 9 x 3
+##   id      n     month
+##   &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
+## 1 Brand 1 n         3
+## 2 1234    3         3
+## 3 3627    1         3
+## 4 8820    3         3
+## 5 Brand 2 n         3
+## 6 7253    1         3
+## 7 8766    3         3
+## 8 8288    6         3
+## 9 7256    13        3
+```
+
+---
+
+class: middle
+
+you get the point...
+
+---
+
+## Get a list of all files
+
+
+```r
+fs::dir_ls("data-raw")
+```
+
+```
+## data-raw/01-sales.xlsx data-raw/02-sales.xlsx data-raw/03-sales.xlsx 
+## data-raw/04-sales.xlsx data-raw/05-sales.xlsx
+```
+
+---
+
+## Read all files at once
+
+
+```r
+sales &lt;- purrr::map_dfr(
+  .x = fs::dir_ls("data-raw"), 
+  .f = read_excel, 
+  skip = 3, col_names = c("id", "n")
+  )
+glimpse(sales)
+```
+
+```
+## Observations: 45
+## Variables: 2
+## $ id &lt;chr&gt; "Brand 1", "1234", "8721", "1822", "Brand 2", "3333", "2156",…
+## $ n  &lt;chr&gt; "n", "3", "9", "2", "n", "1", "9", "6", "4", "n", "8", "2", "…
+```
+
+---
+
+## And keep track of source file
+
+
+```r
+sales &lt;- purrr::map_dfr(
+  .x = fs::dir_ls("data-raw"), 
+  .f = read_excel, 
+  skip = 3, col_names = c("id", "n"),
+  .id = "source"
+  )
+glimpse(sales)
+```
+
+```
+## Observations: 45
+## Variables: 3
+## $ source &lt;chr&gt; "data-raw/01-sales.xlsx", "data-raw/01-sales.xlsx", "data…
+## $ id     &lt;chr&gt; "Brand 1", "1234", "8721", "1822", "Brand 2", "3333", "21…
+## $ n      &lt;chr&gt; "n", "3", "9", "2", "n", "1", "9", "6", "4", "n", "8", "2…
+```
+
+  
+
+---
+
+### 07 - Iteration / `01-sales-monthly.Rmd` - **Exercise 1**
+
+.instructions[
+Read and talk through the code below to get a sense of what is happening 
+at each step of the pipeline. Finally, come up with a few other aspects of the 
+data frame you would like to clean up to prepare it for analysis. **Stretch goal:** Implement them!  
+
+**Note:** Some of it should feel familiar, e.g. how `is_brand_name` is defined, 
+`fill()`, etc.
+]
+
+.small[
+
+```r
+sales &lt;- sales %&gt;%
+  mutate(
+    is_brand_name = str_detect(id, "Brand"),
+    brand = if_else(is_brand_name, id, NA_character_)
+  ) %&gt;%
+  fill(brand) %&gt;%
+  filter(!is_brand_name) %&gt;%
+  rename(month = source) %&gt;%
+  select(month, brand, id, n)
+```
+]
+
+<div class="countdown" id="timer_5da9e632" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+.footnote[
+[rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud)
+]
+
+---
+
+
+```r
+sales &lt;- sales %&gt;%
+  mutate(
+    is_brand_name = str_detect(id, "Brand"),
+    brand = if_else(is_brand_name, id, NA_character_)
+  ) %&gt;%
+  fill(brand) %&gt;%
+  filter(!is_brand_name) %&gt;%
+  rename(month = source) %&gt;%
+  select(month, brand, id, n) %&gt;%
+  # MOAR CLEANING ----
+  mutate(
+    id = as.numeric(id),
+    n = as.numeric(n),
+    month = str_remove(month, "-sales.xlsx"),
+    month = str_remove(month, "data-raw/"),
+    month = as.integer(month)
+  )
+```
+
+---
+
+
+```r
+sales
+```
+
+```
+## # A tibble: 35 x 4
+##    month brand      id     n
+##    &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1     1 Brand 1  1234     3
+##  2     1 Brand 1  8721     9
+##  3     1 Brand 1  1822     2
+##  4     1 Brand 2  3333     1
+##  5     1 Brand 2  2156     9
+##  6     1 Brand 2  3987     6
+##  7     1 Brand 2  3216     4
+##  8     2 Brand 1  1234     8
+##  9     2 Brand 1  8721     2
+## 10     2 Brand 1  1822     3
+## # … with 25 more rows
+```
+
+---
+
+### 07 - Iteration / `01-sales-monthly.Rmd` - **Exercise 2**
+
+.instructions[
+How many total items were sold each month? How many per brand each month?  
+**Hint:** `group_by()` then `summarise()`.
+]
+
+.small[
+.pull-left[
+
+]
+.pull-right[
+
+]
+]
+
+---
+
+## What is `map()`?
+
+
+```r
+map(.x, .f = ~ DO SOMETHING WITH .x, ...)
+```
+
+&gt; For each element of `.x` do `.f`
+
+- `.x`: a list
+- `.f`: a function to apply to each element of `.x`
+- `...`: other arguments to pass to function
+
+---
+
+## Student scores
+
+.small[
+
+```r
+set.seed(1015) # Ensures everyone gets the same random numbers
+scores &lt;- list(
+  student1 = round(runif(10, 50, 100)),
+  student2 = round(runif(10, 50, 100)),
+  student3 = round(runif(10, 50, 100)),
+  student4 = round(runif(10, 50, 100)),
+  student5 = round(runif(10, 50, 100))
+)
+scores
+```
+
+```
+## $student1
+##  [1] 91 52 77 66 54 73 51 52 54 77
+## 
+## $student2
+##  [1] 74 77 77 94 60 76 81 57 78 90
+## 
+## $student3
+##  [1] 71 93 80 85 56 79 80 63 81 54
+## 
+## $student4
+##  [1] 62 70 66 77 93 82 71 90 80 52
+## 
+## $student5
+##  [1]  91  69  87  79  96 100  98  76  64  84
+```
+]
+
+---
+
+.question[
+What do you think the following does?
+]
+
+
+```r
+map(scores, mean)
+```
+
+--
+
+
+```
+## $student1
+## [1] 64.7
+## 
+## $student2
+## [1] 76.4
+## 
+## $student3
+## [1] 74.2
+## 
+## $student4
+## [1] 74.3
+## 
+## $student5
+## [1] 84.4
+```
+
+---
+
+.question[
+What would I change to calculate the standard deviation of each students' scores?
+```
+map(scores, mean)
+```
+]
+
+--
+
+.midi[
+
+```r
+map(scores, sd)
+```
+
+```
+## $student1
+## [1] 14.15823
+## 
+## $student2
+## [1] 11.4037
+## 
+## $student3
+## [1] 12.83052
+## 
+## $student4
+## [1] 12.65833
+## 
+## $student5
+## [1] 12.32162
+```
+]
+
+]
+
+
+---
+
+## `map()` &amp; friends
+
+- Other types of output: `map_something`
+- Other ways of specifying `.f` (a formula, a string or integer to extract the named/numbered element for each element, or a function)
+- Other iteration functions: `map2` - variants of `map()` that iterate over multiple arguments in parallel
+
+---
+
+## `map_something`
+
+Functions for looping over an object and returning a value (of a specific type):
+
+* `map()` - returns a list
+* `map_lgl()` - returns a logical vector
+* `map_int()` - returns a integer vector
+* `map_dbl()` - returns a double vector
+* `map_chr()` - returns a character vector
+* `map_df()` / `map_dfr()` - returns a data frame by row binding
+* `map_dfc()` - returns a data frame by column binding
+* ...
+
+---
+
+.question[
+What would I change if I want the output to be a vector, not a list?
+```
+map(scores, mean)
+```
+]
+
+--
+
+.midi[
+
+```r
+map_dbl(scores, mean)
+```
+
+```
+## student1 student2 student3 student4 student5 
+##     64.7     76.4     74.2     74.3     84.4
+```
+]
+
+---
+
+.question[
+What if I had `NA`s in the data?
+]
+
+.small[
+
+```r
+scores_with_na &lt;- list(
+  student1 = c(round(runif(9, 50, 100)), NA),
+  student2 = c(round(runif(9, 50, 100)), NA),
+  student3 = c(round(runif(9, 50, 100)), NA),
+  student4 = c(round(runif(9, 50, 100)), NA),
+  student5 = c(round(runif(9, 50, 100)), NA)
+)
+scores_with_na
+```
+
+```
+## $student1
+##  [1] 65 59 71 72 59 57 93 76 98 NA
+## 
+## $student2
+##  [1] 67 53 58 72 86 97 51 71 68 NA
+## 
+## $student3
+##  [1] 81 50 50 66 70 69 62 75 86 NA
+## 
+## $student4
+##  [1] 67 59 62 90 97 67 51 60 55 NA
+## 
+## $student5
+##  [1]  56  79  63  73  76  60 100  56  90  NA
+```
+]
+
+---
+
+.question[
+What if I had `NA`s in the data?
+]
+
+
+```r
+map_dbl(scores_with_na, mean)
+```
+
+```
+## student1 student2 student3 student4 student5 
+##       NA       NA       NA       NA       NA
+```
+
+```r
+map_dbl(scores_with_na, mean, na.rm = TRUE)
+```
+
+```
+## student1 student2 student3 student4 student5 
+## 72.22222 69.22222 67.66667 67.55556 72.55556
+```
+
+---
+
+class: middle
+
+.question[
+What if what we wanted to do is not a predefined function?
+]
+
+--
+
+Write a function!
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightLines": true,
+"highlightStyle": "solarized-light",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

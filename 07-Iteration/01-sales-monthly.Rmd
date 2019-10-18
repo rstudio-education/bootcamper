@@ -1,0 +1,52 @@
+---
+title: "Monthly sales"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(readxl)
+```
+
+**Exercise 1:** Read and talk through the code below to get a sense of what is 
+happening at each step of the pipeline.
+
+- Read all sales files in:
+
+```{r read-all-sales}
+sales <- purrr::map_dfr(
+  .x = fs::dir_ls("data-raw"), 
+  .f = read_excel, 
+  skip = 3, col_names = c("id", "n"),
+  .id = "source"
+  )
+
+sales
+```
+
+- Tidy monthly sales:
+
+```{r tidy-sales}
+sales <- sales %>%
+  mutate(
+    is_brand_name = str_detect(id, "Brand"),
+    brand = if_else(is_brand_name, id, NA_character_)
+  ) %>%
+  fill(brand) %>%
+  filter(!is_brand_name) %>%
+  rename(month = source) %>%
+  select(month, brand, id, n)
+
+sales
+```
+
+- Come up with a few other aspects of the data frame you would like to clean up 
+to prepare it for analysis. **Stretch goal:** Implement them!  
+
+**Exercise 2:** How many total items were sold each month? How many per brand each month? 
+
+```{r label-me}
+
+```
+

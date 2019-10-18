@@ -1,0 +1,365 @@
+---
+title: "Iteration <br> `r emo::ji('dancing_women')`"
+output:
+  xaringan::moon_reader:
+    css: "../slides.css"
+    lib_dir: libs
+    nature:
+      ratio: "16:9"
+      highlightLines: true
+      highlightStyle: solarized-light
+      countIncrementalSlides: false
+---
+
+```{r child = "../setup.Rmd"}
+```
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(readxl)
+```
+
+
+class: center, middle
+
+# Copying and pasting...
+
+---
+
+## January data
+
+```{r}
+sales_01 <- read_excel("data-raw/01-sales.xlsx")
+sales_01
+```
+
+---
+
+## Let's try again
+
+```{r}
+sales_01 <- read_excel("data-raw/01-sales.xlsx", skip = 3)
+sales_01
+```
+
+---
+
+## And again
+
+```{r}
+sales_01 <- read_excel("data-raw/01-sales.xlsx", skip = 3,
+                    col_names = c("id", "n"))
+sales_01
+```
+
+---
+
+```{r}
+sales_01 <- sales_01 %>%
+  mutate(month = 1)
+sales_01
+```
+
+---
+
+## February data
+
+```{r}
+sales_02 <- read_excel("data-raw/02-sales.xlsx", skip = 3,
+                    col_names = c("id", "n")) %>%
+  mutate(month = 2)
+sales_02
+```
+
+---
+
+## March data
+
+```{r}
+sales_03 <- read_excel("data-raw/03-sales.xlsx", skip = 3,
+                    col_names = c("id", "n")) %>%
+  mutate(month = 3)
+sales_03
+```
+
+---
+
+class: middle
+
+you get the point...
+
+---
+
+## Get a list of all files
+
+```{r}
+fs::dir_ls("data-raw")
+```
+
+---
+
+## Read all files at once
+
+```{r}
+sales <- purrr::map_dfr(
+  .x = fs::dir_ls("data-raw"), 
+  .f = read_excel, 
+  skip = 3, col_names = c("id", "n")
+  )
+glimpse(sales)
+```
+
+---
+
+## And keep track of source file
+
+```{r}
+sales <- purrr::map_dfr(
+  .x = fs::dir_ls("data-raw"), 
+  .f = read_excel, 
+  skip = 3, col_names = c("id", "n"),
+  .id = "source"
+  )
+glimpse(sales)
+```
+
+  
+
+---
+
+### 07 - Iteration / `01-sales-monthly.Rmd` - **Exercise 1**
+
+.instructions[
+Read and talk through the code below to get a sense of what is happening 
+at each step of the pipeline. Finally, come up with a few other aspects of the 
+data frame you would like to clean up to prepare it for analysis. **Stretch goal:** Implement them!  
+
+**Note:** Some of it should feel familiar, e.g. how `is_brand_name` is defined, 
+`fill()`, etc.
+]
+
+.small[
+```{r eval=FALSE}
+sales <- sales %>%
+  mutate(
+    is_brand_name = str_detect(id, "Brand"),
+    brand = if_else(is_brand_name, id, NA_character_)
+  ) %>%
+  fill(brand) %>%
+  filter(!is_brand_name) %>%
+  rename(month = source) %>%
+  select(month, brand, id, n)
+```
+]
+
+```{r echo=FALSE}
+countdown(minutes = 10, seconds = 0)
+```
+
+.footnote[
+[rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud)
+]
+
+---
+
+```{r}
+sales <- sales %>%
+  mutate(
+    is_brand_name = str_detect(id, "Brand"),
+    brand = if_else(is_brand_name, id, NA_character_)
+  ) %>%
+  fill(brand) %>%
+  filter(!is_brand_name) %>%
+  rename(month = source) %>%
+  select(month, brand, id, n) %>%
+  # MOAR CLEANING ----
+  mutate(
+    id = as.numeric(id),
+    n = as.numeric(n),
+    month = str_remove(month, "-sales.xlsx"),
+    month = str_remove(month, "data-raw/"),
+    month = as.integer(month)
+  )
+```
+
+---
+
+```{r}
+sales
+```
+
+---
+
+### 07 - Iteration / `01-sales-monthly.Rmd` - **Exercise 2**
+
+.instructions[
+How many total items were sold each month? How many per brand each month?  
+**Hint:** `group_by()` then `summarise()`.
+]
+
+.small[
+.pull-left[
+```{r include=FALSE}
+sales %>%
+  group_by(month) %>%
+  summarise(total_n = sum(n))
+```
+]
+.pull-right[
+```{r include=FALSE}
+sales %>%
+  group_by(month, brand) %>%
+  summarise(total_n = sum(n))
+```
+]
+]
+
+---
+
+## What is `map()`?
+
+```{r eval=FALSE}
+map(.x, .f = ~ DO SOMETHING WITH .x, ...)
+```
+
+> For each element of `.x` do `.f`
+
+- `.x`: a list
+- `.f`: a function to apply to each element of `.x`
+- `...`: other arguments to pass to function
+
+---
+
+## Student scores
+
+.small[
+```{r}
+set.seed(1015) # Ensures everyone gets the same random numbers
+scores <- list(
+  student1 = round(runif(10, 50, 100)),
+  student2 = round(runif(10, 50, 100)),
+  student3 = round(runif(10, 50, 100)),
+  student4 = round(runif(10, 50, 100)),
+  student5 = round(runif(10, 50, 100))
+)
+scores
+```
+]
+
+---
+
+.question[
+What do you think the following does?
+]
+
+```{r eval=FALSE}
+map(scores, mean)
+```
+
+--
+
+```{r echo=FALSE}
+map(scores, mean)
+```
+
+---
+
+.question[
+What would I change to calculate the standard deviation of each students' scores?
+```
+map(scores, mean)
+```
+]
+
+--
+
+.midi[
+```{r}
+map(scores, sd)
+```
+]
+
+]
+
+
+---
+
+## `map()` & friends
+
+- Other types of output: `map_something`
+- Other ways of specifying `.f` (a formula, a string or integer to extract the named/numbered element for each element, or a function)
+- Other iteration functions: `map2` - variants of `map()` that iterate over multiple arguments in parallel
+
+---
+
+## `map_something`
+
+Functions for looping over an object and returning a value (of a specific type):
+
+* `map()` - returns a list
+* `map_lgl()` - returns a logical vector
+* `map_int()` - returns a integer vector
+* `map_dbl()` - returns a double vector
+* `map_chr()` - returns a character vector
+* `map_df()` / `map_dfr()` - returns a data frame by row binding
+* `map_dfc()` - returns a data frame by column binding
+* ...
+
+---
+
+.question[
+What would I change if I want the output to be a vector, not a list?
+```
+map(scores, mean)
+```
+]
+
+--
+
+.midi[
+```{r}
+map_dbl(scores, mean)
+```
+]
+
+---
+
+.question[
+What if I had `NA`s in the data?
+]
+
+.small[
+```{r}
+scores_with_na <- list(
+  student1 = c(round(runif(9, 50, 100)), NA),
+  student2 = c(round(runif(9, 50, 100)), NA),
+  student3 = c(round(runif(9, 50, 100)), NA),
+  student4 = c(round(runif(9, 50, 100)), NA),
+  student5 = c(round(runif(9, 50, 100)), NA)
+)
+scores_with_na
+```
+]
+
+---
+
+.question[
+What if I had `NA`s in the data?
+]
+
+```{r}
+map_dbl(scores_with_na, mean)
+map_dbl(scores_with_na, mean, na.rm = TRUE)
+```
+
+---
+
+class: middle
+
+.question[
+What if what we wanted to do is not a predefined function?
+]
+
+--
+
+Write a function!
