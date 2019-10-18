@@ -33,4 +33,4 @@ For the "your turn" exercises we'll use RStudio Cloud. Join the workspace
 | 12:00 - 13:00 | `r emo::ji("plate_with_cutlery")` Lunch break |
 | 13:00 - 14:30 | [Iteration](https://rstudio-education.github.io/bootcamper/slides/07-iteration/07-iteration.html)                |
 | 14:30 - 15:00 | `r emo::ji("coffee")` Coffee break |
-| 15:00 - 16:30 | Case study: Text analysis    |
+| 15:00 - 16:30 | [Case study: Text analysis](https://rstudio-education.github.io/bootcamper/slides/08-text-analysis/08-text-analysis.html)    |
