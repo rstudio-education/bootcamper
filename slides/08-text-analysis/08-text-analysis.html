@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Text analysis   🗞</title>
+    <meta charset="utf-8" />
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Text analysis <br> 🗞
+
+---
+
+
+
+
+
+layout: true
+  
+&lt;div class="my-footer"&gt;
+&lt;span&gt;
+&lt;a href="https://rstd.io/bootcamper" target="_blank"&gt;rstd.io/bootcamper
+&lt;/a&gt;
+&lt;/span&gt;
+&lt;/div&gt; 
+
+---
+
+
+
+
+class: center, middle
+
+# Text analysis
+
+---
+
+## Text analysis
+
+- Text mining (text analysis) is the process of deriving high-quality information from text.
+- Typical text mining tasks include 
+  - text categorization
+  - text clustering
+  - concept/entity extraction
+  - production of granular taxonomies
+  - sentiment analysis
+  - document summarization
+  - entity relation modeling (i.e., learning relations between named entities)
+
+---
+
+## Tidytext
+
+- Using tidy data principles can make many text mining tasks easier, more effective, and consistent with tools we've already learned about
+- **Tidy text** = one-**token**-per-row
+  - A token can be a word or an n-gram (e.g. bigram = 2 words) 
+- Learn more at [tidytextmining.com](https://www.tidytextmining.com/)
+
+
+```r
+library(tidytext)
+```
+
+---
+
+## What is tidy text?
+
+
+```r
+text &lt;- c("Take me out tonight",
+          "Where there's music and there's people",
+          "And they're young and alive",
+          "Driving in your car",
+          "I never never want to go home",
+          "Because I haven't got one",
+          "Anymore")
+
+text
+```
+
+```
+## [1] "Take me out tonight"                   
+## [2] "Where there's music and there's people"
+## [3] "And they're young and alive"           
+## [4] "Driving in your car"                   
+## [5] "I never never want to go home"         
+## [6] "Because I haven't got one"             
+## [7] "Anymore"
+```
+
+---
+
+## What is tidy text?
+
+
+```r
+text_df &lt;- tibble(line = 1:7, text = text)
+
+text_df
+```
+
+```
+## # A tibble: 7 x 2
+##    line text                                  
+##   &lt;int&gt; &lt;chr&gt;                                 
+## 1     1 Take me out tonight                   
+## 2     2 Where there's music and there's people
+## 3     3 And they're young and alive           
+## 4     4 Driving in your car                   
+## 5     5 I never never want to go home         
+## 6     6 Because I haven't got one             
+## 7     7 Anymore
+```
+
+---
+
+## What is tidy text?
+
+
+```r
+text_df %&gt;%
+  unnest_tokens(word, text)
+```
+
+```
+## # A tibble: 32 x 2
+##     line word   
+##    &lt;int&gt; &lt;chr&gt;  
+##  1     1 take   
+##  2     1 me     
+##  3     1 out    
+##  4     1 tonight
+##  5     2 where  
+##  6     2 there's
+##  7     2 music  
+##  8     2 and    
+##  9     2 there's
+## 10     2 people 
+## # … with 22 more rows
+```
+
+---
+
+class: center, middle
+
+&lt;img src="img/hamilton.jpg" width="100%" /&gt;
+
+---
+
+## Let's get more data
+
+We'll use the `genius` package to get song lyric data from [Genius](https://genius.com/).
+
+
+```r
+library(genius) # https://github.com/JosiahParry/genius
+```
+
+- `genius_album()` allows you to download the lyrics for an entire album in a 
+tidy format. 
+- Input: Two arguments artists and album. Supply the quoted name of artist 
+and the album (if it gives you issues check that you have the album name and 
+artists as specified on [Genius](https://genius.com/)).
+- Output: A tidy data frame with three columns:
+    - `title`: track name
+    - `track_n`: track number
+    - `text`: lyrics
+
+---
+
+## Hamilton!
+
+
+```r
+hamilton &lt;- genius_album(
+  artist = "Lin-Manuel Miranda", 
+  album = "Hamilton: An American Musical (Off-Broadway)"
+  )
+```
+
+```
+## Joining, by = c("track_title", "track_n", "track_url")
+```
+
+```r
+glimpse(hamilton)
+```
+
+```
+## Observations: 3,331
+## Variables: 4
+## $ track_title &lt;chr&gt; "Alexander Hamilton (Off-Broadway) (Ft. Anthony Ramo…
+## $ track_n     &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+## $ line        &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1…
+## $ lyric       &lt;chr&gt; "How does a bastard, orphan, son of a whore and a", …
+```
+
+---
+
+## Save for later
+
+
+```r
+hamilton &lt;- hamilton %&gt;%
+  mutate(
+    album = "Hamilton",
+    artist = "Lin-Manuel Miranda"
+    )
+```
+
+---
+
+## How many songs are in the album?
+
+
+```r
+hamilton %&gt;%
+  distinct(track_title) %&gt;%
+  nrow()
+```
+
+```
+## [1] 52
+```
+
+---
+
+## How long are Hamilton songs?
+
+Length measured by number of lines
+
+
+```r
+hamilton %&gt;%
+  count(track_title) %&gt;%
+  arrange(desc(n)) %&gt;%
+  select(n, track_title)
+```
+
+```
+## # A tibble: 52 x 2
+##        n track_title                                                       
+##    &lt;int&gt; &lt;chr&gt;                                                             
+##  1   149 Right Hand Man (Off-Broadway) (Ft. Anthony Ramos, Daveed Diggs, I…
+##  2   142 My Shot (Off-Broadway) (Ft. Anthony Ramos, Daveed Diggs, Leslie O…
+##  3   141 Non-Stop (Off-Broadway) (Ft. Isaiah Johnson, Leslie Odom Jr., Phi…
+##  4   123 The Election of 1800 (Off-Broadway)                               
+##  5   118 The Room Where It Happens (Off-Broadway) (Ft. Daveed Diggs, Lesli…
+##  6   114 One Last Ride (Ft. Isaiah Johnson)                                
+##  7   111 Satisfied (Off-Broadway) (Ft. Anthony Ramos, Phillipa Soo &amp; Renée…
+##  8   110 Say No to This (Off-Broadway) (Ft. Ciara Renee, Phillipa Soo, Ren…
+##  9   105 Take a Break (Off-Broadway) (Ft. Anthony Ramos, Phillipa Soo &amp; Re…
+## 10    96 Ten Things One Thing (Ft. Leslie Odom Jr.)                        
+## # … with 42 more rows
+```
+
+---
+
+## Tidy up your lyrics!
+
+.small[
+
+```r
+hamilton_lyrics &lt;- hamilton %&gt;%
+  unnest_tokens(word, lyric)
+
+hamilton_lyrics
+```
+
+```
+## # A tibble: 22,361 x 6
+##    track_title                       track_n  line album   artist     word 
+##    &lt;chr&gt;                               &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;
+##  1 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… how  
+##  2 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… does 
+##  3 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… a    
+##  4 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… bast…
+##  5 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… orph…
+##  6 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… son  
+##  7 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… of   
+##  8 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… a    
+##  9 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… whore
+## 10 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… and  
+## # … with 22,351 more rows
+```
+]
+
+---
+
+## What are the most common words?
+
+
+```r
+hamilton_lyrics %&gt;%
+  count(word) %&gt;%
+  arrange(desc(n))
+```
+
+```
+## # A tibble: 3,132 x 2
+##    word      n
+##    &lt;chr&gt; &lt;int&gt;
+##  1 the     911
+##  2 i       653
+##  3 you     615
+##  4 to      563
+##  5 a       497
+##  6 and     416
+##  7 in      346
+##  8 it      324
+##  9 of      301
+## 10 my      284
+## # … with 3,122 more rows
+```
+
+---
+
+## Stop words
+
+- **Stop words** are words which are filtered out before or after processing of natural language data (text)
+- They usually refer to the most common words in a language, but there is not a single list of stop words used by all natural language processing tools
+
+---
+
+## Spanish stop words
+
+
+```r
+get_stopwords(language = "es")
+```
+
+```
+## # A tibble: 308 x 2
+##    word  lexicon 
+##    &lt;chr&gt; &lt;chr&gt;   
+##  1 de    snowball
+##  2 la    snowball
+##  3 que   snowball
+##  4 el    snowball
+##  5 en    snowball
+##  6 y     snowball
+##  7 a     snowball
+##  8 los   snowball
+##  9 del   snowball
+## 10 se    snowball
+## # … with 298 more rows
+```
+
+---
+
+## Various lexicons
+
+See `?get_stopwords` for more info.
+
+
+```r
+get_stopwords(source = "smart")
+```
+
+```
+## # A tibble: 571 x 2
+##    word        lexicon
+##    &lt;chr&gt;       &lt;chr&gt;  
+##  1 a           smart  
+##  2 a's         smart  
+##  3 able        smart  
+##  4 about       smart  
+##  5 above       smart  
+##  6 according   smart  
+##  7 accordingly smart  
+##  8 across      smart  
+##  9 actually    smart  
+## 10 after       smart  
+## # … with 561 more rows
+```
+
+---
+
+## What are the most common words?
+
+
+```r
+hamilton_lyrics %&gt;%
+  anti_join(get_stopwords(source = "smart")) %&gt;%
+  count(word) %&gt;%
+  arrange(desc(n))
+```
+
+```
+## Joining, by = "word"
+```
+
+```
+## # A tibble: 2,762 x 2
+##    word          n
+##    &lt;chr&gt;     &lt;int&gt;
+##  1 da          103
+##  2 hey          84
+##  3 wait         82
+##  4 hamilton     72
+##  5 time         65
+##  6 burr         64
+##  7 room         64
+##  8 alexander    58
+##  9 sir          54
+## 10 man          48
+## # … with 2,752 more rows
+```
+
+---
+
+![](08-text-analysis_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+
+---
+
+## What are the most common words?
+
+
+```r
+hamilton_lyrics %&gt;%
+  anti_join(get_stopwords(source = "smart")) %&gt;%
+  count(word) %&gt;%
+  arrange(desc(n)) %&gt;%
+  top_n(20) %&gt;%
+  ggplot(aes(fct_reorder(word, n), n)) +
+    geom_col() +
+    coord_flip() + 
+    theme_minimal() +
+    labs(title = "Frequency of Hamilton lyrics",
+         subtitle = "Da da da dat da dat da da da da ya da",
+         y = "",
+         x = "")
+```
+
+---
+
+## Sentiment analysis
+
+- One way to analyze the sentiment of a text is to consider the text as a combination of its individual words 
+- and the sentiment content of the whole text as the sum of the sentiment content of the individual words
+
+---
+
+## Sentiment lexicons
+
+.pull-left[
+
+```r
+get_sentiments("afinn")
+```
+
+```
+## # A tibble: 2,477 x 2
+##    word       value
+##    &lt;chr&gt;      &lt;dbl&gt;
+##  1 abandon       -2
+##  2 abandoned     -2
+##  3 abandons      -2
+##  4 abducted      -2
+##  5 abduction     -2
+##  6 abductions    -2
+##  7 abhor         -3
+##  8 abhorred      -3
+##  9 abhorrent     -3
+## 10 abhors        -3
+## # … with 2,467 more rows
+```
+]
+.pull-right[
+
+```r
+get_sentiments("bing") 
+```
+
+```
+## # A tibble: 6,786 x 2
+##    word        sentiment
+##    &lt;chr&gt;       &lt;chr&gt;    
+##  1 2-faces     negative 
+##  2 abnormal    negative 
+##  3 abolish     negative 
+##  4 abominable  negative 
+##  5 abominably  negative 
+##  6 abominate   negative 
+##  7 abomination negative 
+##  8 abort       negative 
+##  9 aborted     negative 
+## 10 aborts      negative 
+## # … with 6,776 more rows
+```
+]
+
+---
+
+## Sentiments in Hamilton lyrics
+
+
+```r
+hamilton_lyrics %&gt;%
+  inner_join(get_sentiments("bing")) %&gt;%
+  count(sentiment, word) %&gt;%
+  arrange(desc(n))
+```
+
+```
+## Joining, by = "word"
+```
+
+```
+## # A tibble: 540 x 3
+##    sentiment word          n
+##    &lt;chr&gt;     &lt;chr&gt;     &lt;int&gt;
+##  1 positive  like         76
+##  2 positive  right        44
+##  3 negative  helpless     33
+##  4 positive  nice         33
+##  5 positive  well         33
+##  6 positive  work         32
+##  7 positive  enough       31
+##  8 positive  satisfied    31
+##  9 negative  shit         21
+## 10 positive  love         19
+## # … with 530 more rows
+```
+
+---
+
+## Visualizing sentiments
+
+![](08-text-analysis_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+
+---
+
+## Visualizing sentiments
+
+
+```r
+hamilton_lyrics %&gt;%
+  inner_join(get_sentiments("bing")) %&gt;%
+  count(sentiment, word) %&gt;%
+  arrange(desc(n)) %&gt;%
+  group_by(sentiment) %&gt;%
+  top_n(10) %&gt;%
+  ungroup() %&gt;%
+  ggplot(aes(fct_reorder(word, n), n, fill = sentiment)) +
+    geom_col() +
+    coord_flip() +
+    facet_wrap(~ sentiment, scales = "free") +
+    theme_minimal() +
+    labs(title = "Sentiments in Hamilton lyrics",
+         x = "") +
+    guides(fill = FALSE)
+```
+
+---
+
+class: center, middle
+
+# Comparing lyrics across artists
+
+---
+
+## Get more data
+
+Get data from two more artists:
+
+.midi[
+
+```r
+american_teen &lt;- genius_album(artist = "Khalid", album = "American Teen") %&gt;%
+  mutate(artist = "Khalid", album = "American Teen")
+sinister &lt;- genius_album(artist = "Belle and Sebastian", album = "If You're Feeling Sinister") %&gt;%
+  mutate(artist = "Belle and Sebastian", album = "If You're Feeling Sinister")
+drones &lt;- genius_album(artist = "Muse", album = "Drones") %&gt;%
+  mutate(artist = "Muse", album = "Drones")
+```
+]
+
+
+
+---
+
+## Combine data
+
+.pull-left[
+
+```r
+mixtape &lt;- bind_rows(
+  hamilton, 
+  american_teen, 
+  sinister, 
+  drones
+  )
+```
+]
+.pull-right[
+![](img/mixtape.png)
+]
+
+
+```r
+glimpse(mixtape)
+```
+
+```
+## Observations: 4,904
+## Variables: 6
+## $ track_title &lt;chr&gt; "Alexander Hamilton (Off-Broadway) (Ft. Anthony Ramo…
+## $ track_n     &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+## $ line        &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1…
+## $ lyric       &lt;chr&gt; "How does a bastard, orphan, son of a whore and a", …
+## $ album       &lt;chr&gt; "Hamilton", "Hamilton", "Hamilton", "Hamilton", "Ham…
+## $ artist      &lt;chr&gt; "Lin-Manuel Miranda", "Lin-Manuel Miranda", "Lin-Man…
+```
+
+---
+
+## All lyrics
+
+.small[
+
+```r
+mixtape_lyrics &lt;- mixtape %&gt;%
+  unnest_tokens(word, lyric)
+
+mixtape_lyrics
+```
+
+```
+## # A tibble: 31,856 x 6
+##    track_title                       track_n  line album   artist     word 
+##    &lt;chr&gt;                               &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;
+##  1 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… how  
+##  2 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… does 
+##  3 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… a    
+##  4 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… bast…
+##  5 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… orph…
+##  6 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… son  
+##  7 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… of   
+##  8 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… a    
+##  9 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… whore
+## 10 Alexander Hamilton (Off-Broadway…       1     1 Hamilt… Lin-Manue… and  
+## # … with 31,846 more rows
+```
+]
+
+---
+
+## Common lyrics
+
+Without stop words:
+
+
+```r
+mixtape_lyrics_counts &lt;- mixtape_lyrics %&gt;%
+  anti_join(get_stopwords(source = "smart")) %&gt;%
+  filter(
+    # stop words that weren't in the lexicon
+    !(word %in% c("da", "dadadadada", "la", "ooh", "em"))
+    ) %&gt;%
+  count(artist, word, sort = TRUE) # alternative way to sort
+```
+
+```
+## Joining, by = "word"
+```
+
+---
+
+## What is a document about?
+
+- Term frequency
+- Inverse document frequency
+
+`$$idf(\text{term}) = \ln{\left(\frac{n_{\text{documents}}}{n_{\text{documents containing term}}}\right)}$$`
+
+tf-idf is about comparing **documents** within a **collection**.
+
+---
+
+## Calculating tf-idf
+
+This is not that exciting... What's the issue?
+
+
+```r
+mixtape_words &lt;- mixtape_lyrics_counts %&gt;%
+  bind_tf_idf(word, artist, n)
+
+mixtape_words
+```
+
+```
+## # A tibble: 4,006 x 6
+##    artist             word          n      tf   idf  tf_idf
+##    &lt;chr&gt;              &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+##  1 Lin-Manuel Miranda hey          84 0.00997 0.288 0.00287
+##  2 Lin-Manuel Miranda wait         82 0.00974 0.693 0.00675
+##  3 Lin-Manuel Miranda hamilton     72 0.00855 1.39  0.0119 
+##  4 Lin-Manuel Miranda time         65 0.00772 0     0      
+##  5 Lin-Manuel Miranda burr         64 0.00760 1.39  0.0105 
+##  6 Lin-Manuel Miranda room         64 0.00760 0.288 0.00219
+##  7 Lin-Manuel Miranda alexander    58 0.00689 1.39  0.00955
+##  8 Khalid             love         57 0.0405  0     0      
+##  9 Lin-Manuel Miranda sir          54 0.00641 0.693 0.00444
+## 10 Lin-Manuel Miranda man          48 0.00570 0     0      
+## # … with 3,996 more rows
+```
+
+---
+
+## Sorting tf-idf
+
+
+```r
+mixtape_words %&gt;%
+  bind_tf_idf(word, artist, n) %&gt;%
+  arrange(-tf_idf)
+```
+
+```
+## # A tibble: 4,006 x 6
+##    artist              word        n     tf   idf tf_idf
+##    &lt;chr&gt;               &lt;chr&gt;   &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Belle and Sebastian track      19 0.0207 1.39  0.0287
+##  2 Khalid              turning    29 0.0206 1.39  0.0286
+##  3 Belle and Sebastian stars      18 0.0196 1.39  0.0272
+##  4 Muse                drones     15 0.0182 1.39  0.0252
+##  5 Muse                psycho     14 0.0170 1.39  0.0235
+##  6 Belle and Sebastian judy       14 0.0153 1.39  0.0212
+##  7 Belle and Sebastian snow       13 0.0142 1.39  0.0197
+##  8 Khalid              blooded    18 0.0128 1.39  0.0177
+##  9 Khalid              promise    32 0.0227 0.693 0.0158
+## 10 Muse                aye         9 0.0109 1.39  0.0151
+## # … with 3,996 more rows
+```
+
+---
+
+## 
+
+&lt;img src="08-text-analysis_files/figure-html/unnamed-chunk-32-1.png" width="1800" /&gt;
+
+---
+
+## Acknowledgements
+
+- Julia Silge: https://github.com/juliasilge/tidytext-tutorial
+- Julia Silge and David Robinson: https://www.tidytextmining.com/
+- Josiah Parry: https://github.com/JosiahParry/genius
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightLines": true,
+"highlightStyle": "solarized-light",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

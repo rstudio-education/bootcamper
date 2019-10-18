@@ -1,0 +1,476 @@
+---
+title: "Text analysis <br> `r emo::ji('paper')`"
+output:
+  xaringan::moon_reader:
+    css: "../slides.css"
+    lib_dir: libs
+    nature:
+      ratio: "16:9"
+      highlightLines: true
+      highlightStyle: solarized-light
+      countIncrementalSlides: false
+---
+
+```{r child = "../setup.Rmd"}
+```
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(tidytext)
+library(genius)
+```
+
+
+class: center, middle
+
+# Text analysis
+
+---
+
+## Text analysis
+
+- Text mining (text analysis) is the process of deriving high-quality information from text.
+- Typical text mining tasks include 
+  - text categorization
+  - text clustering
+  - concept/entity extraction
+  - production of granular taxonomies
+  - sentiment analysis
+  - document summarization
+  - entity relation modeling (i.e., learning relations between named entities)
+
+---
+
+## Tidytext
+
+- Using tidy data principles can make many text mining tasks easier, more effective, and consistent with tools we've already learned about
+- **Tidy text** = one-**token**-per-row
+  - A token can be a word or an n-gram (e.g. bigram = 2 words) 
+- Learn more at [tidytextmining.com](https://www.tidytextmining.com/)
+
+```{r eval=FALSE}
+library(tidytext)
+```
+
+---
+
+## What is tidy text?
+
+```{r}
+text <- c("Take me out tonight",
+          "Where there's music and there's people",
+          "And they're young and alive",
+          "Driving in your car",
+          "I never never want to go home",
+          "Because I haven't got one",
+          "Anymore")
+
+text
+```
+
+---
+
+## What is tidy text?
+
+```{r}
+text_df <- tibble(line = 1:7, text = text)
+
+text_df
+```
+
+---
+
+## What is tidy text?
+
+```{r}
+text_df %>%
+  unnest_tokens(word, text)
+```
+
+---
+
+class: center, middle
+
+```{r out.width="100%", echo=FALSE}
+knitr::include_graphics("img/hamilton.jpg")
+```
+
+---
+
+## Let's get more data
+
+We'll use the `genius` package to get song lyric data from [Genius](https://genius.com/).
+
+```{r eval=FALSE}
+library(genius) # https://github.com/JosiahParry/genius
+```
+
+- `genius_album()` allows you to download the lyrics for an entire album in a 
+tidy format. 
+- Input: Two arguments artists and album. Supply the quoted name of artist 
+and the album (if it gives you issues check that you have the album name and 
+artists as specified on [Genius](https://genius.com/)).
+- Output: A tidy data frame with three columns:
+    - `title`: track name
+    - `track_n`: track number
+    - `text`: lyrics
+
+---
+
+## Hamilton!
+
+```{r cache=TRUE}
+hamilton <- genius_album(
+  artist = "Lin-Manuel Miranda", 
+  album = "Hamilton: An American Musical (Off-Broadway)"
+  )
+glimpse(hamilton)
+```
+
+---
+
+## Save for later
+
+```{r}
+hamilton <- hamilton %>%
+  mutate(
+    album = "Hamilton",
+    artist = "Lin-Manuel Miranda"
+    )
+```
+
+---
+
+## How many songs are in the album?
+
+```{r}
+hamilton %>%
+  distinct(track_title) %>%
+  nrow()
+```
+
+---
+
+## How long are Hamilton songs?
+
+Length measured by number of lines
+
+```{r}
+hamilton %>%
+  count(track_title) %>%
+  arrange(desc(n)) %>%
+  select(n, track_title)
+```
+
+---
+
+## Tidy up your lyrics!
+
+.small[
+```{r}
+hamilton_lyrics <- hamilton %>%
+  unnest_tokens(word, lyric)
+
+hamilton_lyrics
+```
+]
+
+---
+
+## What are the most common words?
+
+```{r}
+hamilton_lyrics %>%
+  count(word) %>%
+  arrange(desc(n))
+```
+
+---
+
+## Stop words
+
+- **Stop words** are words which are filtered out before or after processing of natural language data (text)
+- They usually refer to the most common words in a language, but there is not a single list of stop words used by all natural language processing tools
+
+---
+
+## Spanish stop words
+
+```{r}
+get_stopwords(language = "es")
+```
+
+---
+
+## Various lexicons
+
+See `?get_stopwords` for more info.
+
+```{r}
+get_stopwords(source = "smart")
+```
+
+---
+
+## What are the most common words?
+
+```{r}
+hamilton_lyrics %>%
+  anti_join(get_stopwords(source = "smart")) %>%
+  count(word) %>%
+  arrange(desc(n))
+```
+
+---
+
+```{r echo=FALSE, message=FALSE, fig.height=3.25}
+hamilton_lyrics %>%
+  anti_join(get_stopwords(source = "smart")) %>%
+  count(word) %>%
+  arrange(desc(n)) %>%
+  top_n(20) %>%
+  ggplot(aes(fct_reorder(word, n), n)) +
+    geom_col() +
+    coord_flip() + 
+    theme_minimal() +
+    labs(title = "Frequency of Hamilton lyrics",
+         subtitle = "Da da da dat da dat da da da da ya da",
+         y = "",
+         x = "")
+```
+
+---
+
+## What are the most common words?
+
+```{r eval=FALSE}
+hamilton_lyrics %>%
+  anti_join(get_stopwords(source = "smart")) %>%
+  count(word) %>%
+  arrange(desc(n)) %>%
+  top_n(20) %>%
+  ggplot(aes(fct_reorder(word, n), n)) +
+    geom_col() +
+    coord_flip() + 
+    theme_minimal() +
+    labs(title = "Frequency of Hamilton lyrics",
+         subtitle = "Da da da dat da dat da da da da ya da",
+         y = "",
+         x = "")
+```
+
+---
+
+## Sentiment analysis
+
+- One way to analyze the sentiment of a text is to consider the text as a combination of its individual words 
+- and the sentiment content of the whole text as the sum of the sentiment content of the individual words
+
+---
+
+## Sentiment lexicons
+
+.pull-left[
+```{r}
+get_sentiments("afinn")
+```
+]
+.pull-right[
+```{r}
+get_sentiments("bing") 
+```
+]
+
+---
+
+## Sentiments in Hamilton lyrics
+
+```{r}
+hamilton_lyrics %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, word) %>%
+  arrange(desc(n))
+```
+
+---
+
+## Visualizing sentiments
+
+```{r echo=FALSE, message=FALSE}
+hamilton_lyrics %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, word) %>%
+  arrange(desc(n)) %>%
+  group_by(sentiment) %>%
+  top_n(10) %>%
+  ungroup() %>%
+  ggplot(aes(fct_reorder(word, n), n, fill = sentiment)) +
+    geom_col() +
+    coord_flip() +
+    facet_wrap(~ sentiment, scales = "free") +
+    theme_minimal() +
+    labs(title = "Sentiments in Hamilton lyrics",
+         x = "") +
+    guides(fill = FALSE)
+```
+
+---
+
+## Visualizing sentiments
+
+```{r eval=FALSE}
+hamilton_lyrics %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(sentiment, word) %>%
+  arrange(desc(n)) %>%
+  group_by(sentiment) %>%
+  top_n(10) %>%
+  ungroup() %>%
+  ggplot(aes(fct_reorder(word, n), n, fill = sentiment)) +
+    geom_col() +
+    coord_flip() +
+    facet_wrap(~ sentiment, scales = "free") +
+    theme_minimal() +
+    labs(title = "Sentiments in Hamilton lyrics",
+         x = "") +
+    guides(fill = FALSE)
+```
+
+---
+
+class: center, middle
+
+# Comparing lyrics across artists
+
+---
+
+## Get more data
+
+Get data from two more artists:
+
+.midi[
+```{r eval=FALSE}
+american_teen <- genius_album(artist = "Khalid", album = "American Teen") %>%
+  mutate(artist = "Khalid", album = "American Teen")
+sinister <- genius_album(artist = "Belle and Sebastian", album = "If You're Feeling Sinister") %>%
+  mutate(artist = "Belle and Sebastian", album = "If You're Feeling Sinister")
+drones <- genius_album(artist = "Muse", album = "Drones") %>%
+  mutate(artist = "Muse", album = "Drones")
+```
+]
+
+```{r include=FALSE}
+american_teen <- read_rds("data/american_teen.rds")
+sinister      <- read_rds("data/sinister.rds")
+drones        <- read_rds("data/drones.rds")
+```
+
+---
+
+## Combine data
+
+.pull-left[
+```{r}
+mixtape <- bind_rows(
+  hamilton, 
+  american_teen, 
+  sinister, 
+  drones
+  )
+```
+]
+.pull-right[
+![](img/mixtape.png)
+]
+
+```{r}
+glimpse(mixtape)
+```
+
+---
+
+## All lyrics
+
+.small[
+```{r}
+mixtape_lyrics <- mixtape %>%
+  unnest_tokens(word, lyric)
+
+mixtape_lyrics
+```
+]
+
+---
+
+## Common lyrics
+
+Without stop words:
+
+```{r}
+mixtape_lyrics_counts <- mixtape_lyrics %>%
+  anti_join(get_stopwords(source = "smart")) %>%
+  filter(
+    # stop words that weren't in the lexicon
+    !(word %in% c("da", "dadadadada", "la", "ooh", "em"))
+    ) %>%
+  count(artist, word, sort = TRUE) # alternative way to sort
+```
+
+---
+
+## What is a document about?
+
+- Term frequency
+- Inverse document frequency
+
+$$idf(\text{term}) = \ln{\left(\frac{n_{\text{documents}}}{n_{\text{documents containing term}}}\right)}$$
+
+tf-idf is about comparing **documents** within a **collection**.
+
+---
+
+## Calculating tf-idf
+
+This is not that exciting... What's the issue?
+
+```{r}
+mixtape_words <- mixtape_lyrics_counts %>%
+  bind_tf_idf(word, artist, n)
+
+mixtape_words
+```
+
+---
+
+## Sorting tf-idf
+
+```{r}
+mixtape_words %>%
+  bind_tf_idf(word, artist, n) %>%
+  arrange(-tf_idf)
+```
+
+---
+
+## 
+
+```{r echo=FALSE,message=FALSE, fig.height=3.5, fig.width=6, fig.retina=3}
+mixtape_words %>% 
+  group_by(artist) %>% 
+  top_n(10) %>% 
+  ungroup() %>% 
+  ggplot(aes(fct_reorder(word, tf_idf), tf_idf, fill = artist)) + 
+    geom_col(alpha = 0.9, show.legend = FALSE) + coord_flip() + 
+    facet_wrap(~artist, ncol=2, scales = "free") + 
+    scale_y_continuous(expand = c(0,0)) + 
+    theme_minimal() +
+    labs(x = NULL, y = "tf-idf")
+```
+
+---
+
+## Acknowledgements
+
+- Julia Silge: https://github.com/juliasilge/tidytext-tutorial
+- Julia Silge and David Robinson: https://www.tidytextmining.com/
+- Josiah Parry: https://github.com/JosiahParry/genius
