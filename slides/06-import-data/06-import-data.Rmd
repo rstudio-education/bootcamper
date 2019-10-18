@@ -324,7 +324,7 @@ If done, see next slide for stretch goal.
 
 .midi[
 ```{r echo=FALSE}
-sales <- read_excel("data/sales.xlsx", skip = 3, col_names = c("brand_id", "n"))
+sales <- read_excel("data/sales.xlsx", skip = 3, col_names = c("id", "n"))
 sales
 ```
 ]
@@ -349,12 +349,16 @@ following.
 ```{r echo=FALSE}
 sales %>%
   mutate(
-    is_brand_name = str_detect(brand_id, "Brand"),
-    brand = if_else(is_brand_name, brand_id, NA_character_)
+    is_brand_name = str_detect(id, "Brand"),
+    brand = if_else(is_brand_name, id, NA_character_)
   ) %>%
   fill(brand) %>%
   filter(!is_brand_name) %>%
-  select(-is_brand_name)
+  select(brand, id, n) %>%
+  mutate(
+    id = as.numeric(id),
+    n = as.numeric(n)
+  )
 ```
 ]
 
