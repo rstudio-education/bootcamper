@@ -314,24 +314,6 @@ countdown(minutes = 5, seconds = 0)
 
 ---
 
-class: center, middle
-
-# Other types of data
-
----
-
-## Other types of data
-
-- **haven**: SPSS, Stata, and SAS files
-- **DBI**, along with a database specific backend (e.g. RMySQL, RSQLite, RPostgreSQL etc): allows you to run SQL queries against a database and return a data frame
-- **jsonline**: JSON
-- **xml2**: xml
-- **rvest**: web scraping
-- **httr**: web APIs
-- **sparklyr**: data loaded into spark
-
----
-
 ### 06 - Data types / `03-tidy-fun.Rmd`
 
 .instructions[
@@ -375,3 +357,62 @@ sales %>%
   select(-is_brand_name)
 ```
 ]
+
+---
+
+class: center, middle
+
+# Importing from Google
+
+---
+
+## googledrive * googlesheets4
+
+- The **googledrive** package provides functionality for file level operatons (for any type of file) on your Google drive, such as list, read, write, etc: [googledrive.tidyverse.org](https://googledrive.tidyverse.org/)
+
+- The **googlesheets4** package (soon to be on CRAN) provides functionality specifically for working with Google sheets: [googlesheets4.tidyverse.org](https://googlesheets4.tidyverse.org/)
+
+---
+
+## Live demo: googledrive
+
+```{r eval=FALSE}
+library(googledrive)
+
+drive_find(n_max = 30)
+drive_find(pattern = "rstudio::conf")
+drive_find(type = "spreadsheet") # Google sheets!
+conf_rooming_info <- drive_find(
+  pattern = "rstudio::conf 2020 Rooming List"
+  )
+```
+
+---
+
+## Live demo: googlesheets4
+
+```{r eval=FALSE}
+library(googlesheets4)
+
+conf_rooming <- read_sheet(conf_rooming_info)
+dim(conf_rooming)
+names(conf_rooming)
+```
+
+---
+
+class: center, middle
+
+# Other types of data
+
+---
+
+## Other types of data
+
+- **haven**: SPSS, Stata, and SAS files
+- **DBI**, along with a database specific backend (e.g. RMySQL, RSQLite, RPostgreSQL etc): allows you to run SQL queries against a database and return a data frame
+- **jsonline**: JSON
+- **xml2**: xml
+- **rvest**: web scraping
+- **httr**: web APIs
+- **sparklyr**: data loaded into spark

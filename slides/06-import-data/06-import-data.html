@@ -104,7 +104,7 @@ skimr::skim(nobel)
 ##  n obs: 935 
 ##  n variables: 26 
 ## 
-## ── Variable type:character ────────────────────────────────────────────────────────────
+## ── Variable type:character ──────────────────────────────────────────
 ##               variable missing complete   n min max empty n_unique
 ##            affiliation     250      685 935   4 110     0      303
 ##              born_city      28      907 935   3  29     0      613
@@ -128,12 +128,12 @@ skimr::skim(nobel)
 ##     overall_motivation     918       17 935  55 114     0        7
 ##                surname      29      906 935   2  26     0      851
 ## 
-## ── Variable type:Date ─────────────────────────────────────────────────────────────────
+## ── Variable type:Date ───────────────────────────────────────────────
 ##   variable missing complete   n        min        max     median n_unique
 ##  born_date      33      902 935 1817-11-30 1997-07-12 1916-06-28      885
 ##  died_date     308      627 935 1903-11-01 2019-08-07 1983-03-09      616
 ## 
-## ── Variable type:numeric ──────────────────────────────────────────────────────────────
+## ── Variable type:numeric ────────────────────────────────────────────
 ##  variable missing complete   n    mean     sd   p0    p25  p50    p75 p100     hist
 ##        id       0      935 935  475.12 277.83    1  234.5  470  716.5  969 ▇▇▇▇▇▇▇▇
 ##     share       0      935 935    1.99   0.94    1    1      2    3      4 ▇▁▇▁▁▅▁▂
@@ -192,7 +192,7 @@ respectively, to `data/`.
 **Hint:** Use the `%in%` operator when filtering.
 ]
 
-<div class="countdown" id="timer_5da92369" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5da9aadb" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -435,7 +435,7 @@ the `data/` folder and observe the variable types.
 Are they as you left them?
 ]
 
-<div class="countdown" id="timer_5da9262a" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5da9a9a1" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -470,31 +470,13 @@ write_rds(x, path)
 variable types.  Are they as you left them?
 ]
 
-<div class="countdown" id="timer_5da9255b" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5da9aa07" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 .footnote[
 [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud)
 ]
-
----
-
-class: center, middle
-
-# Other types of data
-
----
-
-## Other types of data
-
-- **haven**: SPSS, Stata, and SAS files
-- **DBI**, along with a database specific backend (e.g. RMySQL, RSQLite, RPostgreSQL etc): allows you to run SQL queries against a database and return a data frame
-- **jsonline**: JSON
-- **xml2**: xml
-- **rvest**: web scraping
-- **httr**: web APIs
-- **sparklyr**: data loaded into spark
 
 ---
 
@@ -525,7 +507,7 @@ If done, see next slide for stretch goal.
 ]
 
 
-<div class="countdown" id="timer_5da922be" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5da9acb6" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -555,6 +537,67 @@ following.
 ## 7 3216     5     Brand 2
 ```
 ]
+
+---
+
+class: center, middle
+
+# Importing from Google
+
+---
+
+## googledrive * googlesheets4
+
+- The **googledrive** package provides functionality for file level operatons (for any type of file) on your Google drive, such as list, read, write, etc: [googledrive.tidyverse.org](https://googledrive.tidyverse.org/)
+
+- The **googlesheets4** package (soon to be on CRAN) provides functionality specifically for working with Google sheets: [googlesheets4.tidyverse.org](https://googlesheets4.tidyverse.org/)
+
+---
+
+## Live demo: googledrive
+
+
+```r
+library(googledrive)
+
+drive_find(n_max = 30)
+drive_find(pattern = "rstudio::conf")
+drive_find(type = "spreadsheet") # Google sheets!
+conf_rooming_info &lt;- drive_find(
+  pattern = "rstudio::conf 2020 Rooming List"
+  )
+```
+
+---
+
+## Live demo: googlesheets4
+
+
+```r
+library(googlesheets4)
+
+conf_rooming &lt;- read_sheet(conf_rooming_info)
+dim(conf_rooming)
+names(conf_rooming)
+```
+
+---
+
+class: center, middle
+
+# Other types of data
+
+---
+
+## Other types of data
+
+- **haven**: SPSS, Stata, and SAS files
+- **DBI**, along with a database specific backend (e.g. RMySQL, RSQLite, RPostgreSQL etc): allows you to run SQL queries against a database and return a data frame
+- **jsonline**: JSON
+- **xml2**: xml
+- **rvest**: web scraping
+- **httr**: web APIs
+- **sparklyr**: data loaded into spark
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
