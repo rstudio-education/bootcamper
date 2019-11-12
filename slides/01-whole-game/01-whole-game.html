@@ -5,6 +5,8 @@
     <meta charset="utf-8" />
     <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
     <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
     <link rel="stylesheet" href="../slides.css" type="text/css" />
   </head>
   <body>
@@ -120,8 +122,22 @@ David Robinson, [varianceexplained.org/r/trump-tweets](http://varianceexplained.
 - Go to [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud) and join the 
 RStudio Cloud workspace for the bootcamp.
 - Start the first assignment: `01 - Whole game`
-- We'll go through the three R Markdown files in order. Open the first one to get 
-started.
+- Open `01-unvotes-rmd.Rmd` and knit the document.
+- Change "Turkey" to another country and knit again. Compare with breakout room-mates(?)
+how the country you chose voted on certain issues.
+
+<div class="countdown" id="timer_5dcacab2" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+## 💻 Demo
+
+Continue to work in the first assignment: `01 - Whole game`
+
+- Open `02-unvotes-rmd-param.Rmd` and knit the document.
+- Open `03-unvotes-shiny.Rmd` and knit the document.
 
 ---
 
@@ -282,7 +298,7 @@ The tidyverse is an opinionated collection of R packages designed for data scien
 All packages share an underlying design philosophy, grammar, and data structures.
 ]
 .pull-right[
-![](img/tidyverse-packages.png)&lt;!-- --&gt;
+&lt;img src="img/tidyverse-packages.png" width="322" /&gt;
 ]
 
 
@@ -301,8 +317,6 @@ class: center, middle
 .tiny[
 Source: http://socviz.co/appendix.html#a-little-more-about-r
 ]
-
----
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -116,8 +116,22 @@ knitr::include_graphics("img/bohemian-rhapsody.png")
 - Go to [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud) and join the 
 RStudio Cloud workspace for the bootcamp.
 - Start the first assignment: `01 - Whole game`
-- We'll go through the three R Markdown files in order. Open the first one to get 
-started.
+- Open `01-unvotes-rmd.Rmd` and knit the document.
+- Change "Turkey" to another country and knit again. Compare with breakout room-mates(?)
+how the country you chose voted on certain issues.
+
+```{r echo=FALSE}
+countdown(minutes = 5)
+```
+
+---
+
+## `r emo::ji("computer")` Demo
+
+Continue to work in the first assignment: `01 - Whole game`
+
+- Open `02-unvotes-rmd-param.Rmd` and knit the document.
+- Open `03-unvotes-shiny.Rmd` and knit the document.
 
 ---
 
@@ -257,5 +271,3 @@ knitr::include_graphics("img/r-help.png")
 .tiny[
 Source: http://socviz.co/appendix.html#a-little-more-about-r
 ]
-
----
