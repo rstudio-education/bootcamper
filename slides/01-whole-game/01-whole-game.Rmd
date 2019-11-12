@@ -131,6 +131,7 @@ countdown(minutes = 5)
 Continue to work in the first assignment: `01 - Whole game`
 
 - Open `02-unvotes-rmd-param.Rmd` and knit the document.
+  - Go to https://connect.rstudioservices.com/connect/#/apps/464/access/529 and change the input parameters.
 - Open `03-unvotes-shiny.Rmd` and knit the document.
 
 ---
