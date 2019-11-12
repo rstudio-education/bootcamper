@@ -331,7 +331,7 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
 run the chunk, and observe what you get. You might get a reasonable plot, or 
 an error. If you get an error, try another variable.
 
-<div class="countdown" id="timer_5d9f138f" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5dcacd9a" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -526,24 +526,26 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
 
 ---
 
-## Dive further...
+## 💻 Your turn
 
-.question[
-In the next few slides describe what each plot displays. Think about
-how the code relates to the output.
-]
+Look through the next three slides titled Facet 1, 2, and 3 describe what each 
+plot displays. Think about how the code relates to the output.
 
---
-
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;br&gt;
 
 .alert[
-The plots in the next few slides do not have proper titles, axis labels, etc. 
-because we want you to figure out what's happening in the plots. But you 
-should always label your plots!
+**Note:** The plots in the next few slides do not have proper titles, axis 
+labels, etc. because we want you to figure out what's happening in the plots. 
+But you should always label your plots!
 ]
 
+<div class="countdown" id="timer_5dcace55" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
 ---
+
+### Facet 1
 
 
 ```r
@@ -552,9 +554,11 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
   facet_grid(gender ~ .)
 ```
 
-![](02-visualize-data_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+![](02-visualize-data_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
 
 ---
+
+### Facet 2
 
 
 ```r
@@ -563,9 +567,11 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
   facet_grid(. ~ gender)
 ```
 
-![](02-visualize-data_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
+![](02-visualize-data_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
 
 ---
+
+### Facet 3
 
 
 ```r
@@ -574,7 +580,7 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
   facet_wrap(~ eye_color)
 ```
 
-![](02-visualize-data_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
+![](02-visualize-data_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -608,17 +614,6 @@ class: center, middle
 
 ---
 
-## Describing shapes of numerical distributions
-
-* shape:
-    * skewness: right-skewed, left-skewed, symmetric (skew is to the side of the longer tail)
-    * modality: unimodal, bimodal, multimodal, uniform
-* center: mean (`mean`), median (`median`), mode (not always useful)
-* spread: range (`range`), standard deviation (`sd`), inter-quartile range (`IQR`)
-* unusal observations
-
----
-
 ## Histograms
 
 
@@ -627,7 +622,7 @@ ggplot(data = starwars, mapping = aes(x = height)) +
   geom_histogram(binwidth = 10)
 ```
 
-&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-30-1.png" width="75%" /&gt;
+&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-31-1.png" width="75%" /&gt;
 
 ---
 
@@ -639,7 +634,7 @@ ggplot(data = starwars, mapping = aes(x = height)) +
   geom_density()
 ```
 
-&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-31-1.png" width="75%" /&gt;
+&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-32-1.png" width="75%" /&gt;
 
 ---
 
@@ -651,7 +646,7 @@ ggplot(data = starwars, mapping = aes(y = height)) +
   geom_boxplot()
 ```
 
-&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-32-1.png" width="60%" /&gt;
+&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-33-1.png" width="60%" /&gt;
 
 ---
 
@@ -669,7 +664,7 @@ ggplot(data = starwars, mapping = aes(y = height, x = gender)) +
   geom_boxplot()
 ```
 
-&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-33-1.png" width="75%" /&gt;
+&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-34-1.png" width="75%" /&gt;
 
 ---
 
@@ -683,7 +678,7 @@ ggplot(data = starwars, mapping = aes(y = height, x = gender)) +
   geom_point()
 ```
 
-&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-34-1.png" width="60%" /&gt;
+&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-35-1.png" width="60%" /&gt;
 
 ---
 
@@ -695,7 +690,7 @@ ggplot(data = starwars, mapping = aes(y = height, x = gender)) +
   geom_violin()
 ```
 
-&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-35-1.png" width="75%" /&gt;
+&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-36-1.png" width="75%" /&gt;
 
 ---
 
@@ -710,7 +705,7 @@ ggplot(data = starwars, mapping = aes(y = height, x = gender)) +
   geom_jitter()
 ```
 
-&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-37-1.png" width="75%" /&gt;
+&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-38-1.png" width="75%" /&gt;
 
 ---
 
@@ -723,7 +718,7 @@ ggplot(data = starwars, mapping = aes(y = height, x = gender)) +
   geom_beeswarm()
 ```
 
-&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-38-1.png" width="75%" /&gt;
+&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-39-1.png" width="75%" /&gt;
 
 ---
 
@@ -741,7 +736,7 @@ ggplot(data = starwars, mapping = aes(x = gender)) +
   geom_bar()
 ```
 
-&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-39-1.png" width="80%" /&gt;
+&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-40-1.png" width="80%" /&gt;
 
 ---
 
@@ -754,7 +749,7 @@ ggplot(data = starwars, mapping = aes(x = gender, fill = hair_color)) +
   geom_bar()
 ```
 
-![](02-visualize-data_files/figure-html/unnamed-chunk-40-1.png)&lt;!-- --&gt;
+![](02-visualize-data_files/figure-html/unnamed-chunk-41-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -785,7 +780,7 @@ ggplot(data = starwars,
   coord_flip()
 ```
 
-&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-42-1.png" width="70%" /&gt;
+&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-43-1.png" width="70%" /&gt;
 
 ---
 
@@ -799,7 +794,7 @@ ggplot(data = starwars,
   coord_flip()
 ```
 
-&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-43-1.png" width="70%" /&gt;
+&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-44-1.png" width="70%" /&gt;
 
 ```r
   labs(y = "proportion")
@@ -819,32 +814,15 @@ ggplot(data = starwars,
 Which bar plot is a more useful representation for visualizing the relationship between gender and hair color?
 ]
 
-&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-44-1.png" width="50%" /&gt;
-
 &lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-45-1.png" width="50%" /&gt;
+
+&lt;img src="02-visualize-data_files/figure-html/unnamed-chunk-46-1.png" width="50%" /&gt;
 
 ---
 
 class: center, middle
 
 # Why do we visualize?
-
----
-
-## 💻 Your turn
-
-- Go to RStudio Cloud and start the second assignment: `02 - Visualize Data`
-- Open the first R Markdown file: `02-why.visualize.Rmd`
-- Knit the document
-
-<div class="countdown" id="timer_5d9f16ac" style="right:0;bottom:0;" data-warnwhen="0">
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
-
-.footnote[
-RStudio Cloud workspace for this bootcamp  
-is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
-]
 
 ---
 
@@ -861,6 +839,23 @@ How are people reporting lower vs. higher values of FB visits?
 ]
 
 ![](02-visualize-data_files/figure-html/unnamed-chunk-48-1.png)&lt;!-- --&gt;
+
+---
+
+## 💻 Your turn
+
+- Go to RStudio Cloud and start the second assignment: `02 - Visualize Data`
+- Open the first R Markdown file: `02-why.visualize.Rmd`
+- Knit the document
+
+<div class="countdown" id="timer_5dcacd9b" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+.footnote[
+RStudio Cloud workspace for this bootcamp  
+is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

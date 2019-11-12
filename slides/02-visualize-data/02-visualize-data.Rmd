@@ -436,32 +436,36 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
 
 ---
 
-## Dive further...
+## `r emo::ji("computer")` Your turn
 
-.question[
-In the next few slides describe what each plot displays. Think about
-how the code relates to the output.
-]
+Look through the next three slides titled Facet 1, 2, and 3 describe what each 
+plot displays. Think about how the code relates to the output.
 
---
-
-<br><br><br>
+<br>
 
 .alert[
-The plots in the next few slides do not have proper titles, axis labels, etc. 
-because we want you to figure out what's happening in the plots. But you 
-should always label your plots!
+**Note:** The plots in the next few slides do not have proper titles, axis 
+labels, etc. because we want you to figure out what's happening in the plots. 
+But you should always label your plots!
 ]
+
+```{r echo=FALSE}
+countdown(minutes = 3, seconds = 00)
+```
 
 ---
 
-```{r fig.width=7, fig.height=3.25, warning=FALSE}
+### Facet 1
+
+```{r fig.width=7, fig.height=3, warning=FALSE}
 ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
   geom_point() +
   facet_grid(gender ~ .)
 ```
 
 ---
+
+### Facet 2
 
 ```{r fig.width=8, warning=FALSE}
 ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
@@ -471,7 +475,9 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
 
 ---
 
-```{r fig.width=7, fig.height=3.25, warning=FALSE}
+### Facet 3
+
+```{r fig.width=7, fig.height=3, warning=FALSE}
 ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
   geom_point() +
   facet_wrap(~ eye_color)
@@ -506,17 +512,6 @@ class: center, middle
 class: center, middle
 
 # Visualizing numerical data
-
----
-
-## Describing shapes of numerical distributions
-
-* shape:
-    * skewness: right-skewed, left-skewed, symmetric (skew is to the side of the longer tail)
-    * modality: unimodal, bimodal, multimodal, uniform
-* center: mean (`mean`), median (`median`), mode (not always useful)
-* spread: range (`range`), standard deviation (`sd`), inter-quartile range (`IQR`)
-* unusal observations
 
 ---
 
@@ -695,23 +690,6 @@ class: center, middle
 
 ---
 
-## `r emo::ji("computer")` Your turn
-
-- Go to RStudio Cloud and start the second assignment: `02 - Visualize Data`
-- Open the first R Markdown file: `02-why.visualize.Rmd`
-- Knit the document
-
-```{r echo=FALSE}
-countdown(minutes = 5, seconds = 00)
-```
-
-.footnote[
-RStudio Cloud workspace for this bootcamp  
-is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
-]
-
----
-
 .question[
 Do you see anything out of the ordinary?
 ]
@@ -733,3 +711,21 @@ ggplot(dsbox::student_survey, aes(x = fb_visits_per_day)) +
   geom_histogram(binwidth = 1) +
   labs(title = "How many times do you go on Facebook per day?", x = "")
 ```
+
+---
+
+## `r emo::ji("computer")` Your turn
+
+- Go to RStudio Cloud and start the second assignment: `02 - Visualize Data`
+- Open the first R Markdown file: `02-why.visualize.Rmd`
+- Knit the document
+
+```{r echo=FALSE}
+countdown(minutes = 5, seconds = 00)
+```
+
+.footnote[
+RStudio Cloud workspace for this bootcamp  
+is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
+]
+
