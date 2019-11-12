@@ -1,7 +1,8 @@
 
 ## Hello R\!
 
-Materials for the 2-day internal R bootcamp can be found below.
+Materials for the internal R bootcamp can be found below. We will cover
+the material over the span of 4 half days.
 
 For the “your turn” exercises we’ll use RStudio Cloud. Join the
 workspace
