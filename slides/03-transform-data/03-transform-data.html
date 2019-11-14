@@ -75,6 +75,7 @@ class: center, middle
 
 ## Bike crashes in NC 2007 - 2014
 
+.small[
 
 ```r
 ncbikecrash &lt;- read_csv("data/ncbikecrash.csv")
@@ -138,12 +139,13 @@ glimpse(ncbikecrash)
 ## $ num_lanes            &lt;chr&gt; "2 lanes", "2 lanes", "2 lanes", "1 lane", …
 ## $ geo_point            &lt;chr&gt; "35.3336070056, -77.9955023901", "36.315187…
 ```
-
+]
 
 ---
 
 ## Variables
 
+.small[
 
 ```r
 names(ncbikecrash)
@@ -169,6 +171,7 @@ names(ncbikecrash)
 ## [49] "road_defects"         "road_feature"         "road_surface"        
 ## [52] "num_lanes"            "geo_point"
 ```
+]
 
 ---
 
@@ -280,6 +283,7 @@ In programming, a pipe is a technique for passing information from one process t
 - Start with the data frame `ncbikecrash`, and pass it to the `select()` function,
 ]
 .pull-right[
+.small[
 
 ```r
 *ncbikecrash %&gt;%
@@ -304,6 +308,7 @@ In programming, a pipe is a technique for passing information from one process t
 ## # … with 7,457 more rows
 ```
 ]
+]
 
 ---
 
@@ -316,6 +321,7 @@ In programming, a pipe is a technique for passing information from one process t
 - then we select the variables `county` and `bike_age`,
 ]
 .pull-right[
+.small[
 
 ```r
 ncbikecrash %&gt;%
@@ -340,6 +346,7 @@ ncbikecrash %&gt;%
 ## # … with 7,457 more rows
 ```
 ]
+]
 
 ---
 
@@ -353,6 +360,7 @@ In programming, a pipe is a technique for passing information from one process t
 - and then we arrange the data frame by `bike_age` in ascending order.
 ]
 .pull-right[
+.small[
 
 ```r
 ncbikecrash %&gt;%
@@ -376,6 +384,7 @@ ncbikecrash %&gt;%
 ## 10 Onslow      10      
 ## # … with 7,457 more rows
 ```
+]
 ]
 
 ---
@@ -407,18 +416,22 @@ Any guesses as to why the package is called magrittr?
 
 - You can think about the following sequence of actions - find key, 
 unlock car, start car, drive to school, park.
+
+--
 - Expressed as a set of nested functions in R pseudocode this would look like:
 
 ```r
-park(drive(start_car(find("keys")), to = "campus"))
+park(drive(start_car(find("keys")), to = "work"))
 ```
+
+--
 - Writing it out using pipes give it a more natural (and easier to read) 
 structure:
 
 ```r
 find("keys") %&gt;%
   start_car() %&gt;%
-  drive(to = "campus") %&gt;%
+  drive(to = "work") %&gt;%
   park()
 ```
 
@@ -453,10 +466,60 @@ starwars %&gt;%
 ## A note on piping and layering
 
 - The `%&gt;%` operator in **dplyr** functions is called the pipe operator. This means you "pipe" the output of the previous line of code as the first input of the next line of code.
+
+--
 - The `+` operator in **ggplot2** functions is used for "layering". This means you create the plot in layers, separated by `+`.
-- Many of the styling principles are consistent across `%&gt;%` and `+`:
-  - always a space before
-  - always a line break after (for pipelines with more than 2 lines)
+
+--
+.midi[
+
+```r
+ggplot(starwars, aes(x = height, y = mass)) %&gt;%
+  geom_point()
+```
+
+```
+## Error: `mapping` must be created by `aes()`
+## Did you use %&gt;% instead of +?
+```
+]
+
+--
+.midi[
+
+```r
+starwars +
+  select(height, mass)
+```
+
+```
+## Error in select(height, mass): object 'height' not found
+```
+]
+
+---
+
+## Code styling
+
+Many of the styling principles are consistent across `%&gt;%` and `+`:
+
+- always a space before
+- always a line break after (for pipelines with more than 2 lines)
+
+#### None of this...
+
+
+```r
+ggplot(starwars,aes(x=height,y=mass))+geom_point()
+```
+
+#### More of this...
+
+
+```r
+ggplot(starwars, aes(x = height, y = mass)) + 
+  geom_point()
+```
 
 ---
 
@@ -873,7 +936,7 @@ operator    | definition                   || operator     | definition
 - Open the first R Markdown file: `01-bike-crashes.Rmd`
 - Knit the document, and work on Exercise 1
 
-<div class="countdown" id="timer_5d9f629c" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5dcd6fcb" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -948,7 +1011,7 @@ ncbikecrash %&gt;%
 - Open the first R Markdown file: `01-bike-crashes.Rmd`
 - Knit the document, and work on Exercises 2 and 3
 
-<div class="countdown" id="timer_5d9f600f" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5dcd6e24" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -1084,7 +1147,7 @@ continents
 ## Joining data frames
 
 ```
-*_join(x, y)
+something_join(x, y)
 ```
 
 - `inner_join()`: all rows from x where there are matching values in y, return 
@@ -1369,22 +1432,20 @@ How does `left_join()` know to join the two data frames by `country`?
 
 Hint:
 
+- Variables in the original fisheries dataset:
 
-```r
-names(fisheries)
-```
 
 ```
-## [1] "country"     "capture"     "aquaculture" "total"       "continent"
+## [1] "country"     "capture"     "aquaculture" "total"
 ```
 
-```r
-names(continents)
-```
+- Variables in the continents dataset:
+
 
 ```
 ## [1] "country"   "continent"
 ```
+
 
 ---
 
@@ -1453,10 +1514,27 @@ fisheries %&gt;%
 
 - Go to RStudio Cloud and start the second assignment: `03 - Transform Data`
 - Open the first R Markdown file: `02-fisheries.Rmd`
-- Knit the document and work on the exercise
+- Knit the document and work on the exercises 1
 
-<div class="countdown" id="timer_5d9f637d" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5dcd6ef9" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+.footnote[
+RStudio Cloud workspace for this bootcamp  
+is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
+]
+
+---
+
+## 💻 Your turn
+
+- Go to RStudio Cloud and start the second assignment: `03 - Transform Data`
+- Open the first R Markdown file: `02-fisheries.Rmd`
+- Knit the document and work on the exercises 2 - 4
+
+<div class="countdown" id="timer_5dcd6de3" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">08</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 .footnote[
@@ -1476,7 +1554,7 @@ ggplot(fisheries_summary, aes(x = continent, y = mean_ap)) +
   geom_col()
 ```
 
-![](03-transform-data_files/figure-html/unnamed-chunk-60-1.png)&lt;!-- --&gt;
+&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-66-1.png" width="3000" /&gt;
 
 ---
 
@@ -1500,7 +1578,7 @@ ggplot(fisheries_summary,
 
 ---
 
-![](03-transform-data_files/figure-html/unnamed-chunk-62-1.png)&lt;!-- --&gt;
+&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-68-1.png" width="1500" /&gt;
 
 ---
 
@@ -1524,7 +1602,7 @@ ggplot(fisheries_summary,
 
 ---
 
-![](03-transform-data_files/figure-html/unnamed-chunk-64-1.png)&lt;!-- --&gt;
+&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-70-1.png" width="1500" /&gt;
 
 ---
 
@@ -1754,7 +1832,7 @@ ggplot(world_map, aes(x = long, y = lat, group = group)) +
   theme_minimal()
 ```
 
-![](03-transform-data_files/figure-html/unnamed-chunk-67-1.png)&lt;!-- --&gt;
+&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-73-1.png" width="3600" /&gt;
 ]
 
 
@@ -2841,7 +2919,7 @@ ggplot(fisheries_map, mapping = aes(x = long, y = lat, group = group)) +
   theme_minimal()
 ```
 
-![](03-transform-data_files/figure-html/unnamed-chunk-72-1.png)&lt;!-- --&gt;
+&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-78-1.png" width="3600" /&gt;
 ]
 
 ---
@@ -2851,7 +2929,7 @@ What is misleading about the following map?
 ]
 
 .midi[
-&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-73-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-79-1.png" width="3600" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -2880,7 +2958,7 @@ ggplot() +
 
 ---
 
-&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-75-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-81-1.png" width="3000" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -2910,7 +2988,7 @@ ggplot() +
 
 ## Log scale
 
-&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-77-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-83-1.png" width="3000" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -2939,11 +3017,11 @@ ggplot() +
 
 ---
 
-&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-79-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-85-1.png" width="3000" style="display: block; margin: auto;" /&gt;
 
 ---
 
-&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-80-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="03-transform-data_files/figure-html/unnamed-chunk-86-1.png" width="3000" style="display: block; margin: auto;" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

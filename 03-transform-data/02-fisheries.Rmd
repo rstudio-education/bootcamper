@@ -30,12 +30,49 @@ fisheries <- fisheries %>%
     )
 ```
 
-Create a new data frame called `fisheries_summary` that calculates minimum, 
-mean, and maximum aquacultute percentage for each continent in the dataset 
-and orders the results in descending order of mean aquaculture percentage.
+1. Calculate the mean aquaculture (we'll call it `mean_ac` for short) percentage 
+for counties in the fisheries data using the `summarise()` function in dplyr. 
+Note that the function for calculating the mean is `mean()` in R.
+
+```{r fisheries-mean}
+fisheries %>%                  # start with the fisheries data frame
+  ___(mean_ac = ___)           # calculate mean acquculture
+```
+
+2. Now expand your calculations to also calculate the minimum and maximum 
+aquacultute percentage for countries in the fisheries data. Note that the 
+functions for calculating minimum and maximum in R are `min()` and `max()`
+respectively.
 
 ```{r fisheries-summary}
-# add your code here
+fisheries %>%                  # start with the fisheries data frame
+  ___(
+    mean_ac = ___,             # calculate mean acquculture
+    min_ac  = ____,            # calculate min acquculture
+    max_ac  = ____             # calculate max acquculture
+    )          
+```
+
+3. Create a new data frame called `fisheries_summary_continent` that calculates 
+minimum, mean, and maximum aquacultute percentage for each continent in the 
+fisheries data. 
+
+```{r fisheries-summary-continent}
+fisheries_summary_continent <- fisheries %>%
+  ___ %>%                      # ensure calculations are done per continent
+  ___(
+    mean_ac = ___,             # calculate mean acquculture
+    min_ac  = ____,            # calculate min acquculture
+    max_ac  = ____             # calculate max acquculture
+    )                          
+```
+
+4. Take the `fisheries_summary_continent` data frame and order the results in descending 
+order of mean aquaculture percentage.
+
+```{r fisheries-summary-continent-sorted}
+fisheries_summary_continent %>%      # start with the fisheries_summary_continent data frame
+  ___                                # order in descending order of mean
 ```
 
 

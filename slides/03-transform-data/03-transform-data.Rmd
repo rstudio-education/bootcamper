@@ -62,19 +62,22 @@ knitr::include_graphics("img/dplyr-part-of-tidyverse.png")
 
 ## Bike crashes in NC 2007 - 2014
 
+.small[
 ```{r message=FALSE}
 ncbikecrash <- read_csv("data/ncbikecrash.csv")
 glimpse(ncbikecrash)
 ```
-
+]
 
 ---
 
 ## Variables
 
+.small[
 ```{r}
 names(ncbikecrash)
 ```
+]
 
 ---
 
@@ -132,11 +135,13 @@ In programming, a pipe is a technique for passing information from one process t
 - Start with the data frame `ncbikecrash`, and pass it to the `select()` function,
 ]
 .pull-right[
+.small[
 ```{r}
 ncbikecrash %>% #<<
   select(county, bike_age) %>%
   arrange(bike_age)
 ```
+]
 ]
 
 ---
@@ -150,11 +155,13 @@ In programming, a pipe is a technique for passing information from one process t
 - then we select the variables `county` and `bike_age`,
 ]
 .pull-right[
+.small[
 ```{r}
 ncbikecrash %>%
   select(county, bike_age) %>% #<<
   arrange(bike_age)
 ```
+]
 ]
 
 ---
@@ -169,11 +176,13 @@ In programming, a pipe is a technique for passing information from one process t
 - and then we arrange the data frame by `bike_age` in ascending order.
 ]
 .pull-right[
+.small[
 ```{r}
 ncbikecrash %>%
   select(county, bike_age) %>%
   arrange(bike_age) #<<
 ```
+]
 ]
 
 ---
@@ -209,16 +218,20 @@ knitr::include_graphics("img/magrittr.jpg")
 
 - You can think about the following sequence of actions - find key, 
 unlock car, start car, drive to school, park.
+
+--
 - Expressed as a set of nested functions in R pseudocode this would look like:
 ```{r eval=FALSE}
-park(drive(start_car(find("keys")), to = "campus"))
+park(drive(start_car(find("keys")), to = "work"))
 ```
+
+--
 - Writing it out using pipes give it a more natural (and easier to read) 
 structure:
 ```{r eval=FALSE}
 find("keys") %>%
   start_car() %>%
-  drive(to = "campus") %>%
+  drive(to = "work") %>%
   park()
 ```
 
@@ -242,10 +255,47 @@ starwars %>%
 ## A note on piping and layering
 
 - The `%>%` operator in **dplyr** functions is called the pipe operator. This means you "pipe" the output of the previous line of code as the first input of the next line of code.
+
+--
 - The `+` operator in **ggplot2** functions is used for "layering". This means you create the plot in layers, separated by `+`.
-- Many of the styling principles are consistent across `%>%` and `+`:
-  - always a space before
-  - always a line break after (for pipelines with more than 2 lines)
+
+--
+.midi[
+```{r error=TRUE}
+ggplot(starwars, aes(x = height, y = mass)) %>%
+  geom_point()
+```
+]
+
+--
+.midi[
+```{r error=TRUE}
+starwars +
+  select(height, mass)
+```
+]
+
+---
+
+## Code styling
+
+Many of the styling principles are consistent across `%>%` and `+`:
+
+- always a space before
+- always a line break after (for pipelines with more than 2 lines)
+
+#### None of this...
+
+```{r eval=FALSE}
+ggplot(starwars,aes(x=height,y=mass))+geom_point()
+```
+
+#### More of this...
+
+```{r eval=FALSE}
+ggplot(starwars, aes(x = height, y = mass)) + 
+  geom_point()
+```
 
 ---
 
@@ -532,7 +582,7 @@ continents
 ## Joining data frames
 
 ```
-*_join(x, y)
+something_join(x, y)
 ```
 
 - `inner_join()`: all rows from x where there are matching values in y, return 
@@ -691,10 +741,18 @@ How does `left_join()` know to join the two data frames by `country`?
 
 Hint:
 
-```{r}
-names(fisheries)
+- Variables in the original fisheries dataset:
+
+```{r echo=FALSE}
+fisheries %>% select(-continent) %>% names()
+```
+
+- Variables in the continents dataset:
+
+```{r echo=FALSE}
 names(continents)
 ```
+
 
 ---
 
@@ -744,10 +802,27 @@ fisheries %>%
 
 - Go to RStudio Cloud and start the second assignment: `03 - Transform Data`
 - Open the first R Markdown file: `02-fisheries.Rmd`
-- Knit the document and work on the exercise
+- Knit the document and work on the exercises 1
 
 ```{r echo=FALSE}
 countdown(minutes = 5, seconds = 00)
+```
+
+.footnote[
+RStudio Cloud workspace for this bootcamp  
+is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
+]
+
+---
+
+## `r emo::ji("computer")` Your turn
+
+- Go to RStudio Cloud and start the second assignment: `03 - Transform Data`
+- Open the first R Markdown file: `02-fisheries.Rmd`
+- Knit the document and work on the exercises 2 - 4
+
+```{r echo=FALSE}
+countdown(minutes = 8, seconds = 00)
 ```
 
 .footnote[
@@ -986,7 +1061,7 @@ ggplot() +
 
 ---
 
-```{r echo=FALSE, fig.height=7, fig.width=12, fig.align="center"}
+```{r echo=FALSE, fig.height=6, fig.width=10, fig.align="center"}
 ggplot() +
   geom_polygon(world_map, 
                mapping = aes(x = long, y = lat, group = group), 
@@ -1032,7 +1107,7 @@ ggplot() +
 
 ## Log scale
 
-```{r echo=FALSE, fig.height=7, fig.width=12, fig.align="center"}
+```{r echo=FALSE, fig.height=6, fig.width=10, fig.align="center"}
 ggplot() +
   geom_polygon(world_map, mapping = aes(x = long, y = lat, group = group), fill = "lightgray") +
   geom_polygon(fisheries_map, mapping = aes(x = long, y = lat, group = group, fill = log(capture))) +
@@ -1073,7 +1148,7 @@ ggplot() +
 
 ---
 
-```{r echo=FALSE, fig.height=7, fig.width=12, fig.align="center"}
+```{r echo=FALSE, fig.height=6, fig.width=10, fig.align="center"}
 ggplot() +
   geom_polygon(world_map, mapping = aes(x = long, y = lat, group = group), fill = "lightgray") +
   geom_polygon(fisheries_map, mapping = aes(x = long, y = lat, group = group, fill = log(aquaculture+1))) +
@@ -1091,7 +1166,7 @@ ggplot() +
 
 ---
 
-```{r echo=FALSE, fig.height=7, fig.width=12, fig.align="center"}
+```{r echo=FALSE, fig.height=6, fig.width=10, fig.align="center"}
 fisheries_map <- fisheries_map %>%
   mutate(
     aquaculture_perc = aquaculture / total
