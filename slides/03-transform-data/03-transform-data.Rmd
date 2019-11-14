@@ -504,6 +504,123 @@ is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
 
 ---
 
+## `count` to create frequency tables
+
+```{r}
+ncbikecrash %>%
+  count(bike_age_group)
+```
+
+---
+
+## `count` + `arrange`
+
+.pull-left[
+```{r}
+ncbikecrash %>%
+  count(bike_age_group) %>%
+  arrange(n)
+```
+]
+.pull-right[
+```{r}
+ncbikecrash %>%
+  count(bike_age_group) %>%
+  arrange(desc(n))
+```
+]
+
+---
+
+# `count` for multiple variables
+
+```{r}
+ncbikecrash %>%
+  count(bike_age_group, crash_alcohol)
+```
+
+---
+
+# order matters when you `count`
+
+.small[
+.pull-left[
+```{r}
+ncbikecrash %>%
+  count(bike_age_group, crash_alcohol)
+```
+]
+.pull-right[
+```{r}
+ncbikecrash %>%
+  count(crash_alcohol, bike_age_group)
+```
+]
+]
+
+---
+
+# `mutate` to add a new variable
+
+```{r}
+ncbikecrash %>%
+  count(bike_age_group, crash_alcohol) %>%
+  mutate(proportion = n / sum(n))
+```
+
+---
+
+# `group_by` for grouped operations
+
+```{r}
+ncbikecrash %>%
+  count(bike_age_group, crash_alcohol) %>%
+  group_by(bike_age_group) %>%
+  mutate(proportion = n / sum(n))
+```
+
+---
+
+```{r}
+ggplot(ncbikecrash, aes(x = bike_age_group, fill = crash_alcohol)) +
+  geom_bar(position = "fill") +
+  coord_flip()
+```
+
+---
+
+# Aside: fix `bike_age`
+
+```{r}
+ncbikecrash <- ncbikecrash %>%
+  mutate(bike_age_numeric = as.numeric(bike_age))
+
+ncbikecrash %>%
+  select(bike_age, bike_age_numeric)
+```
+
+---
+
+# `summarise` for summary stats
+
+```{r}
+ncbikecrash %>%
+  summarise(mean_bike_age = mean(bike_age_numeric, na.rm = TRUE))
+```
+
+---
+
+# `group_by` and then `summarise` for grouped summary stats
+
+```{r}
+ncbikecrash %>%
+  group_by(crash_alcohol) %>%
+  summarise(mean_bike_age = mean(bike_age_numeric, na.rm = TRUE))
+```
+
+
+---
+
 class: center, middle
 
 # Fisheries
