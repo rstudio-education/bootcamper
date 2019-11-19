@@ -42,7 +42,7 @@ together. Take notes on topics you want to discuss/ask questions about when we
 come back to the big group.
 ]
 
-<div class="countdown" id="timer_5dd40b2a" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5dd43d41" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -283,10 +283,12 @@ into longer format -- in this case all columns except for the `faculty_type`
 
 ## Pivot staff data
 
+.midi[
 
 ```r
 staff_long &lt;- staff %&gt;%
-  pivot_longer(cols = -faculty_type, names_to = "year", values_to = "percentage") %&gt;%
+  pivot_longer(cols = -faculty_type, names_to = "year", 
+               values_to = "percentage") %&gt;%
   mutate(percentage = as.numeric(percentage))
 
 staff_long
@@ -308,6 +310,7 @@ staff_long
 ## 10 Full-Time Tenured Faculty 2009        16.8
 ## # … with 45 more rows
 ```
+]
 
 ---
 
@@ -329,7 +332,7 @@ staff_long %&gt;%
 
 ---
 
-.small[
+.midi[
 
 ```r
 staff_long %&gt;%
@@ -345,6 +348,7 @@ staff_long %&gt;%
 
 ## Some improvement...
 
+.midi[
 
 ```r
 staff_long %&gt;%
@@ -354,19 +358,23 @@ staff_long %&gt;%
 ```
 
 &lt;img src="04-tidy-data_files/figure-html/unnamed-chunk-14-1.png" width="1500" /&gt;
+]
 
 ---
 
 ## More improvement
 
+.midi[
 
 ```r
 staff_long %&gt;%
-  ggplot(aes(x = year, y = percentage, group = faculty_type, color = faculty_type)) +
+  ggplot(aes(x = year, y = percentage, group = faculty_type, 
+             color = faculty_type)) +
   geom_line()
 ```
 
 &lt;img src="04-tidy-data_files/figure-html/unnamed-chunk-15-1.png" width="2100" /&gt;
+]
 
 ---
 
@@ -376,7 +384,7 @@ staff_long %&gt;%
 - Open the first R Markdown file: `01-instructional-staff.Rmd`
 - Knit the document, and work on the exercises
 
-<div class="countdown" id="timer_5dd40b91" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5dd43e6c" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 

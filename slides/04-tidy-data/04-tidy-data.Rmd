@@ -16,7 +16,6 @@ output:
 
 ```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
-library(magick)
 ```
 
 .instructions[
@@ -249,13 +248,16 @@ into longer format -- in this case all columns except for the `faculty_type`
 
 ## Pivot staff data
 
+.midi[
 ```{r}
 staff_long <- staff %>%
-  pivot_longer(cols = -faculty_type, names_to = "year", values_to = "percentage") %>%
+  pivot_longer(cols = -faculty_type, names_to = "year", 
+               values_to = "percentage") %>%
   mutate(percentage = as.numeric(percentage))
 
 staff_long
 ```
+]
 
 ---
 
@@ -264,7 +266,7 @@ This doesn't look quite right, how would you fix it?
 ]
 
 .small[
-```{r}
+```{r fig.height=2}
 staff_long %>%
   ggplot(aes(x = year, y = percentage, color = faculty_type)) +
   geom_col(position = "dodge") + 
@@ -274,8 +276,8 @@ staff_long %>%
 
 ---
 
-.small[
-```{r}
+.midi[
+```{r fig.height=2}
 staff_long %>%
   ggplot(aes(x = year, y = percentage, fill = faculty_type)) +
   geom_col(position = "dodge") + 
@@ -287,22 +289,27 @@ staff_long %>%
 
 ## Some improvement...
 
-```{r}
+.midi[
+```{r fig.height=2}
 staff_long %>%
   ggplot(aes(x = year, y = percentage, fill = faculty_type)) +
   geom_col() +
   coord_flip()
 ```
+]
 
 ---
 
 ## More improvement
 
+.midi[
 ```{r fig.width=7}
 staff_long %>%
-  ggplot(aes(x = year, y = percentage, group = faculty_type, color = faculty_type)) +
+  ggplot(aes(x = year, y = percentage, group = faculty_type, 
+             color = faculty_type)) +
   geom_line()
 ```
+]
 
 ---
 
