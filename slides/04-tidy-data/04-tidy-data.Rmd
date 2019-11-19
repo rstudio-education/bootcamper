@@ -19,6 +19,20 @@ library(tidyverse)
 library(magick)
 ```
 
+.instructions[
+Split into breakout groups and review a few questions from the "homework". If 
+you did not have a chance to do the homework, that's fine. Use the sidebar to 
+navigate to a topic that you were confused about and work on a few questions 
+together. Take notes on topics you want to discuss/ask questions about when we 
+come back to the big group.
+]
+
+```{r echo=FALSE}
+countdown(minutes = 10, seconds = 0)
+```
+
+---
+
 class: center, middle
 
 # Tidy data
