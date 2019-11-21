@@ -28,10 +28,12 @@ class: center, middle
 
 ## January data
 
+.small[
 ```{r}
 sales_01 <- read_excel("data-raw/01-sales.xlsx")
 sales_01
 ```
+]
 
 ---
 
@@ -87,6 +89,21 @@ sales_03
 class: middle
 
 you get the point...
+
+---
+
+class: middle
+
+.question[
+What are some ways you can thin of that would allow us to automate reading these files in all at once so we don't have to repeat ourselves? It's ok if you don't know how to implement it, we're just looking for ideas!
+]
+
+---
+
+## Solve the problem with iteration
+
+1. Get a list of all files
+2. Map the same function for reading in a single file over this list
 
 ---
 

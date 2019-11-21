@@ -16,6 +16,7 @@ output:
 
 ```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
+library(readxl)
 library(DT)
 library(here)
 ```
@@ -341,7 +342,7 @@ countdown(minutes = 15, seconds = 0)
 ---
 
 .instructions[
-**Stretch goal:** Manipulate the sales data such sich that it looks like the 
+**Stretch goal:** Manipulate the sales data such that it looks like the 
 following.
 ]
 

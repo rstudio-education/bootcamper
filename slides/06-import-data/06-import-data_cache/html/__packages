@@ -1,13 +1,7 @@
 base
-methods
 usethis
 devtools
 testthat
-datasets
-utils
-grDevices
-graphics
-stats
 countdown
 tidyverse
 ggplot2

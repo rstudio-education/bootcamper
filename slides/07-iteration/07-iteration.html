@@ -43,6 +43,7 @@ class: center, middle
 
 ## January data
 
+.small[
 
 ```r
 sales_01 &lt;- read_excel("data-raw/01-sales.xlsx")
@@ -74,6 +75,7 @@ sales_01
 ## 11 3987                                                               6    
 ## 12 3216                                                               4
 ```
+]
 
 ---
 
@@ -211,6 +213,21 @@ you get the point...
 
 ---
 
+class: middle
+
+.question[
+What are some ways you can thin of that would allow us to automate reading these files in all at once so we don't have to repeat ourselves? It's ok if you don't know how to implement it, we're just looking for ideas!
+]
+
+---
+
+## Solve the problem with iteration
+
+1. Get a list of all files
+2. Map the same function for reading in a single file over this list
+
+---
+
 ## Get a list of all files
 
 
@@ -297,7 +314,7 @@ sales &lt;- sales %&gt;%
 ```
 ]
 
-<div class="countdown" id="timer_5da9e632" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5dd6c39d" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
