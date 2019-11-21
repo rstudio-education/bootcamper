@@ -105,7 +105,7 @@ fs::dir_ls("data")
 
 ---
 
-### 06 - Data types / `01-import-export.Rmd`
+### 06 - Import data / `01-import-export.Rmd`
 
 .instructions[
 Read in the `nobels.csv` file from the `data-raw/` folder, split into two (STEM and 
@@ -257,7 +257,7 @@ read_csv("data/df-na.csv",
 
 ---
 
-### 06 - Data types / `02-read-excel.Rmd`
+### 06 - Import data / `02-read-excel.Rmd`
 
 .instructions[
 **Exercise 1**
@@ -295,7 +295,7 @@ write_rds(x, path)
 
 ---
 
-### 06 - Data types / `02-read-excel.Rmd`
+### 06 - Import data / `02-read-excel.Rmd`
 
 .instructions[
 **Exercise 2**
@@ -315,7 +315,7 @@ countdown(minutes = 5, seconds = 0)
 
 ---
 
-### 06 - Data types / `03-tidy-fun.Rmd`
+### 06 - Import data / `03-tidy-fun.Rmd`
 
 .instructions[
 Load the `sales.xlsx` file from the `data-raw/` folder, using appropriate 
