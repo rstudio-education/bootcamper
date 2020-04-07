@@ -1,7 +1,15 @@
 base
+methods
 usethis
 devtools
 testthat
+conflicted
+datasets
+utils
+grDevices
+graphics
+stats
+countdown
 tidyverse
 ggplot2
 tibble
@@ -12,8 +20,5 @@ dplyr
 stringr
 forcats
 magick
-scales
-ggbeeswarm
-datasauRus
 skimr
-countdown
+knitr

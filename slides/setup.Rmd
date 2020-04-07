@@ -1,24 +1,19 @@
 ```{r setup, include=FALSE}
 # R options
-options(
-  htmltools.dir.version = FALSE, # for blogdown
-  show.signif.stars = FALSE,     # for regression output
-  warn = 1
-  )
+options(htmltools.dir.version = FALSE)
 # figure height, width, dpi
-knitr::opts_chunk$set(fig.height = 2.5, fig.width = 5, dpi = 300, fig.retina=3) 
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width = 5, 
+                      fig.height = 3,
+                      dpi = 300)
+# set seed
+set.seed(1234)
 # fontawesome
 htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 # magick
 dev.off <- function(){
   invisible(grDevices::dev.off())
 }
-# code highlighting
-hook_source <- knitr::knit_hooks$get('source')
-knitr::knit_hooks$set(source = function(x, options) {
-  x <- stringr::str_replace(x, "^[[:blank:]]?([^*].+?)[[:blank:]]*#<<[[:blank:]]*$", "*\\1")
-  hook_source(x, options)
-})
 # countdown
 library(countdown)
 ```
@@ -27,8 +22,7 @@ layout: true
   
 <div class="my-footer">
 <span>
-<a href="https://rstd.io/bootcamper" target="_blank">rstd.io/bootcamper
-</a>
+<a href="https://rstd.io/bootcamper" target="_blank">rstd.io/bootcamper</a>
 </span>
 </div> 
 
