@@ -8,7 +8,13 @@ output: html_document
 library(tidyverse)
 ```
 
-```{r}
+Replace the `x` and/or `y` aesthetics with other variables from the dataset, run the chunk, and observe what you get. You might get a reasonable plot, or an error. If you get an error, try another variable. Here is a list of the variables in the data frame. Discuss why certain variables make sense to represent with points and others don't.
+
+```{r var-names}
+names(starwars)
+```
+
+```{r scatterplot}
 ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
   geom_point()
 ```
