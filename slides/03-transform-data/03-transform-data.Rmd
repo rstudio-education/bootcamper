@@ -487,23 +487,6 @@ ncbikecrash %>%
 
 ---
 
-## `r emo::ji("computer")` Your turn
-
-- Go to RStudio Cloud and start the second assignment: `03 - Transform Data`
-- Open the first R Markdown file: `01-bike-crashes.Rmd`
-- Knit the document, and work on Exercises 2 and 3
-
-```{r echo=FALSE}
-countdown(minutes = 10, seconds = 00)
-```
-
-.footnote[
-RStudio Cloud workspace for this bootcamp  
-is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
-]
-
----
-
 ## `count` to create frequency tables
 
 ```{r}
@@ -556,6 +539,23 @@ ncbikecrash %>%
   count(crash_alcohol, bike_age_group)
 ```
 ]
+]
+
+---
+
+## `r emo::ji("computer")` Your turn
+
+- Go to RStudio Cloud and start the second assignment: `03 - Transform Data`
+- Open the first R Markdown file: `01-bike-crashes.Rmd`
+- Knit the document, and work on Exercises 2 and 3
+
+```{r echo=FALSE}
+countdown(minutes = 10, seconds = 00)
+```
+
+.footnote[
+RStudio Cloud workspace for this bootcamp  
+is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
 ]
 
 ---

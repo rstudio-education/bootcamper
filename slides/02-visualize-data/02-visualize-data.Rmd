@@ -2,13 +2,18 @@
 title: "Visualize data <br> `r emo::ji('bar_chart')`"
 output:
   xaringan::moon_reader:
-    css: "../slides.css"
+    css: ["../slides-style.css", "../xaringan-themer.css"]
     lib_dir: libs
     nature:
-      ratio: "16:9"
-      highlightLines: true
       highlightStyle: solarized-light
+      highlightLines: true
       countIncrementalSlides: false
+      ratio: "16:9"
+      slideNumberFormat: |
+        <div class="progress-bar-container">
+          <div class="progress-bar" style="width: calc(%current% / %total% * 100%);">
+          </div>
+        </div>
 ---
 
 ```{r child = "../setup.Rmd"}
@@ -17,9 +22,10 @@ output:
 ```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(magick)
+library(knitr)
 ```
 
-class: center, middle
+class: middle
 
 # Data visualization
 
@@ -49,13 +55,14 @@ library(tidyverse)
 - The `gg` in "ggplot2" stands for Grammar of Graphics
 - It is inspired by the book **Grammar of Graphics** by Leland Wilkinson
 ]
+
 ---
 
 ## Grammar of Graphics
 
 A grammar of graphics is a tool that enables us to concisely describe the components of a graphic.
 
-```{r echo=FALSE, out.width="70%",fig.align="center"}
+```{r echo=FALSE, out.width="60%",fig.align="center"}
 knitr::include_graphics("img/grammar-of-graphics.png")
 ```
 
@@ -65,7 +72,7 @@ Source: [BloggoType](http://bloggotype.blogspot.com/2016/08/holiday-notes2-gramm
 
 ---
 
-```{r out.width="70%"}
+```{r out.width="60%"}
 ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
   geom_point() +
   labs(title = "Mass vs. height of Starwars characters",
@@ -74,7 +81,7 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
 
 ---
 
-.question[
+.discussion[
 - What are the functions doing the plotting? 
 - What is the dataset being plotted? 
 - Which variable is on the x-axis and which variable is on the y-axis? 
@@ -97,11 +104,11 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
 
 ---
 
-.question[
+.discussion[
 What does `geom_smooth()` do?
 ]
 
-```{r out.width="65%", warning=FALSE, message=FALSE}
+```{r out.width="50%", warning=FALSE, message=FALSE}
 ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
   geom_point() +
   geom_smooth() + #<<
@@ -128,7 +135,7 @@ ggplot(data = [dataset],
 
 ---
 
-class: center, middle
+class: middle
 
 # Visualizing Star Wars
 
@@ -139,11 +146,10 @@ class: center, middle
 - Each row is an **observation**
 - Each column is a **variable**
 
-.small[
-```{r message=FALSE}
+```{r message=FALSE, echo=FALSE}
+options(width=90)
 starwars
 ```
-]
 
 ---
 
@@ -179,10 +185,11 @@ knitr::include_graphics("img/skimr.png")
 
 ---
 
-.tiny[
-```{r message=FALSE, results="md", echo=FALSE}
+.xsmall[
+```{r message=FALSE, results="md", echo=FALSE, render = normal_print}
+options(width=120)
 library(skimr)
-skim(starwars) %>% kable()
+skim(starwars)
 ```
 ]
 
@@ -190,36 +197,38 @@ skim(starwars) %>% kable()
 
 ## What's in the Star Wars data?
 
-.question[
+.pull-left[
+.discussion[
 How many rows and columns does this dataset have? What does each row represent? What does each column represent?
 ]
-
 ```{r eval = FALSE}
 ?starwars
 ```
-
-```{r echo=FALSE, out.width="60%"}
-knitr::include_graphics("img/starwars-help.png")
+]
+.pull-right[
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/starwars-help-annotated.png")
 ```
+]
 
 ---
 
 ## Mass vs. height
 
-```{r out.width="70%"}
+```{r out.width="60%"}
 ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
   geom_point()
 ```
 
 ---
 
-## `r emo::ji("computer")` Your turn
-
-- Go to RStudio Cloud and start the second assignment: `02 - Visualize Data`
-- Open the first R Markdown file: `01-starwars.Rmd`
-- Replace the `x` and/or `y` aesthetics with other variables from the dataset, 
-run the chunk, and observe what you get. You might get a reasonable plot, or 
-an error. If you get an error, try another variable.
+.your-turn[
+- Go to RStudio Cloud and start the second assignment: `02 - Visualize Data`.
+- Open the first R Markdown file: `01-starwars.Rmd`.
+- Replace the `x` and/or `y` aesthetics with other variables from the dataset, run the chunk, and observe what you get. You might get a reasonable plot, or an error. If you get an error, try another variable.
+- Discuss why certain variables make sense to represent with points and others don't.
+- But, a mini R Markdown review before you get started!
+]
 
 ```{r echo=FALSE}
 countdown(minutes = 3, seconds = 00)
@@ -248,18 +257,16 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
 
 ## Mass vs. height
 
-.question[
+.discussion[
 How would you describe this relationship? What other variables would help us understand data points that don't follow the overall trend? Who is the not so tall but really chubby character?
 ]
 
-.small[
-```{r out.width="70%", warning=FALSE,echo=FALSE}
+```{r out.width="60%", warning=FALSE,echo=FALSE}
 ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
   geom_point() +
   labs(title = "Mass vs. height of Starwars characters",
        x = "Height (cm)", y = "Weight (kg)")
 ```
-]
 
 ---
 
@@ -297,7 +304,7 @@ We can map additional variables to various features of the plot:
 
 ---
 
-class: center, middle
+class: middle
 
 # Aesthetics
 
@@ -328,7 +335,7 @@ ggplot(data = starwars,
 
 ## Mass vs. height + gender
 
-```{r out.width="70%", warning=FALSE}
+```{r out.width="65%", warning=FALSE}
 ggplot(data = starwars, 
        mapping = aes(x = height, y = mass, color = gender, 
                      size = birth_year)) + #<<
@@ -362,7 +369,7 @@ ggplot(data = starwars,
 
 ---
 
-```{r warning=FALSE, echo=FALSE, fig.height=5,fig.width=8}
+```{r warning=FALSE, echo=FALSE, fig.height=4.5,fig.width=8}
 ggplot(data = starwars, 
        mapping = aes(x = height, 
                      y = mass, 
@@ -389,7 +396,7 @@ Let's now increase the size of all points *not* based on the values of a
 variable in the data, i.e. **set** size instead of **map** size:
 
 .midi[
-```{r out.width="70%", warning=FALSE}
+```{r out.width="63%", warning=FALSE}
 ggplot(data = starwars, mapping = aes(x = height, y = mass, color = gender)) +
   geom_point(size = 2) #<<
 ```
@@ -413,7 +420,7 @@ features in the geom for customization **not** mapped to a variable
 
 ---
 
-class: center, middle
+class: middle
 
 # Faceting
 
@@ -436,17 +443,10 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
 
 ---
 
-## `r emo::ji("computer")` Your turn
+.your-turn[
+Look through the next three slides titled Facet 1, 2, and 3 describe what each plot displays. Think about how the code relates to the output.
 
-Look through the next three slides titled Facet 1, 2, and 3 describe what each 
-plot displays. Think about how the code relates to the output.
-
-<br>
-
-.alert[
-**Note:** The plots in the next few slides do not have proper titles, axis 
-labels, etc. because we want you to figure out what's happening in the plots. 
-But you should always label your plots!
+**Note:** The plots in the next few slides do not have proper titles, axis labels, etc. because we want you to figure out what's happening in the plots. But you should always label your plots!
 ]
 
 ```{r echo=FALSE}
@@ -495,7 +495,37 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
 
 ---
 
-class: center, middle
+class: middle
+
+# Why do we visualize?
+
+---
+
+.discussion[
+Do you see anything out of the ordinary?
+]
+
+```{r fig.height=3, fig.width=6, echo=FALSE, warning=FALSE}
+ggplot(dsbox::student_survey, aes(x = first_kiss)) +
+  geom_histogram(binwidth = 1) +
+  labs(title = "How old were you when you had your first kiss?", x = "")
+```
+
+---
+
+.discussion[
+How are people reporting lower vs. higher values of FB visits?
+]
+
+```{r fig.height=3, fig.width=6, echo=FALSE, warning=FALSE}
+ggplot(dsbox::student_survey, aes(x = fb_visits_per_day)) +
+  geom_histogram(binwidth = 1) +
+  labs(title = "How many times do you go on Facebook per day?", x = "")
+```
+
+---
+
+class: middle
 
 # Identifying variables
 
@@ -509,7 +539,7 @@ class: center, middle
 
 ---
 
-class: center, middle
+class: middle
 
 # Visualizing numerical data
 
@@ -542,7 +572,7 @@ ggplot(data = starwars, mapping = aes(y = height)) +
 
 ---
 
-class: center, middle
+class: middle
 
 # Visualizing relationships between numerical and categorical data
 
@@ -593,7 +623,7 @@ ggplot(data = starwars, mapping = aes(y = height, x = gender)) +
 
 ## Beeswarm plots
 
-```{r out.width="75%", warning = FALSE}
+```{r out.width="70%", warning = FALSE}
 library(ggbeeswarm)
 ggplot(data = starwars, mapping = aes(y = height, x = gender)) +
   geom_beeswarm()
@@ -601,7 +631,7 @@ ggplot(data = starwars, mapping = aes(y = height, x = gender)) +
 
 ---
 
-class: center, middle
+class: middle
 
 # Visualizing categorical data
 
@@ -609,7 +639,7 @@ class: center, middle
 
 ## Bar plots
 
-```{r out.width="80%"}
+```{r out.width="70%"}
 ggplot(data = starwars, mapping = aes(x = gender)) +
   geom_bar()
 ```
@@ -633,18 +663,17 @@ Using the `fct_other()` function from the **forcats** package, which is also par
 
 ```{r}
 starwars <- starwars %>%
-  mutate(hair_color2 = 
-           fct_other(hair_color, 
-                     keep = c("black", "brown", "brown", "blond")
-                     )
-         )
+  mutate(
+    hair_color2 = fct_other(hair_color,
+                            keep = c("black", "brown", "brown", "blond"))
+  )
 ```
 
 ---
 
 ## Segmented bar plots, counts
 
-```{r out.width="70%"}
+```{r out.width="65%"}
 ggplot(data = starwars, 
        mapping = aes(x = gender, fill = hair_color2)) +
   geom_bar() +
@@ -655,70 +684,40 @@ ggplot(data = starwars,
 
 ## Segmented bar plots, proportions
 
-```{r out.width="70%"}
+```{r out.width="65%"}
 ggplot(data = starwars, 
-       mapping = aes(x = gender, fill = hair_color2)) +
+       mapping = aes(y = gender, fill = hair_color2)) +
   geom_bar(position = "fill") +
-  coord_flip()
-  labs(y = "proportion")
+  labs(x = "proportion")
 ```
 
 ---
 
-.question[
+.discussion[
 Which bar plot is a more useful representation for visualizing the relationship between gender and hair color?
 ]
 
-```{r echo=FALSE, out.width="50%"}
-ggplot(data = starwars, mapping = aes(x = gender, fill = hair_color2)) +
-  geom_bar() +
-  coord_flip()
+.pull-left[
+```{r echo=FALSE, out.width="95%"}
+ggplot(data = starwars, mapping = aes(y = gender, fill = hair_color2)) +
+  geom_bar()
 ```
-
-```{r echo=FALSE, out.width="50%"}
-ggplot(data = starwars, mapping = aes(x = gender, fill = hair_color2)) +
+]
+.pull-right[
+```{r echo=FALSE, out.width="95%"}
+ggplot(data = starwars, mapping = aes(y = gender, fill = hair_color2)) +
   geom_bar(position = "fill") +
-  coord_flip() +
-  labs(y = "proportion")
+  labs(x = "proportion")
 ```
-
----
-
-class: center, middle
-
-# Why do we visualize?
-
----
-
-.question[
-Do you see anything out of the ordinary?
 ]
 
-```{r fig.height=3, fig.width=6, echo=FALSE, warning=FALSE}
-ggplot(dsbox::student_survey, aes(x = first_kiss)) +
-  geom_histogram(binwidth = 1) +
-  labs(title = "How old were you when you had your first kiss?", x = "")
-```
-
 ---
 
-.question[
-How are people reporting lower vs. higher values of FB visits?
-]
-
-```{r fig.height=3, fig.width=6, echo=FALSE, warning=FALSE}
-ggplot(dsbox::student_survey, aes(x = fb_visits_per_day)) +
-  geom_histogram(binwidth = 1) +
-  labs(title = "How many times do you go on Facebook per day?", x = "")
-```
-
----
-
-## `r emo::ji("computer")` Your turn
-
+.your-turn[
 - Go to RStudio Cloud and start the second assignment: `02 - Visualize Data`
 - Open the first R Markdown file: `02-why.visualize.Rmd`
 - Knit the document
+]
 
 ```{r echo=FALSE}
 countdown(minutes = 5, seconds = 00)
