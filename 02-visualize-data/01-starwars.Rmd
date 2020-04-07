@@ -8,13 +8,23 @@ output: html_document
 library(tidyverse)
 ```
 
-Replace the `x` and/or `y` aesthetics with other variables from the dataset, run the chunk, and observe what you get. You might get a reasonable plot, or an error. If you get an error, try another variable. Here is a list of the variables in the data frame. Discuss why certain variables make sense to represent with points and others don't.
+The following is a list of the variables in the `starwars` dataset:
 
 ```{r var-names}
 names(starwars)
 ```
 
-```{r scatterplot}
+1. Modify the code below to plot height vs. birth_year. See the help for the data frame for the definition of `birth_year` in this context.
+
+```{r height-birth-year}
 ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
   geom_point()
+```
+
+2. You should observe that a few observations appear to be outliers. Can you guess who those characters are? Hint: Run `View(starwars)` in the Console to take a look at the raw data.
+
+3. Stretch goal: Visualise the relationship between height and sex using a scatterplot (`geom_point()`). Describe any features of the data that this visualisation reveals.
+
+```{r height-sex}
+# add code here
 ```
