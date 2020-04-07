@@ -2,13 +2,18 @@
 title: "The whole game <br> `r emo::ji('space_invader')`"
 output:
   xaringan::moon_reader:
-    css: "../slides.css"
+    css: ["../slides-style.css", "../xaringan-themer.css"]
     lib_dir: libs
     nature:
-      ratio: "16:9"
-      highlightLines: true
       highlightStyle: solarized-light
+      highlightLines: true
       countIncrementalSlides: false
+      ratio: "16:9"
+      slideNumberFormat: |
+        <div class="progress-bar-container">
+          <div class="progress-bar" style="width: calc(%current% / %total% * 100%);">
+          </div>
+        </div>
 ---
 
 ```{r child = "../setup.Rmd"}
@@ -16,9 +21,10 @@ output:
 
 ```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
+library(nycflights13)
 ```
 
-class: center, middle
+class: middle
 
 # Welcome!
 
@@ -57,9 +63,7 @@ class: center, middle
 
 - Everything in one place: [rstd.io/bootcamper](http://rstd.io/bootcamper)
 - RStudio Cloud: [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud)
-- Asking for help:
-  - Just interrupt!
-  - Or type in chat (but if I don't see it, feel free to interrupt!)
+- Asking for help: Just interrupt! Or type in chat (but if I don't see it, feel free to interrupt!)
 
 ---
 
@@ -69,76 +73,83 @@ class: center, middle
 
 ---
 
-## The US of Bey
-
-```{r fig.align="center", echo=FALSE, alt="The US of Bey", out.width="65%"}
-knitr::include_graphics("img/brooke-watson-us-of-bey.gif")
+```{r fig.align="center", echo=FALSE, alt="COVID-19 Tracker", out.width="90%"}
+knitr::include_graphics("img/covid-19-tracker.png")
 ```
 
-Brooke Watson, [blog.brooke.science/posts/the-us-of-bey](https://blog.brooke.science/posts/the-us-of-bey/)
-
----
-
-## Punctuation in literature
-
-```{r fig.align="center", echo=FALSE, alt="Punctuation", out.width="48%"}
-knitr::include_graphics("img/julia-silge-punctuation.png")
-```
-
-Julia Silge, [juliasilge.com/blog/punctution-literature](https://juliasilge.com/blog/punctution-literature/)
-
----
-
-## Text analysis of Trump's tweets
-
-```{r fig.align="center", echo=FALSE, alt="Trump tweets", out.width="63%"}
-knitr::include_graphics("img/david-robinson-trump-tweets.png")
-```
-
-David Robinson, [varianceexplained.org/r/trump-tweets](http://varianceexplained.org/r/trump-tweets)
-
----
-
-## Greatest Twitter scheme of all time
-
-```{r fig.align="center", echo=FALSE, out.width = "43%"}
-knitr::include_graphics("img/bohemian-rhapsody.png")
-```
-
-.small[
-[gist.github.com/mine-cetinkaya-rundel/03d7516dea1e5f2613a5d71c28edb08d](https://gist.github.com/mine-cetinkaya-rundel/03d7516dea1e5f2613a5d71c28edb08d)
+.xsmall[
+Edward Parker, [vac-lshtm.shinyapps.io/ncov_tracker](https://vac-lshtm.shinyapps.io/ncov_tracker/) (See [bit.ly/covid19-r](http://bit.ly/covid19-r) for more COVID-19 analysis in R.)
 ]
 
 ---
 
-## `r emo::ji("computer")` Your turn
+```{r fig.align="center", echo=FALSE, alt="Gender roles in Jane Austen novels", out.width="60%"}
+knitr::include_graphics("img/jane-austen-gender.png")
+```
 
+.xsmall[
+Julia Silge, [juliasilge.com/blog/gender-pronouns](https://juliasilge.com/blog/gender-pronouns/)
+]
+
+---
+
+```{r fig.align="center", echo=FALSE, alt="Trump tweets", out.width="65%"}
+knitr::include_graphics("img/david-robinson-trump-tweets.png")
+```
+
+.xsmall[
+David Robinson, [varianceexplained.org/r/trump-tweets](http://varianceexplained.org/r/trump-tweets)
+]
+
+---
+
+```{r fig.align="center", echo=FALSE, alt="The US of Bey", out.width="70%"}
+knitr::include_graphics("img/brooke-watson-us-of-bey.gif")
+```
+
+.xsmall[
+Brooke Watson, [blog.brooke.science/posts/the-us-of-bey](https://blog.brooke.science/posts/the-us-of-bey/)
+]
+
+---
+
+.your-turn[
 - Go to [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud) and join the 
 RStudio Cloud workspace for the bootcamp.
-- Start the first assignment: `01 - Whole game`
-- Open `01-unvotes-rmd.Rmd` and knit the document.
-- Change "Turkey" to another country and knit again. Compare with breakout room-mates(?)
-how the country you chose voted on certain issues.
+- Start the first assignment: `01 - Whole game`.
+- Open `01-covid-rmd.Rmd` and knit the document.
+- Change "Turkey" to another country and knit again. Compare with breakout room-mates(?) how the country you chose voted on certain issues.
+]
 
 ```{r echo=FALSE}
-countdown(minutes = 5)
+countdown(minutes = 10)
 ```
 
 ---
 
-## `r emo::ji("computer")` Demo
+## `r emo::ji("computer")` Demo: Parametrized reports
 
 Continue to work in the first assignment: `01 - Whole game`
 
-- Open `02-unvotes-rmd-param.Rmd` and knit the document.
-  - Go to https://connect.rstudioservices.com/connect/#/apps/464/access/529 and change the input parameters.
-- Open `03-unvotes-shiny.Rmd` and knit the document.
+- Open `02-covid-rmd-param.Rmd` and knit the document.
+- Knit with parameters.
+- View deployed parameterized document at [connect.rstudioservices.com/covid-rmd](https://connect.rstudioservices.com/covid-rmd/).
+- Change parameters on RStudio Connect and reproduce report.
 
 ---
 
-class: center, middle
+## `r emo::ji("computer")` Demo: Shiny apps
 
-# R
+Continue to work in the first assignment: `01 - Whole game`
+
+- Open `03-covid-shiny.Rmd` and knit the document, change inputs in app and observe the visualisation react.
+- View deployed Shiny app at [connect.rstudioservices.com/covid-shiny](https://connect.rstudioservices.com/covid-shiny/)
+
+---
+
+class: middle
+
+.huge-blue[R]
 
 ---
 
@@ -149,12 +160,10 @@ class: center, middle
 8738787213 / 1653
 ```
 
+- The most commonly used data type in R is data frames, where each row represents an observation, and each column a variable.
 
-- The most commonly used data type in R is data frames, where each row represents 
-an observation, and each column a variable.
-
-```{r}
-mtcars
+```{r echo=FALSE}
+head(presidential) %>% as.data.frame()
 ```
 
 ---
@@ -164,10 +173,10 @@ mtcars
 - We use the `$` operator to access a variable within a data frame.
 
 ```{r}
-mtcars$mpg
+presidential$name
 ```
 
-- Functions are (often) verbs, followed by what they will be applied to in parantheses.
+- Functions are (often) verbs, followed by what they will be applied to in parentheses.
 
 ```{r eval=FALSE}
 do_this(to_this)
@@ -179,8 +188,14 @@ do_that(to_this, to_that, with_those)
 ## R
 
 - In R, the fundamental unit of shareable code is the package.
-- As of September 2019, there are over 14,000 packages available on the **C**omprehensive **R** **A**rchive **N**etwork (CRAN), the public clearing house for R packages. 
+--
+
+- As of April 2020, there are over 15,000 packages available on the **C**omprehensive **R** **A**rchive **N**etwork (CRAN), the public clearing house for R packages. Source: [r-pkg.org](https://www.r-pkg.org/).
+--
+
 - This huge variety of packages is one reason why R is so successful: the chances are that someone has already solved a problem that you’re working on, and you can benefit from their work by downloading their package.
+--
+
 - Using R packages:
   - Install them from CRAN with `install.packages("x")`
   - Use them in R with `library(x)`
@@ -188,9 +203,9 @@ do_that(to_this, to_that, with_those)
 
 ---
 
-class: center, middle
+class: middle
 
-# RStudio
+.huge-blue[RStudio]
 
 ---
 
@@ -202,9 +217,9 @@ knitr::include_graphics("img/rstudio-anatomy.png")
 
 ---
 
-class: center, middle
+class: middle
 
-# R Markdown
+.huge-blue[R Markdown]
 
 ---
 
@@ -216,15 +231,6 @@ knitr::include_graphics("img/rmarkdown-anatomy.png")
 
 ---
 
-## R Markdown tips
-
-- Most importantly: environment of your R Markdown document is separate from that of the Console
-- Help:
-  - [R Markdown cheat sheet](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf) 
-  - Markdown Quick Reference (Help -> Markdown Quick Reference)
-
----
-
 ## How will we use R Markdown?
 
 - Every "your turn" exercise is an R Markdown document
@@ -233,12 +239,13 @@ knitr::include_graphics("img/rmarkdown-anatomy.png")
 
 ---
 
-class: center, middle
+class: middle
 
-```{r echo=FALSE,out.width="50%"}
+.huge-blue[tidyverse]
+
+```{r echo=FALSE,out.width="15%", fig.align="right"}
 knitr::include_graphics("img/tidyverse.png")
 ```
-
 
 ---
 
@@ -246,6 +253,7 @@ knitr::include_graphics("img/tidyverse.png")
 
 .pull-left[
 The tidyverse is an opinionated collection of R packages designed for data science. 
+
 All packages share an underlying design philosophy, grammar, and data structures.
 ]
 .pull-right[
@@ -257,18 +265,53 @@ knitr::include_graphics("img/tidyverse-packages.png")
 
 ---
 
-class: center, middle
+class: middle
 
-# Getting help in R
+.huge-blue[Getting help in R]
 
 ---
 
 ## Reading help files
 
-```{r echo=FALSE, out.width="50%", fig.align="center"}
+.pull-left[
+You can get help on any function by typing the function name in the Console with a `?` before it:
+
+```{r eval=FALSE}
+?mean
+```
+]
+.pull-right[
+```{r echo=FALSE, out.width="100%", fig.align="center"}
 knitr::include_graphics("img/r-help.png")
 ```
+]
 
-.tiny[
+.xsmall[
 Source: http://socviz.co/appendix.html#a-little-more-about-r
 ]
+
+---
+
+## Package help
+
+- **Many** modern packages have user friendly web pages with function descriptions, code examples, and vignettes (problem-oriented long form articles that walk you through features of the package), e.g. [ggplot2.tidyverse.org](https://ggplot2.tidyverse.org/).
+--
+
+- **All** packages on CRAN have a dedicated with high-level package documentation such as a description, dependencies, etc. as well as a link to a PDF reference manual, e.g.  [cran.r-project.org/web/packages/ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html).
+--
+
+- **Some** packages also have cheatsheets which can be quite handy! [rstudio.com/resources/cheatsheets](https://rstudio.com/resources/cheatsheets/)
+  
+.alert[
+I recommend using the package websites when available since they display output of code in the examples whereas the help in R and reference manual does not.
+]
+
+---
+
+.your-turn[
+Take a few minutes in breakout sessions to come up with a list of 1-2 questions you would like clarified before we move on to the next module.
+]
+
+```{r echo=FALSE}
+countdown(minutes = 3)
+```
