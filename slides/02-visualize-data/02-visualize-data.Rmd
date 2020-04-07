@@ -225,13 +225,12 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
 .your-turn[
 - Go to RStudio Cloud and start the second assignment: `02 - Visualize Data`.
 - Open the first R Markdown file: `01-starwars.Rmd`.
-- Replace the `x` and/or `y` aesthetics with other variables from the dataset, run the chunk, and observe what you get. You might get a reasonable plot, or an error. If you get an error, try another variable.
-- Discuss why certain variables make sense to represent with points and others don't.
+- Answer the first two questions, and if time allows also the third one.
 - But, a mini R Markdown review before you get started!
 ]
 
 ```{r echo=FALSE}
-countdown(minutes = 3, seconds = 00)
+countdown(minutes = 5, seconds = 00)
 ```
 
 .footnote[

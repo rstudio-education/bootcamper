@@ -166,7 +166,7 @@ class: middle
 
 
 ```
-## # A tibble: 87 x 15
+## # A tibble: 87 x 14
 ##    name  height  mass hair_color skin_color eye_color birth_year sex   gender homeworld
 ##    &lt;chr&gt;  &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    
 ##  1 Luke…    172    77 blond      fair       blue            19   male  mascu… Tatooine 
@@ -179,8 +179,8 @@ class: middle
 ##  8 R5-D4     97    32 &lt;NA&gt;       white, red red             NA   none  mascu… Tatooine 
 ##  9 Bigg…    183    84 black      light      brown           24   male  mascu… Tatooine 
 ## 10 Obi-…    182    77 auburn, w… fair       blue-gray       57   male  mascu… Stewjon  
-## # … with 77 more rows, and 5 more variables: species &lt;chr&gt;, films &lt;list&gt;,
-## #   vehicles &lt;list&gt;, starships &lt;list&gt;, hair_color2 &lt;fct&gt;
+## # … with 77 more rows, and 4 more variables: species &lt;chr&gt;, films &lt;list&gt;,
+## #   vehicles &lt;list&gt;, starships &lt;list&gt;
 ```
 
 ---
@@ -200,22 +200,21 @@ glimpse(starwars)
 
 ```
 ## Rows: 87
-## Columns: 15
-## $ name        &lt;chr&gt; "Luke Skywalker", "C-3PO", "R2-D2", "Darth Vader", "Leia Organa", "…
-## $ height      &lt;int&gt; 172, 167, 96, 202, 150, 178, 165, 97, 183, 182, 188, 180, 228, 180,…
-## $ mass        &lt;dbl&gt; 77.0, 75.0, 32.0, 136.0, 49.0, 120.0, 75.0, 32.0, 84.0, 77.0, 84.0,…
-## $ hair_color  &lt;chr&gt; "blond", NA, NA, "none", "brown", "brown, grey", "brown", NA, "blac…
-## $ skin_color  &lt;chr&gt; "fair", "gold", "white, blue", "white", "light", "light", "light", …
-## $ eye_color   &lt;chr&gt; "blue", "yellow", "red", "yellow", "brown", "blue", "blue", "red", …
-## $ birth_year  &lt;dbl&gt; 19.0, 112.0, 33.0, 41.9, 19.0, 52.0, 47.0, NA, 24.0, 57.0, 41.9, 64…
-## $ sex         &lt;chr&gt; "male", "none", "none", "male", "female", "male", "female", "none",…
-## $ gender      &lt;chr&gt; "masculine", "masculine", "masculine", "masculine", "feminine", "ma…
-## $ homeworld   &lt;chr&gt; "Tatooine", "Tatooine", "Naboo", "Tatooine", "Alderaan", "Tatooine"…
-## $ species     &lt;chr&gt; "Human", "Droid", "Droid", "Human", "Human", "Human", "Human", "Dro…
-## $ films       &lt;list&gt; [&lt;"The Empire Strikes Back", "Revenge of the Sith", "Return of the…
-## $ vehicles    &lt;list&gt; [&lt;"Snowspeeder", "Imperial Speeder Bike"&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, "Imperial S…
-## $ starships   &lt;list&gt; [&lt;"X-wing", "Imperial shuttle"&gt;, &lt;&gt;, &lt;&gt;, "TIE Advanced x1", &lt;&gt;, &lt;&gt;…
-## $ hair_color2 &lt;fct&gt; blond, NA, NA, Other, brown, Other, brown, NA, black, Other, blond,…
+## Columns: 14
+## $ name       &lt;chr&gt; "Luke Skywalker", "C-3PO", "R2-D2", "Darth Vader", "Leia Organa", "O…
+## $ height     &lt;int&gt; 172, 167, 96, 202, 150, 178, 165, 97, 183, 182, 188, 180, 228, 180, …
+## $ mass       &lt;dbl&gt; 77.0, 75.0, 32.0, 136.0, 49.0, 120.0, 75.0, 32.0, 84.0, 77.0, 84.0, …
+## $ hair_color &lt;chr&gt; "blond", NA, NA, "none", "brown", "brown, grey", "brown", NA, "black…
+## $ skin_color &lt;chr&gt; "fair", "gold", "white, blue", "white", "light", "light", "light", "…
+## $ eye_color  &lt;chr&gt; "blue", "yellow", "red", "yellow", "brown", "blue", "blue", "red", "…
+## $ birth_year &lt;dbl&gt; 19.0, 112.0, 33.0, 41.9, 19.0, 52.0, 47.0, NA, 24.0, 57.0, 41.9, 64.…
+## $ sex        &lt;chr&gt; "male", "none", "none", "male", "female", "male", "female", "none", …
+## $ gender     &lt;chr&gt; "masculine", "masculine", "masculine", "masculine", "feminine", "mas…
+## $ homeworld  &lt;chr&gt; "Tatooine", "Tatooine", "Naboo", "Tatooine", "Alderaan", "Tatooine",…
+## $ species    &lt;chr&gt; "Human", "Droid", "Droid", "Human", "Human", "Human", "Human", "Droi…
+## $ films      &lt;list&gt; [&lt;"The Empire Strikes Back", "Revenge of the Sith", "Return of the …
+## $ vehicles   &lt;list&gt; [&lt;"Snowspeeder", "Imperial Speeder Bike"&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, "Imperial Sp…
+## $ starships  &lt;list&gt; [&lt;"X-wing", "Imperial shuttle"&gt;, &lt;&gt;, &lt;&gt;, "TIE Advanced x1", &lt;&gt;, &lt;&gt;,…
 ```
 
 ---
@@ -244,11 +243,10 @@ skim(starwars)
 ##                            Values  
 ## Name                       starwars
 ## Number of rows             87      
-## Number of columns          15      
+## Number of columns          14      
 ## _______________________            
 ## Column type frequency:             
 ##   character                8       
-##   factor                   1       
 ##   list                     3       
 ##   numeric                  3       
 ## ________________________           
@@ -264,10 +262,6 @@ skim(starwars)
 ## 6 gender                4         0.954     8     9     0        2          0
 ## 7 homeworld            10         0.885     4    14     0       48          0
 ## 8 species               4         0.954     3    14     0       37          0
-## 
-## ── Variable type: factor ───────────────────────────────────────────────────────────────────────────────────────────────
-##   skim_variable n_missing complete_rate ordered n_unique top_counts                       
-## 1 hair_color2           5         0.943 FALSE          4 Oth: 48, bro: 18, bla: 13, blo: 3
 ## 
 ## ── Variable type: list ─────────────────────────────────────────────────────────────────────────────────────────────────
 ##   skim_variable n_missing complete_rate n_unique min_length max_length
@@ -321,13 +315,12 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
 .your-turn[
 - Go to RStudio Cloud and start the second assignment: `02 - Visualize Data`.
 - Open the first R Markdown file: `01-starwars.Rmd`.
-- Replace the `x` and/or `y` aesthetics with other variables from the dataset, run the chunk, and observe what you get. You might get a reasonable plot, or an error. If you get an error, try another variable.
-- Discuss why certain variables make sense to represent with points and others don't.
+- Answer the first two questions, and if time allows also the third one.
 - But, a mini R Markdown review before you get started!
 ]
 
-<div class="countdown" id="timer_5e8cb0c5" style="right:0;bottom:0;" data-warnwhen="0">
-<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<div class="countdown" id="timer_5e8cd60c" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 .footnote[
@@ -525,7 +518,7 @@ Look through the next three slides titled Facet 1, 2, and 3 describe what each p
 **Note:** The plots in the next few slides do not have proper titles, axis labels, etc. because we want you to figure out what's happening in the plots. But you should always label your plots!
 ]
 
-<div class="countdown" id="timer_5e8cb098" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e8cd8e2" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -824,7 +817,7 @@ Which bar plot is a more useful representation for visualizing the relationship 
 - Knit the document
 ]
 
-<div class="countdown" id="timer_5e8cadf8" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e8cd799" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
