@@ -5,8 +5,7 @@ Materials for the internal R bootcamp can be found below. We will cover
 the material over the span of 4 half days.
 
 For the “your turn” exercises we’ll use RStudio Cloud. Join the
-workspace
-[here](https://rstd.io/bootcamper-cloud).
+workspace [here](https://rstd.io/bootcamper-cloud).
 
 ## Schedule
 
@@ -20,24 +19,24 @@ workspace
 
 ### Day 2
 
-| Time          | Activity                                                                                                         |
-| :------------ | :--------------------------------------------------------------------------------------------------------------- |
-| 09:00 - 10:30 | [Transform data](https://rstudio-education.github.io/bootcamper/slides/03-transform-data/03-transform-data.html) |
-| 10:30 - 11:00 | ☕ Coffee break                                                                                                   |
-| 11:00 - 12:30 | [Tidy data](https://rstudio-education.github.io/bootcamper/slides/04-tidy-data/04-tidy-data.html)                |
+| Time          | Activity       |
+| :------------ | :------------- |
+| 09:00 - 10:30 | Transform data |
+| 10:30 - 11:00 | ☕ Coffee break |
+| 11:00 - 12:30 | Tidy data      |
 
 ### Day 3
 
-| Time          | Activity                                                                                                |
-| :------------ | :------------------------------------------------------------------------------------------------------ |
-| 09:00 - 10:30 | [Data types](https://rstudio-education.github.io/bootcamper/slides/05-data-types/05-data-types.html)    |
-| 10:30 - 11:00 | ☕ Coffee break                                                                                          |
-| 11:00 - 12:30 | [Import data](https://rstudio-education.github.io/bootcamper/slides/06-import-data/06-import-data.html) |
+| Time          | Activity       |
+| :------------ | :------------- |
+| 09:00 - 10:30 | Data types     |
+| 10:30 - 11:00 | ☕ Coffee break |
+| 11:00 - 12:30 | Import data    |
 
 ### Day 4
 
-| Time          | Activity                                                                                                                  |
-| :------------ | :------------------------------------------------------------------------------------------------------------------------ |
-| 09:00 - 10:30 | [Iteration](https://rstudio-education.github.io/bootcamper/slides/07-iteration/07-iteration.html)                         |
-| 10:30 - 11:00 | ☕ Coffee break                                                                                                            |
-| 11:00 - 12:30 | [Case study: Text analysis](https://rstudio-education.github.io/bootcamper/slides/08-text-analysis/08-text-analysis.html) |
+| Time          | Activity       |
+| :------------ | :------------- |
+| 09:00 - 10:30 | Iteration      |
+| 10:30 - 11:00 | ☕ Coffee break |
+| 11:00 - 12:30 | Case study     |
