@@ -198,13 +198,6 @@ li:before {
   border-left: solid 5px var(--baby-blue);
   background-color: var(--baby-blue-30);
 }
-.discussion:before{
-  content: "Discussion";
-  font-size: 150%;
-  font-weight: bold;
-  color: var(--monument);
-  margin-bottom: 10px;
-}
 .your-turn {
   border-left: solid 5px var(--cornhusk);
   background-color: var(--cornhusk-30);
@@ -256,7 +249,7 @@ div.my-footer a {
 /* Footnote */
 .footnote {
   position: absolute;
-  bottom: 3em;
+  bottom: 1em;
   padding-right: 4em;
   font-size: 70%;
 }
