@@ -663,8 +663,7 @@ Using the `fct_other()` function from the **forcats** package, which is also par
 ```{r}
 starwars <- starwars %>%
   mutate(
-    hair_color2 = fct_other(hair_color,
-                            keep = c("black", "brown", "brown", "blond"))
+    hair_color2 = fct_lump_min(hair_color, min = 10)
   )
 ```
 
@@ -674,9 +673,8 @@ starwars <- starwars %>%
 
 ```{r out.width="65%"}
 ggplot(data = starwars, 
-       mapping = aes(x = gender, fill = hair_color2)) +
-  geom_bar() +
-  coord_flip()
+       mapping = aes(y = gender, fill = hair_color2)) +
+  geom_bar()
 ```
 
 ---
