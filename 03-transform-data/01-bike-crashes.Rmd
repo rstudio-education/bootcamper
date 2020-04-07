@@ -47,7 +47,7 @@ dataset?
 
 **Note:** Don't forget to label your R chunk as well (where it says `label-me`). 
 Your label should be short, informative, and shouldn't include spaces. It also 
-shouldn't repeat a previuous label, otherwise R Markdown will give you an 
+shouldn't repeat a previous label, otherwise R Markdown will give you an 
 error about repeated R chunk labels.
 
 ```{r label-me}
