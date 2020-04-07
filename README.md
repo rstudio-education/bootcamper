@@ -13,30 +13,30 @@ workspace [here](https://rstd.io/bootcamper-cloud).
 
 | Time          | Activity                                                                                                         |
 | :------------ | :--------------------------------------------------------------------------------------------------------------- |
-| 09:00 - 10:00 | [The whole game](https://rstudio-education.github.io/bootcamper/slides/01-whole-game/01-whole-game.html)         |
-| 10:00 - 10:30 | ☕ Coffee break                                                                                                   |
-| 10:30 - 12:00 | [Visualize data](https://rstudio-education.github.io/bootcamper/slides/02-visualize-data/02-visualize-data.html) |
+| 14:00 - 15:00 | [The whole game](https://rstudio-education.github.io/bootcamper/slides/01-whole-game/01-whole-game.html)         |
+| 15:00 - 15:30 | ☕ Coffee break                                                                                                   |
+| 15:30 - 17:00 | [Visualize data](https://rstudio-education.github.io/bootcamper/slides/02-visualize-data/02-visualize-data.html) |
 
 ### Day 2
 
 | Time          | Activity       |
 | :------------ | :------------- |
-| 09:00 - 10:30 | Transform data |
-| 10:30 - 11:00 | ☕ Coffee break |
-| 11:00 - 12:30 | Tidy data      |
+| 14:00 - 15:00 | Transform data |
+| 15:00 - 15:30 | ☕ Coffee break |
+| 15:30 - 17:00 | Tidy data      |
 
 ### Day 3
 
 | Time          | Activity       |
 | :------------ | :------------- |
-| 09:00 - 10:30 | Data types     |
-| 10:30 - 11:00 | ☕ Coffee break |
-| 11:00 - 12:30 | Import data    |
+| 14:00 - 15:00 | Data types     |
+| 15:00 - 15:30 | ☕ Coffee break |
+| 15:30 - 17:00 | Import data    |
 
 ### Day 4
 
 | Time          | Activity       |
 | :------------ | :------------- |
-| 09:00 - 10:30 | Iteration      |
-| 10:30 - 11:00 | ☕ Coffee break |
-| 11:00 - 12:30 | Case study     |
+| 14:00 - 15:00 | Iteration      |
+| 15:00 - 15:30 | ☕ Coffee break |
+| 15:30 - 17:00 | Case study     |
