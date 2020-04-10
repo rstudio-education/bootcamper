@@ -1,6 +1,11 @@
 ```{r setup, include=FALSE}
 # R options
-options(htmltools.dir.version = FALSE)
+options(
+  htmltools.dir.version = FALSE,
+  dplyr.print_min = 6, 
+  dplyr.print_max = 6,
+  width = 100
+  )
 # figure height, width, dpi
 knitr::opts_chunk$set(echo = TRUE, 
                       fig.width = 5, 
@@ -16,6 +21,9 @@ dev.off <- function(){
 }
 # countdown
 library(countdown)
+# conflicted
+library(conflicted)
+conflict_prefer("filter", "dplyr")
 ```
 
 layout: true
