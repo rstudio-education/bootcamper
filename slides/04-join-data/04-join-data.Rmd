@@ -60,6 +60,14 @@ include_graphics("img/fisheries-data.png")
 
 ---
 
+## Load data
+
+```{r}
+fisheries <- read_csv("data/fisheries.csv")
+```
+
+---
+
 ## First peek at the data
 
 .xsmall[
@@ -83,6 +91,8 @@ fisheries %>%
 ```
 
 --
+
+<br>
 
 .hand[
 well, that was boring...
@@ -134,8 +144,7 @@ include_graphics("img/fisheries.png")
 
 ## Data prep
 
-```{r include=FALSE}
-fisheries <- read_csv("data/fisheries.csv")
+```{r message=FALSE}
 continents <- read_csv("data/continents.csv")
 ```
 
@@ -396,7 +405,7 @@ fisheries %>%
 
 .your-turn[
 - Go to RStudio Cloud and start the second assignment: `04 - Join Data`
-- Open the first R Markdown file: `01-fisheries.Rmd`
+- Open the first R Markdown file: `fisheries.Rmd`
 - Knit the document and work on the Exercise 1.
 ]
 
@@ -413,7 +422,7 @@ is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
 
 .your-turn[
 - Go to RStudio Cloud and start the second assignment: `04 - Join Data`
-- Open the first R Markdown file: `01-fisheries.Rmd`
+- Open the first R Markdown file: `fisheries.Rmd`
 - Knit the document and work on the Exercises 2 - 4.
 ]
 

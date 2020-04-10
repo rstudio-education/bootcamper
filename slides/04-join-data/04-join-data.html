@@ -66,6 +66,25 @@ the United Nations collects data on fisheries production of countries.
 
 ---
 
+## Load data
+
+
+```r
+fisheries &lt;- read_csv("data/fisheries.csv")
+```
+
+```
+## Parsed with column specification:
+## cols(
+##   country = col_character(),
+##   capture = col_double(),
+##   aquaculture = col_double(),
+##   total = col_double()
+## )
+```
+
+---
+
 ## First peek at the data
 
 .xsmall[
@@ -78,26 +97,24 @@ skim(fisheries)
 ## ── Data Summary ────────────────────────
 ##                            Values   
 ## Name                       fisheries
-## Number of rows             82       
-## Number of columns          6        
+## Number of rows             216      
+## Number of columns          4        
 ## _______________________             
 ## Column type frequency:              
-##   character                2        
-##   numeric                  4        
+##   character                1        
+##   numeric                  3        
 ## ________________________            
 ## Group variables                     
 ## 
 ## ── Variable type: character ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##   skim_variable n_missing complete_rate   min   max empty n_unique whitespace
-## 1 country               0             1     4    32     0       82          0
-## 2 continent             0             1     4     8     0        5          0
+## 1 country               0             1     4    32     0      215          0
 ## 
 ## ── Variable type: numeric ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-##   skim_variable    n_missing complete_rate        mean          sd     p0         p25        p50         p75         p100 hist 
-## 1 capture                  0             1 1081426.    2256689.     68082 177709.     370620      844852.    17800000     ▇▁▁▁▁
-## 2 aquaculture              0             1 1332225.    7249034.         0   4292.      40982.     275456     63700000     ▇▁▁▁▁
-## 3 total                    0             1 2413650.    9334394.    106680 200373.     495807     1190872.    81500000     ▇▁▁▁▁
-## 4 aquaculture_perc         0             1       0.204       0.221      0      0.0199      0.131       0.362        0.803 ▇▂▂▂▁
+##   skim_variable n_missing complete_rate    mean       sd    p0    p25    p50     p75     p100 hist 
+## 1 capture               0             1 421916. 1478638.     0 3280.  33797  221884. 17800000 ▇▁▁▁▁
+## 2 aquaculture           0             1 508368. 4496073.     0   25.2  1574.  25998  63700000 ▇▁▁▁▁
+## 3 total                 0             1 930284. 5846301.     0 7270.  44648. 271901. 81500000 ▇▁▁▁▁
 ```
 ]
 
@@ -119,10 +136,12 @@ fisheries %&gt;%
 ## # A tibble: 1 x 3
 ##   mean_cap mean_aqc mean_tot
 ##      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1 1081426. 1332225. 2413650.
+## 1  421916.  508368.  930284.
 ```
 
 --
+
+&lt;br&gt;
 
 .hand[
 well, that was boring...
@@ -140,9 +159,9 @@ fisheries %&gt;%
 
 ```
 ## # A tibble: 1 x 3
-##    capture aquaculture    total
-##      &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;
-## 1 1081426.    1332225. 2413650.
+##   capture aquaculture   total
+##     &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;
+## 1 421916.     508368. 930284.
 ```
 
 --
@@ -156,10 +175,10 @@ fisheries %&gt;%
 ```
 
 ```
-## # A tibble: 1 x 4
-##    capture aquaculture    total aquaculture_perc
-##      &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;            &lt;dbl&gt;
-## 1 1081426.    1332225. 2413650.            0.204
+## # A tibble: 1 x 3
+##   capture aquaculture   total
+##     &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;
+## 1 421916.     508368. 930284.
 ```
 
 ---
@@ -189,6 +208,9 @@ than 100,000 tons are not included in the visualization.
 ## Data prep
 
 
+```r
+continents &lt;- read_csv("data/continents.csv")
+```
 
 Filter out countries whose total harvest was less than 100,000 tons since they 
 are not included in the visualization:
@@ -626,11 +648,11 @@ fisheries %&gt;%
 
 .your-turn[
 - Go to RStudio Cloud and start the second assignment: `04 - Join Data`
-- Open the first R Markdown file: `01-fisheries.Rmd`
+- Open the first R Markdown file: `fisheries.Rmd`
 - Knit the document and work on the Exercise 1.
 ]
 
-<div class="countdown" id="timer_5e90a3ab" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e90ae47" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -643,11 +665,11 @@ is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
 
 .your-turn[
 - Go to RStudio Cloud and start the second assignment: `04 - Join Data`
-- Open the first R Markdown file: `01-fisheries.Rmd`
+- Open the first R Markdown file: `fisheries.Rmd`
 - Knit the document and work on the Exercises 2 - 4.
 ]
 
-<div class="countdown" id="timer_5e90a36e" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e90b153" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -668,7 +690,7 @@ ggplot(fisheries_summary, aes(x = continent, y = mean_ap)) +
   geom_col()
 ```
 
-![](04-join-data_files/figure-html/unnamed-chunk-41-1.png)&lt;!-- --&gt;
+![](04-join-data_files/figure-html/unnamed-chunk-42-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -681,7 +703,7 @@ ggplot(fisheries_summary,
   geom_col()
 ```
 
-![](04-join-data_files/figure-html/unnamed-chunk-42-1.png)&lt;!-- --&gt;
+![](04-join-data_files/figure-html/unnamed-chunk-43-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -707,7 +729,7 @@ ggplot(fisheries_summary,
 
 ---
 
-![](04-join-data_files/figure-html/unnamed-chunk-44-1.png)&lt;!-- --&gt;
+![](04-join-data_files/figure-html/unnamed-chunk-45-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -793,7 +815,7 @@ ggplot(world_map, aes(x = long, y = lat, group = group)) +
   theme_minimal()
 ```
 
-![](04-join-data_files/figure-html/unnamed-chunk-49-1.png)&lt;!-- --&gt;
+![](04-join-data_files/figure-html/unnamed-chunk-50-1.png)&lt;!-- --&gt;
 ]
 
 
@@ -1876,7 +1898,7 @@ ggplot(fisheries_map, mapping = aes(x = long, y = lat, group = group)) +
   theme_minimal()
 ```
 
-![](04-join-data_files/figure-html/unnamed-chunk-54-1.png)&lt;!-- --&gt;
+![](04-join-data_files/figure-html/unnamed-chunk-55-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -1885,7 +1907,7 @@ ggplot(fisheries_map, mapping = aes(x = long, y = lat, group = group)) +
 What is misleading about the following map?
 ]
 
-&lt;img src="04-join-data_files/figure-html/unnamed-chunk-55-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04-join-data_files/figure-html/unnamed-chunk-56-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1915,7 +1937,7 @@ ggplot() +
 
 ---
 
-&lt;img src="04-join-data_files/figure-html/unnamed-chunk-57-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04-join-data_files/figure-html/unnamed-chunk-58-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1943,7 +1965,7 @@ ggplot() +
 
 ---
 
-&lt;img src="04-join-data_files/figure-html/unnamed-chunk-59-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04-join-data_files/figure-html/unnamed-chunk-60-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -1972,11 +1994,11 @@ ggplot() +
 
 ---
 
-&lt;img src="04-join-data_files/figure-html/unnamed-chunk-61-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04-join-data_files/figure-html/unnamed-chunk-62-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-&lt;img src="04-join-data_files/figure-html/unnamed-chunk-62-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="04-join-data_files/figure-html/unnamed-chunk-63-1.png" style="display: block; margin: auto;" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
