@@ -49,7 +49,7 @@ h1, h2, h3 {
     font-size: 35px;
 }
 .remark-code, .remark-inline-code {
-  font-family: Fira Code, 'Lucida Console', Monaco, monospace;
+  font-family: Monaco, monospace;
 }
 .remark-code {
   font-size: 0.8em;

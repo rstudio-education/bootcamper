@@ -579,8 +579,8 @@ operator    | definition                   || operator     | definition
 ---
 
 .your-turn[
-- Go to RStudio Cloud and start the second assignment: `03 - Transform Data`
-- Open the first R Markdown file: `01-hotels.Rmd`
+- Go to RStudio Cloud and start the second assignment: `03 - Wrangle Data`
+- Open the first R Markdown file: `hotels.Rmd`
 - Knit the document, and work on Exercises 1 - 4
 ]
 
@@ -696,8 +696,8 @@ hotels %>%
 ---
 
 .your-turn[
-- Go to RStudio Cloud and start the second assignment: `03 - Transform Data`
-- Open the first R Markdown file: `01-hotels.Rmd`
+- Go to RStudio Cloud and start the second assignment: `03 - Wrangle Data`
+- Open the first R Markdown file: `hotels.Rmd`
 - Knit the document, and work on Exercises 5 and 6.
 ]
 
@@ -861,8 +861,8 @@ hotels %>%
 ---
 
 .your-turn[
-- Go to RStudio Cloud and start the second assignment: `03 - Transform Data`
-- Open the first R Markdown file: `01-hotels.Rmd`
+- Go to RStudio Cloud and start the second assignment: `03 - Wrangle Data`
+- Open the first R Markdown file: `hotels.Rmd`
 - Knit the document and work on the Exercises 7 and 8.
 ]
 
