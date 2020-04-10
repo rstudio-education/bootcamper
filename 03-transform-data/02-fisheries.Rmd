@@ -15,7 +15,7 @@ continents <- read_csv("data/continents.csv")
 
 The code below brings you to the point in the slides where we left off...
 
-```{r}
+```{r catch-up}
 fisheries <- fisheries %>%
   filter(total > 100000) %>%
   left_join(continents) %>%
@@ -30,49 +30,42 @@ fisheries <- fisheries %>%
     )
 ```
 
-1. Calculate the mean aquaculture (we'll call it `mean_ac` for short) percentage 
+**Note:** In each of these exercises you will need to set `eval=TRUE` when you're 
+ready to run the code for that exercise.
+
+1. Calculate the mean aquaculture percentage (we'll call it `mean_ap` for short) 
 for counties in the fisheries data using the `summarise()` function in dplyr. 
 Note that the function for calculating the mean is `mean()` in R.
 
-```{r fisheries-mean}
+```{r fisheries-mean, eval=FALSE}
 fisheries %>%                  # start with the fisheries data frame
-  ___(mean_ac = ___)           # calculate mean acquculture
+  ___(mean_ap = ___)           # calculate mean aquaculture
 ```
 
 2. Now expand your calculations to also calculate the minimum and maximum 
-aquacultute percentage for countries in the fisheries data. Note that the 
+aquaculture percentage for countries in the fisheries data. Note that the 
 functions for calculating minimum and maximum in R are `min()` and `max()`
 respectively.
 
-```{r fisheries-summary}
+```{r fisheries-summary, eval=FALSE}
 fisheries %>%                  # start with the fisheries data frame
-  ___(
-    mean_ac = ___,             # calculate mean acquculture
-    min_ac  = ____,            # calculate min acquculture
-    max_ac  = ____             # calculate max acquculture
-    )          
+  # and the rest of the code goes here         
 ```
 
 3. Create a new data frame called `fisheries_summary_continent` that calculates 
-minimum, mean, and maximum aquacultute percentage for each continent in the 
+minimum, mean, and maximum aquaculture percentage for each continent in the 
 fisheries data. 
 
-```{r fisheries-summary-continent}
+```{r fisheries-summary-continent, eval=FALSE}
 fisheries_summary_continent <- fisheries %>%
   ___ %>%                      # ensure calculations are done per continent
-  ___(
-    mean_ac = ___,             # calculate mean acquculture
-    min_ac  = ____,            # calculate min acquculture
-    max_ac  = ____             # calculate max acquculture
-    )                          
+  # you can reuse code from Exercise 2 here                        
 ```
 
 4. Take the `fisheries_summary_continent` data frame and order the results in descending 
 order of mean aquaculture percentage.
 
-```{r fisheries-summary-continent-sorted}
+```{r fisheries-summary-continent-sorted, eval=FALSE}
 fisheries_summary_continent %>%      # start with the fisheries_summary_continent data frame
-  ___                                # order in descending order of mean
+  ___                                # order in descending order of mean_ap
 ```
-
-
