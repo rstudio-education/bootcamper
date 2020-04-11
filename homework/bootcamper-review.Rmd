@@ -1,5 +1,5 @@
 ---
-title: "bootcamper::day one review"
+title: "bootcamper::review"
 output: learnr::tutorial
 runtime: shiny_prerendered
 ---
