@@ -138,7 +138,7 @@ View only the `hotel` type and `lead_time`:
 
 .pull-left[
 ```{r}
-select(.data = hotels, hotel, lead_time)
+select(hotels, hotel, lead_time)
 ```
 ]
 --
