@@ -103,9 +103,9 @@ error about repeated R chunk labels.
 
 ### Exercise 6.
 
-Repeat Exercise 4, once for canceled bookings (`is_canceled` coded as 1) and 
-once for not canceled bookings (`is_canceled` coded as 0). What does this reveal 
-about the surprising results you spotted in the previous exercise?
+Repeat Exercise 5, once for canceled bookings (`is_canceled` coded as 1) and 
+once for not canceled bookings (`is_canceled` coded as 0). What does this 
+reveal about the surprising results you spotted in the previous exercise?
 
 **Note:** Don't forget to label your R chunk as well (where it says `label-me-2`). 
 
