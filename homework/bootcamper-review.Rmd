@@ -478,8 +478,8 @@ question(
     
     The resulting dataframe will have ____",
     random_answer_order = TRUE, allow_retry = TRUE,
-    answer("1 column, called `mean_cty`.", correct = TRUE),
-    answer("2 columns, called `model` and `mean_cty`."),
+    answer("1 column, called `mean_cty`."),
+    answer("2 columns, called `model` and `mean_cty`.", correct = TRUE),
     answer("11 columns, one for each variable in the original `mpg` data frame."),
     answer("234 columns, one for each row in the original `mpg` data frame."),
     correct = "The resulting data frame will have 3 rows and 2 columns, each 
