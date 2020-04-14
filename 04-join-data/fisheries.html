@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2020-04-10" />
+<meta name="date" content="2020-04-14" />
 
 <title>Fisheries</title>
 
@@ -1510,7 +1510,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Fisheries</h1>
-<h4 class="date">2020-04-10</h4>
+<h4 class="date">2020-04-14</h4>
 
 </div>
 
@@ -1532,13 +1532,14 @@ div.tocify {
 <p><strong>Note:</strong> In each of these exercises you will need to set <code>eval=TRUE</code> when you’re ready to run the code for that exercise.</p>
 <div id="exercise-1." class="section level3">
 <h3>Exercise 1.</h3>
-<p>Calculate the mean aquaculture percentage (we’ll call it <code>mean_ap</code> for short) for counties in the fisheries data using the <code>summarise()</code> function in dplyr. Note that the function for calculating the mean is <code>mean()</code> in R.</p>
+<p>Calculate the mean aquaculture percentage (we’ll call it <code>mean_ap</code> for short) for continents in the fisheries data using the <code>summarise()</code> function in dplyr. Note that the function for calculating the mean is <code>mean()</code> in R.</p>
 <pre class="r"><code>fisheries %&gt;%                  # start with the fisheries data frame
+  ___ %&gt;%                      # group by continent
   ___(mean_ap = ___)           # calculate mean aquaculture</code></pre>
 </div>
 <div id="exercise-2." class="section level3">
 <h3>Exercise 2.</h3>
-<p>Now expand your calculations to also calculate the minimum and maximum aquaculture percentage for countries in the fisheries data. Note that the functions for calculating minimum and maximum in R are <code>min()</code> and <code>max()</code> respectively.</p>
+<p>Now expand your calculations to also calculate the minimum and maximum aquaculture percentage for continents in the fisheries data. Note that the functions for calculating minimum and maximum in R are <code>min()</code> and <code>max()</code> respectively.</p>
 <pre class="r"><code>fisheries %&gt;%                  # start with the fisheries data frame
   # and the rest of the code goes here         </code></pre>
 </div>
@@ -1546,7 +1547,6 @@ div.tocify {
 <h3>Exercise 3.</h3>
 <p>Create a new data frame called <code>fisheries_summary_continent</code> that calculates minimum, mean, and maximum aquaculture percentage for each continent in the fisheries data.</p>
 <pre class="r"><code>fisheries_summary_continent &lt;- fisheries %&gt;%
-  ___ %&gt;%                      # ensure calculations are done per continent
   # you can reuse code from Exercise 2 here                        </code></pre>
 </div>
 <div id="exercise-4." class="section level3">

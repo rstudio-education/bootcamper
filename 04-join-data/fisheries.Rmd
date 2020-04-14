@@ -36,18 +36,19 @@ ready to run the code for that exercise.
 ### Exercise 1.
 
 Calculate the mean aquaculture percentage (we'll call it `mean_ap` for short) 
-for counties in the fisheries data using the `summarise()` function in dplyr. 
+for continents in the fisheries data using the `summarise()` function in dplyr. 
 Note that the function for calculating the mean is `mean()` in R.
 
 ```{r fisheries-mean, eval=FALSE}
 fisheries %>%                  # start with the fisheries data frame
+  ___ %>%                      # group by continent
   ___(mean_ap = ___)           # calculate mean aquaculture
 ```
 
 ### Exercise 2.
 
 Now expand your calculations to also calculate the minimum and maximum 
-aquaculture percentage for countries in the fisheries data. Note that the 
+aquaculture percentage for continents in the fisheries data. Note that the 
 functions for calculating minimum and maximum in R are `min()` and `max()`
 respectively.
 
@@ -64,7 +65,6 @@ fisheries data.
 
 ```{r fisheries-summary-continent, eval=FALSE}
 fisheries_summary_continent <- fisheries %>%
-  ___ %>%                      # ensure calculations are done per continent
   # you can reuse code from Exercise 2 here                        
 ```
 
