@@ -42,7 +42,7 @@ together. Take notes on topics you want to discuss/ask questions about when we
 come back to the big group.
 ]
 
-<div class="countdown" id="timer_5e95d493" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e95fcaa" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -394,7 +394,7 @@ staff_long %&gt;%
 - Knit the document, and work on the exercises
 ]
 
-<div class="countdown" id="timer_5e95d3a6" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5e95faf8" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -541,6 +541,286 @@ staff_long %&gt;%
 ---
 
 ![](05-tidy-data_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+
+---
+
+class: middle
+
+# Other common tidying moves
+
+---
+
+&lt;img src="img/relig-income.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+.xsmall[
+Source: [pewforum.org/religious-landscape-study/income-distribution](https://www.pewforum.org/religious-landscape-study/income-distribution/), Retrieved 14 April, 2020
+]
+
+---
+
+## Read data 
+
+
+```r
+library(readxl)
+rel_inc &lt;- read_excel("data/relig-income.xlsx") # directly from Excel!
+```
+
+.small[
+
+```
+## # A tibble: 12 x 6
+##   `Religious trad… `Less than $30,… `$30,000-$49,99… `$50,000-$99,99… `$100,000 or mo… `Sample Size`
+##   &lt;chr&gt;                       &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt;
+## 1 Buddhist                     0.36             0.18             0.32             0.13           233
+## 2 Catholic                     0.36             0.19             0.26             0.19          6137
+## 3 Evangelical Pro…             0.35             0.22             0.28             0.14          7462
+## 4 Hindu                        0.17             0.13             0.34             0.36           172
+## 5 Historically Bl…             0.53             0.22             0.17             0.08          1704
+## 6 Jehovah's Witne…             0.48             0.25             0.22             0.04           208
+## # … with 6 more rows
+```
+]
+
+---
+
+## Rename columns
+
+.small[
+
+```r
+rel_inc %&gt;%
+  rename(
+    religion = `Religious tradition`,
+    n = `Sample Size`
+  )
+```
+
+```
+## # A tibble: 12 x 6
+##   religion             `Less than $30,00… `$30,000-$49,999` `$50,000-$99,99… `$100,000 or mor…     n
+##   &lt;chr&gt;                             &lt;dbl&gt;             &lt;dbl&gt;            &lt;dbl&gt;             &lt;dbl&gt; &lt;dbl&gt;
+## 1 Buddhist                           0.36              0.18             0.32              0.13   233
+## 2 Catholic                           0.36              0.19             0.26              0.19  6137
+## 3 Evangelical Protest…               0.35              0.22             0.28              0.14  7462
+## 4 Hindu                              0.17              0.13             0.34              0.36   172
+## 5 Historically Black …               0.53              0.22             0.17              0.08  1704
+## 6 Jehovah's Witness                  0.48              0.25             0.22              0.04   208
+## # … with 6 more rows
+```
+]
+
+--
+
+.discussion[
+If we want a new variable called `income` with levels such as "Less than $30,000", "$30,000-$49,999", ... etc. which function should we use?
+]
+
+---
+
+## Pivot longer
+
+.small[
+
+```r
+rel_inc %&gt;%
+  rename(
+    religion = `Religious tradition`,
+    n = `Sample Size`
+  ) %&gt;%
+  pivot_longer(
+    cols = -c(religion, n),   # all but religion and n
+    names_to = "income", 
+    values_to = "proportion"
+  )
+```
+
+```
+## # A tibble: 48 x 4
+##   religion     n income            proportion
+##   &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                  &lt;dbl&gt;
+## 1 Buddhist   233 Less than $30,000       0.36
+## 2 Buddhist   233 $30,000-$49,999         0.18
+## 3 Buddhist   233 $50,000-$99,999         0.32
+## 4 Buddhist   233 $100,000 or more        0.13
+## 5 Catholic  6137 Less than $30,000       0.36
+## 6 Catholic  6137 $30,000-$49,999         0.19
+## # … with 42 more rows
+```
+]
+
+---
+
+## Calculate frequencies
+
+.small[
+
+```r
+rel_inc %&gt;%
+  rename(
+    religion = `Religious tradition`,
+    n = `Sample Size`
+  ) %&gt;%
+  pivot_longer(
+    cols = -c(religion, n), 
+    names_to = "income", 
+    values_to = "proportion"
+  ) %&gt;%
+  mutate(frequency = round(proportion * n))
+```
+
+```
+## # A tibble: 48 x 5
+##   religion     n income            proportion frequency
+##   &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                  &lt;dbl&gt;     &lt;dbl&gt;
+## 1 Buddhist   233 Less than $30,000       0.36        84
+## 2 Buddhist   233 $30,000-$49,999         0.18        42
+## 3 Buddhist   233 $50,000-$99,999         0.32        75
+## 4 Buddhist   233 $100,000 or more        0.13        30
+## 5 Catholic  6137 Less than $30,000       0.36      2209
+## 6 Catholic  6137 $30,000-$49,999         0.19      1166
+## # … with 42 more rows
+```
+]
+
+---
+
+## Save data
+
+
+```r
+rel_inc_long &lt;- rel_inc %&gt;%
+  rename(
+    religion = `Religious tradition`,
+    n = `Sample Size`
+  ) %&gt;%
+  pivot_longer(
+    cols = -c(religion, n), 
+    names_to = "income", 
+    values_to = "proportion"
+  ) %&gt;%
+  mutate(frequency = round(proportion * n))
+```
+
+---
+
+## Start plotting
+
+
+```r
+ggplot(rel_inc_long, aes(y = religion, x = frequency)) +
+  geom_col()
+```
+
+![](05-tidy-data_files/figure-html/unnamed-chunk-35-1.png)&lt;!-- --&gt;
+
+---
+
+## Reverse religion order
+
+
+```r
+*ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency)) +
+  geom_col()
+```
+
+![](05-tidy-data_files/figure-html/unnamed-chunk-36-1.png)&lt;!-- --&gt;
+
+---
+
+## Add income
+
+
+```r
+*ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency, fill = income)) +
+  geom_col() 
+```
+
+![](05-tidy-data_files/figure-html/unnamed-chunk-37-1.png)&lt;!-- --&gt;
+
+---
+
+## Dodge bars
+
+.small[
+
+```r
+ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency, fill = income)) +
+* geom_col(position = "dodge")
+```
+
+![](05-tidy-data_files/figure-html/unnamed-chunk-38-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Change theme
+
+.small[
+
+```r
+ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency, fill = income)) +
+  geom_col(position = "dodge") +
+* theme_minimal()
+```
+
+![](05-tidy-data_files/figure-html/unnamed-chunk-39-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Move legend to the bottom
+
+.small[
+
+```r
+ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency, fill = income)) +
+  geom_col(position = "dodge") +
+  theme_minimal() +
+* theme(legend.position = "bottom")
+```
+
+![](05-tidy-data_files/figure-html/unnamed-chunk-40-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Prettier colors
+
+.small[
+
+```r
+ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency, fill = income)) +
+  geom_col(position = "dodge") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+* scale_fill_viridis_d()
+```
+
+![](05-tidy-data_files/figure-html/unnamed-chunk-41-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Fix labels
+
+
+```r
+ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency, fill = income)) +
+  geom_col(position = "dodge") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_fill_viridis_d() +
+* labs(
+*   x = "Frequency", y = "",
+*   title = "Income distribution by religious group",
+*   caption = "Source: pewforum.org/religious-landscape-study/income-distribution"
+*   )
+```
+
+---
+
+![](05-tidy-data_files/figure-html/unnamed-chunk-43-1.png)&lt;!-- --&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -545,3 +545,220 @@ staff_long %>%
   ) +
   theme(legend.position = "bottom")
 ```
+
+---
+
+class: middle
+
+# Other common tidying moves
+
+---
+
+```{r echo=FALSE, out.width="85%", fig.align="center"}
+include_graphics("img/relig-income.png")
+```
+
+.xsmall[
+Source: [pewforum.org/religious-landscape-study/income-distribution](https://www.pewforum.org/religious-landscape-study/income-distribution/), Retrieved 14 April, 2020
+]
+
+---
+
+## Read data 
+
+```{r}
+library(readxl)
+rel_inc <- read_excel("data/relig-income.xlsx") # directly from Excel!
+```
+
+.small[
+```{r echo=FALSE}
+rel_inc
+```
+]
+
+---
+
+## Rename columns
+
+.small[
+```{r}
+rel_inc %>%
+  rename(
+    religion = `Religious tradition`,
+    n = `Sample Size`
+  )
+```
+]
+
+--
+
+.discussion[
+If we want a new variable called `income` with levels such as "Less than $30,000", "$30,000-$49,999", ... etc. which function should we use?
+]
+
+---
+
+## Pivot longer
+
+.small[
+```{r}
+rel_inc %>%
+  rename(
+    religion = `Religious tradition`,
+    n = `Sample Size`
+  ) %>%
+  pivot_longer(
+    cols = -c(religion, n),   # all but religion and n
+    names_to = "income", 
+    values_to = "proportion"
+  )
+```
+]
+
+---
+
+## Calculate frequencies
+
+.small[
+```{r}
+rel_inc %>%
+  rename(
+    religion = `Religious tradition`,
+    n = `Sample Size`
+  ) %>%
+  pivot_longer(
+    cols = -c(religion, n), 
+    names_to = "income", 
+    values_to = "proportion"
+  ) %>%
+  mutate(frequency = round(proportion * n))
+```
+]
+
+---
+
+## Save data
+
+```{r}
+rel_inc_long <- rel_inc %>%
+  rename(
+    religion = `Religious tradition`,
+    n = `Sample Size`
+  ) %>%
+  pivot_longer(
+    cols = -c(religion, n), 
+    names_to = "income", 
+    values_to = "proportion"
+  ) %>%
+  mutate(frequency = round(proportion * n))
+```
+
+---
+
+## Start plotting
+
+```{r fig.height=2}
+ggplot(rel_inc_long, aes(y = religion, x = frequency)) +
+  geom_col()
+```
+
+---
+
+## Reverse religion order
+
+```{r fig.height=2}
+ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency)) + #<<
+  geom_col()
+```
+
+---
+
+## Add income
+
+```{r fig.height=2}
+ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency, fill = income)) + #<<
+  geom_col() 
+```
+
+---
+
+## Dodge bars
+
+.small[
+```{r fig.height=2}
+ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency, fill = income)) +
+  geom_col(position = "dodge") #<<
+```
+]
+
+---
+
+## Change theme
+
+.small[
+```{r fig.height=2}
+ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency, fill = income)) +
+  geom_col(position = "dodge") +
+  theme_minimal() #<<
+```
+]
+
+---
+
+## Move legend to the bottom
+
+.small[
+```{r fig.height=2}
+ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency, fill = income)) +
+  geom_col(position = "dodge") +
+  theme_minimal() +
+  theme(legend.position = "bottom") #<<
+```
+]
+
+---
+
+## Prettier colors
+
+.small[
+```{r fig.height=2}
+ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency, fill = income)) +
+  geom_col(position = "dodge") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_fill_viridis_d() #<<
+```
+]
+
+---
+
+## Fix labels
+
+```{r eval=FALSE}
+ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency, fill = income)) +
+  geom_col(position = "dodge") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_fill_viridis_d() +
+  labs( #<<
+    x = "Frequency", y = "", #<<
+    title = "Income distribution by religious group", #<<
+    caption = "Source: pewforum.org/religious-landscape-study/income-distribution" #<<
+    ) #<<
+```
+
+---
+
+```{r echo=FALSE}
+ggplot(rel_inc_long, aes(y = fct_rev(religion), x = frequency, fill = income)) +
+  geom_col(position = "dodge") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_fill_viridis_d() +
+  labs( 
+    x = "Frequency", y = "", 
+    title = "Income distribution by religious group", 
+    caption = "Source: pewforum.org/religious-landscape-study/income-distribution" 
+    ) 
+```
