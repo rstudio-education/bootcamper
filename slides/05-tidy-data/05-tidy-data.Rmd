@@ -1,0 +1,547 @@
+---
+title: "Tidy data <br> `r emo::ji('broom')`"
+output:
+  xaringan::moon_reader:
+    css: ["../xaringan-themer.css", "../slides-style.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: solarized-light
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      slideNumberFormat: |
+        <div class="progress-bar-container">
+          <div class="progress-bar" style="width: calc(%current% / %total% * 100%);">
+          </div>
+        </div>
+---
+
+```{r child = "../setup.Rmd"}
+```
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(patchwork)
+library(knitr)
+```
+
+.your-turn[
+Split into breakout groups and review a few questions from the "homework". If 
+you did not have a chance to do the homework, that's fine. Use the sidebar to 
+navigate to a topic that you were confused about and work on a few questions 
+together. Take notes on topics you want to discuss/ask questions about when we 
+come back to the big group.
+]
+
+```{r echo=FALSE}
+countdown(minutes = 10, seconds = 0)
+```
+
+---
+
+class: middle
+
+# Tidy data
+
+---
+
+## Tidy data
+
+>Happy families are all alike; every unhappy family is unhappy in its own way. 
+>
+>Leo Tolstoy
+
+--
+
+.pull-left[
+**Characteristics of tidy data:**
+
+- Each variable forms a column.
+- Each observation forms a row.
+- Each type of observational unit forms a table.
+]
+--
+.pull-right[
+**Characteristics of untidy data:**
+
+!@#$%^&*()
+]
+
+---
+
+## 
+
+.question[
+What makes this data not tidy?
+]
+
+```{r hyperwar-airplanes-on-hand, echo=FALSE, out.width="90%", fig.align = "center", caption = "WW2 Army Air Force combat aircraft"}
+include_graphics("img/untidy-data/hyperwar-airplanes-on-hand.png")
+```
+
+.footnote[
+Source: [Army Air Forces Statistical Digest, WW II](https://www.ibiblio.org/hyperwar/AAF/StatDigest/aafsd-3.html)
+]
+
+---
+
+.question[
+What makes this data not tidy?
+]
+
+<br>
+
+```{r hiv-est-prevalence-15-49, echo=FALSE, out.width="95%", fig.align = "center", caption = "Estimated HIV prevalence among 15-49 year olds"}
+include_graphics("img/untidy-data/hiv-est-prevalence-15-49.png")
+```
+
+.footnote[
+Source: [Gapminder, Estimated HIV prevalence among 15-49 year olds](https://www.gapminder.org/data)
+]
+
+---
+
+.question[
+What makes this data not tidy?
+]
+
+<br>
+
+```{r us-general-economic-characteristic-acs-2017, echo=FALSE, out.width="95%", fig.align = "center", caption = "US General Economic Characteristics, ACS 2017"}
+include_graphics("img/untidy-data/us-general-economic-characteristic-acs-2017.png")
+```
+
+.footnote[
+Source: [US Census Fact Finder, General Economic Characteristics, ACS 2017](https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?pid=ACS_17_5YR_DP03&src=pt)
+]
+
+---
+
+## Summary tables 
+
+.question[
+Is each of the following a dataset or a summary table?
+]
+
+.midi[
+.pull-left[
+```{r echo=FALSE}
+starwars %>%
+  select(name, height, mass)
+```
+]
+.pull-right[
+```{r echo=FALSE}
+starwars %>%
+  group_by(gender) %>%
+  summarize(
+    avg_height = mean(height, na.rm = TRUE) %>% round(2)
+  )
+```
+]
+]
+
+---
+
+## Displaying data
+
+```{r eval=FALSE}
+starwars %>%
+  select(name, height, mass)
+```
+
+## Summarizing data
+
+```{r eval=FALSE}
+starwars %>%
+  group_by(gender) %>%
+  summarize(
+    avg_height = mean(height, na.rm = TRUE) %>% round(2)
+  )
+````
+
+---
+
+## A grammar of data tidying
+
+.pull-left[
+```{r dplyr-part-of-tidyverse, echo=FALSE, out.width="70%", fig.align = "center", caption = "dplyr is part of the tidyverse"}
+include_graphics("img/tidyr-part-of-tidyverse.png")
+```
+]
+.pull-right[
+The goal of tidyr is to help you create tidy data
+]
+
+---
+
+class: middle
+
+# Instructional staff employment trends
+
+---
+
+The American Association of 
+University Professors (AAUP) is a nonprofit membership association of faculty 
+and other academic professionals. 
+[This report](https://www.aaup.org/sites/default/files/files/AAUP_Report_InstrStaff-75-11_apr2013.pdf) 
+by the AAUP shows trends in instructional staff employees between 1975 
+and 2011, and contains an image very similar to the one given below.
+
+```{r echo=FALSE,out.width="70%",fig.align="center"}
+include_graphics("img/staff-employment.png")
+```
+
+---
+
+## Data
+
+Each row in this dataset represents a faculty type, and the columns are the 
+years for which we have data. The values are percentage of hires of that type 
+of faculty for each year.
+
+```{r load-data-staff, message=FALSE}
+staff <- read_csv("data/instructional-staff.csv")
+staff
+```
+
+---
+
+## Recreate the visualization
+
+In order to recreate this visualization we need to first reshape the data to have 
+one variable for faculty type and one variable for year. In other words, 
+we will convert the data from the long format to wide format. 
+
+But before we do so... 
+
+.discussion[
+If the long data will have a row for each year/faculty type combination, 
+and there are 5 faculty types and 11 years of data, how many rows will the data have?
+]
+
+---
+
+class: middle
+
+```{r echo=FALSE,out.width="80%",fig.align="center"}
+include_graphics("img/pivot.gif")
+```
+
+---
+
+## `pivot_*()` functions
+
+
+```{r echo=FALSE}
+include_graphics("img/tidyr-longer-wider.gif")
+```
+
+---
+
+## `pivot_longer()`
+
+```{r eval=FALSE}
+pivot_longer(data, cols, names_to = "name", values_to = "value")
+```
+
+- The first argument is `data` as usual.
+--
+
+- The second argument, `cols`, is where you specify which columns to pivot 
+into longer format -- in this case all columns except for the `faculty_type` 
+--
+
+- The third argument, `names_to`, is a string specifying the name of the column to create from the data stored in the column names of data -- in this case `year`
+--
+
+- The fourth argument, `values_to`, is a string specifying the name of the column to create from the data stored in cell values, in this case `percentage`
+
+---
+
+## Pivot staff data
+
+```{r}
+staff %>%
+  pivot_longer(
+    cols = -faculty_type, 
+    names_to = "year", 
+    values_to = "percentage"
+    )
+```
+
+---
+
+## Pivot staff data, and save result
+
+```{r}
+staff_long <- staff %>%
+  pivot_longer(
+    cols = -faculty_type, 
+    names_to = "year", 
+    values_to = "percentage"
+    )
+
+staff_long
+```
+
+---
+
+.discussion[
+This doesn't look quite right, how would you fix it?
+]
+
+```{r fig.width=8, fig.height=3}
+staff_long %>%
+  ggplot(aes(x = percentage, y = year, color = faculty_type)) +
+  geom_col(position = "dodge")
+```
+
+---
+
+```{r fig.width=8, fig.height=3}
+staff_long %>%
+  ggplot(aes(x = percentage, y = year, fill = faculty_type)) +
+  geom_col(position = "dodge")
+```
+
+---
+
+## Some improvement...
+
+```{r fig.width=8, fig.height=3}
+staff_long %>%
+  ggplot(aes(x = percentage, y = year, fill = faculty_type)) +
+  geom_col()
+```
+
+---
+
+## More improvement
+
+```{r fig.width=8, fig.height=3}
+staff_long %>%
+  ggplot(aes(x = year, y = percentage, group = faculty_type, color = faculty_type)) +
+  geom_line()
+```
+
+---
+
+.your-turn[
+- Go to RStudio Cloud and start the second assignment: `05 - Tidy Data`
+- Open the first R Markdown file: `instructional-staff.Rmd`
+- Knit the document, and work on the exercises
+]
+
+```{r echo=FALSE}
+countdown(minutes = 10, seconds = 00)
+```
+
+.footnote[
+RStudio Cloud workspace for this bootcamp  
+is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
+]
+
+---
+
+.discussion[
+What type of variable is `year` encoded as in this data frame? What do you think 
+it should be?
+]
+
+```{r}
+staff_long
+```
+
+---
+
+.discussion[
+What is the difference betweent these two plots?
+]
+
+```{r echo=FALSE, fig.width=6, fig.height=3}
+p1 <- staff_long %>%
+  ggplot(aes(x = year, y = percentage, group = faculty_type, color = faculty_type)) +
+  geom_line() +
+  guides(color = FALSE)
+p2 <- staff_long %>%
+  mutate(year = as.character(year)) %>%
+  ggplot(aes(x = year, y = percentage, group = faculty_type, color = faculty_type)) +
+  geom_line() +
+  guides(color = FALSE)
+combined <- p1 + p2
+combined + 
+  plot_layout(nrow = 2)
+```
+
+---
+
+```{r echo=FALSE, fig.width=6, fig.height=3.5}
+p1 <- staff_long %>%
+  ggplot(aes(x = year, y = percentage, group = faculty_type, color = faculty_type)) +
+  geom_line() +
+  guides(color = FALSE)
+p2 <- staff_long %>%
+  mutate(year = as.character(year)) %>%
+  ggplot(aes(x = year, y = percentage, group = faculty_type, color = faculty_type)) +
+  geom_line() +
+  guides(color = FALSE)
+combined <- p1 + p2
+combined + 
+  plot_layout(nrow = 2) +
+  plot_annotation(
+    title = "Data types matter!",
+    subtitle = "Year as numeric (top) and categorical (bottom)"
+    )
+```
+
+---
+
+## Make year numeric again!
+
+```{r fig.width=6, fig.height=2}
+staff_long <- staff_long %>%
+  mutate(year = as.numeric(year))
+
+staff_long %>%
+  ggplot(aes(x = year, y = percentage, group = faculty_type, color = faculty_type)) +
+  geom_line()
+```
+
+---
+
+.discussion[
+How would you go about creating the following plot?
+]
+
+```{r echo=FALSE, fig.width=6, fig.height=3}
+staff_long %>%
+  mutate(part_time = if_else(faculty_type == "Part-Time Faculty",
+                             "Part-Time Faculty", 
+                             "Other Faculty")) %>%
+  ggplot(aes(x = year, y = percentage/100, 
+             group = faculty_type, 
+             color = part_time)) +
+  geom_line() +
+  scale_color_manual(values = c("gray", "red")) +
+  theme_minimal() +
+  labs(
+    title = "Instructional staff employment trends",
+    x = "Year",
+    y = "Proportion",
+    color = ""
+  ) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+```{r eval=FALSE}
+staff_long %>%
+  mutate(part_time = if_else(faculty_type == "Part-Time Faculty", #<<
+                             "Part-Time Faculty", #<<
+                             "Other Faculty")) %>% #<<
+  ggplot(aes(x = year, y = percentage/100, 
+             group = faculty_type, 
+             color = part_time)) + 
+  geom_line() +
+  scale_color_manual(values = c("gray", "red")) + 
+  theme_minimal() + 
+  labs(
+    title = "Instructional staff employment trends",
+    x = "Year",
+    y = "Proportion",
+    color = ""
+  ) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+```{r eval=FALSE}
+staff_long %>%
+  mutate(part_time = if_else(faculty_type == "Part-Time Faculty", 
+                             "Part-Time Faculty", 
+                             "Other Faculty")) %>% 
+  ggplot(aes(x = year, y = percentage/100, 
+             group = faculty_type, #<< 
+             color = part_time)) + #<<
+  geom_line() +
+  scale_color_manual(values = c("gray", "red")) + #<<
+  theme_minimal() + #<<
+  labs(
+    title = "Instructional staff employment trends",
+    x = "Year",
+    y = "Proportion",
+    color = ""
+  ) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+```{r echo=FALSE}
+staff_long %>%
+  mutate(part_time = if_else(faculty_type == "Part-Time Faculty", 
+                             "Part-Time Faculty", 
+                             "Other Faculty")) %>% 
+  ggplot(aes(x = year, y = percentage/100, 
+             group = faculty_type, #<< 
+             color = part_time)) + #<<
+  geom_line() +
+  scale_color_manual(values = c("gray", "red")) + #<<
+  theme_minimal() + #<<
+  labs(
+    title = "Instructional staff employment trends",
+    x = "Year",
+    y = "Proportion",
+    color = ""
+  ) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+```{r eval=FALSE}
+library(scales) #<<
+staff_long %>%
+  mutate(part_time = 
+           if_else(faculty_type == "Part-Time Faculty", 
+                   "Part-Time Faculty", "Other Faculty")) %>% 
+  ggplot(aes(x = year, y = percentage/100, group = faculty_type, 
+             color = part_time)) +
+  geom_line() +
+  scale_color_manual(values = c("gray", "red")) +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) + #<<
+  theme_minimal() +
+  labs(
+    title = "Instructional staff employment trends",
+    x = "Year",
+    y = "Percentage", #<<
+    color = ""
+  ) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+```{r echo=FALSE}
+library(scales)
+staff_long %>%
+  mutate(part_time = 
+           if_else(faculty_type == "Part-Time Faculty", 
+                   "Part-Time Faculty", "Other Faculty")) %>% 
+  ggplot(aes(x = year, y = percentage/100, group = faculty_type, 
+             color = part_time)) +
+  geom_line() +
+  scale_color_manual(values = c("gray", "red")) +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  theme_minimal() +
+  labs(
+    title = "Instructional staff employment trends",
+    x = "Year",
+    y = "Percentage",
+    color = ""
+  ) +
+  theme(legend.position = "bottom")
+```
