@@ -31,7 +31,7 @@ workspace [here](https://rstd.io/bootcamper-cloud).
 | :------------ | :------------------------------------------------------------------------------------------------ |
 | 14:00 - 15:00 | [Join data](https://rstudio-education.github.io/bootcamper/slides/04-join-data/04-join-data.html) |
 | 15:00 - 15:30 | ☕ Coffee break                                                                                    |
-| 15:30 - 17:00 | Tidy data                                                                                         |
+| 15:30 - 17:00 | [Tidy data](https://rstudio-education.github.io/bootcamper/slides/05-tidy-data/05-tidy-data.html) |
 
 ### Day 4
 
