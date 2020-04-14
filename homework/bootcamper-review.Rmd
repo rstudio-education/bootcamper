@@ -339,7 +339,7 @@ question(
   )
 ```
 
-### Question 10
+### Question 15
 
 ```{r q15, echo=FALSE}
 question(
@@ -531,7 +531,7 @@ question(
 
 Your friend takes your code from the previous exercise and helps you correct it.
 
-They come up wih the following correction and are very confident that it will work.
+They come up with the following correction and are very confident that it will work.
 
 ```{r plot-msleep-noplus, eval=FALSE}
 msleep %>%
@@ -571,7 +571,7 @@ question(
     answer("You get a data frame with one column: `vore`.", correct = TRUE),
     answer("You get a data frame with two columns: `vore` and `vore"),
     answer("You get an error."),
-    answer("The get a warning.")
+    answer("You get a warning.")
   )
 ```
 
