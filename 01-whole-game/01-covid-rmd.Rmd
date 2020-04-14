@@ -63,7 +63,7 @@ country_data <- coronavirus %>%
   summarise(tot_cases = sum(cases)) %>%
   arrange(date) %>%
   mutate(cumulative_cases = cumsum(tot_cases)) %>%
-  # only use data where cumulative cases > 10
+  # only use data where cumulative cases > 9
   filter(cumulative_cases > 9) %>%
   # calculate days elapsed and label for last recorded date for country
   mutate(
