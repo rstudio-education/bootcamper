@@ -345,17 +345,6 @@ is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
 ---
 
 .discussion[
-What type of variable is `year` encoded as in this data frame? What do you think 
-it should be?
-]
-
-```{r}
-staff_long
-```
-
----
-
-.discussion[
 What is the difference betweent these two plots?
 ]
 
@@ -365,34 +354,13 @@ p1 <- staff_long %>%
   geom_line() +
   guides(color = FALSE)
 p2 <- staff_long %>%
-  mutate(year = as.character(year)) %>%
+  mutate(year = as.numeric(year)) %>%
   ggplot(aes(x = year, y = percentage, group = faculty_type, color = faculty_type)) +
   geom_line() +
   guides(color = FALSE)
 combined <- p1 + p2
 combined + 
   plot_layout(nrow = 2)
-```
-
----
-
-```{r echo=FALSE, fig.width=6, fig.height=3.5}
-p1 <- staff_long %>%
-  ggplot(aes(x = year, y = percentage, group = faculty_type, color = faculty_type)) +
-  geom_line() +
-  guides(color = FALSE)
-p2 <- staff_long %>%
-  mutate(year = as.character(year)) %>%
-  ggplot(aes(x = year, y = percentage, group = faculty_type, color = faculty_type)) +
-  geom_line() +
-  guides(color = FALSE)
-combined <- p1 + p2
-combined + 
-  plot_layout(nrow = 2) +
-  plot_annotation(
-    title = "Data types matter!",
-    subtitle = "Year as numeric (top) and categorical (bottom)"
-    )
 ```
 
 ---
@@ -512,7 +480,7 @@ staff_long %>%
              color = part_time)) +
   geom_line() +
   scale_color_manual(values = c("gray", "red")) +
-  scale_y_continuous(labels = percent_format(accuracy = 1)) + #<<
+  scale_y_continuous(labels = percent) + #<<
   theme_minimal() +
   labs(
     title = "Instructional staff employment trends",
@@ -535,7 +503,53 @@ staff_long %>%
              color = part_time)) +
   geom_line() +
   scale_color_manual(values = c("gray", "red")) +
+  scale_y_continuous(labels = percent) +
+  theme_minimal() +
+  labs(
+    title = "Instructional staff employment trends",
+    x = "Year",
+    y = "Percentage",
+    color = ""
+  ) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+```{r echo=FALSE}
+library(scales)
+staff_long %>%
+  mutate(part_time = 
+           if_else(faculty_type == "Part-Time Faculty", 
+                   "Part-Time Faculty", "Other Faculty")) %>% 
+  ggplot(aes(x = year, y = percentage/100, group = faculty_type, 
+             color = part_time)) +
+  geom_line() +
+  scale_color_manual(values = c("gray", "red")) +
   scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  theme_minimal() +
+  labs(
+    title = "Instructional staff employment trends",
+    x = "Year",
+    y = "Percentage",
+    color = ""
+  ) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+```{r eval=FALSE}
+library(scales)
+staff_long %>%
+  mutate(part_time = 
+           if_else(faculty_type == "Part-Time Faculty", 
+                   "Part-Time Faculty", "Other Faculty")) %>% 
+  ggplot(aes(x = year, y = percentage/100, group = faculty_type, 
+             color = part_time)) +
+  geom_line() +
+  scale_color_manual(values = c("gray", "red")) +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) + #<<
   theme_minimal() +
   labs(
     title = "Instructional staff employment trends",
