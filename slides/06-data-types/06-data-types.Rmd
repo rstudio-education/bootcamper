@@ -702,7 +702,7 @@ hotels %>%
   labs(x = "Arrival month",                 # customize labels
        y = "Mean ADR (average daily rate)",
        title = "Comparison of resort and city hotel prices across months",
-       subtitle = "Resort hotel prices soar in the summer while ciry hotel prices remain relatively constant throughout the year",
+       subtitle = "Resort hotel prices soar in the summer while city hotel prices remain relatively constant throughout the year",
        color = "Hotel type")
 ```
 
