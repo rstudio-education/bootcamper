@@ -35,8 +35,8 @@ workspace [here](https://rstd.io/bootcamper-cloud).
 
 ### Day 4
 
-| Time          | Activity                                                                                             |
-| :------------ | :--------------------------------------------------------------------------------------------------- |
-| 14:00 - 15:00 | [Data types](https://rstudio-education.github.io/bootcamper/slides/06-data-types/06-data-types.html) |
-| 15:00 - 15:30 | ☕ Coffee break                                                                                       |
-| 15:30 - 17:00 | Import data / Iteration / Case study                                                                 |
+| Time          | Activity                                                                                                |
+| :------------ | :------------------------------------------------------------------------------------------------------ |
+| 14:00 - 15:00 | [Data types](https://rstudio-education.github.io/bootcamper/slides/06-data-types/06-data-types.html)    |
+| 15:00 - 15:30 | ☕ Coffee break                                                                                          |
+| 15:30 - 17:00 | [Import data](https://rstudio-education.github.io/bootcamper/slides/07-import-data/07-import-data.html) |
