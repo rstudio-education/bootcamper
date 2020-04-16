@@ -38,6 +38,6 @@ For the "your turn" exercises we'll use RStudio Cloud. Join the workspace
 ### Day 4
 | Time          | Activity                     |
 | :------------ | :--------------------------- |
-| 14:00 - 15:00 | Data types                   |
+| 14:00 - 15:00 | [Data types](https://rstudio-education.github.io/bootcamper/slides/06-data-types/06-data-types.html)                    |
 | 15:00 - 15:30 | `r emo::ji("coffee")` Coffee break |
 | 15:30 - 17:00 | Import data / Iteration / Case study       |
