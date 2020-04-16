@@ -7,31 +7,35 @@ Load packages:
 
 ```{r message=FALSE}
 library(tidyverse)
+library(scales)
 ```
 
 Load data:
 
-```{r load-data}
-cat_lovers <- read_csv("data/cat-lovers.csv")
+```{r load-data, message=FALSE}
+hotels <- read_csv("data/hotels.csv")
 ```
 
-Implement changes from earlier:
+First, knit the document and view the following visualisation. How are the months ordered? What would be a better order? Then, reorder the months on the x-axis (levels of `arrival_date_month`) in a way that makes more sense. You will want to use a function from the **forcats** package, see https://forcats.tidyverse.org/reference/index.html for inspiration and help.
 
-```{r recode}
-cat_lovers <- cat_lovers %>% #<<
-  mutate(
-    number_of_cats = case_when(
-      name == "Ginger Clark" ~ "2",
-      name == "Doug Bass"    ~ "3",
-      TRUE                   ~ number_of_cats
-      ),
-    number_of_cats = as.numeric(number_of_cats)
-    )
-```
+**Stretch goal:** If you finish the above task before time is up, change the y-axis label so the values are shown with dollar signs, e.g. $80 instead of 80. You will want to use a function from the **scales** package, see https://scales.r-lib.org/reference/index.html for inspiration and help.
 
-Recreate visualization:
-
-```{r plot}
-
+```{r plot, fig.width=10}
+hotels %>%
+  group_by(hotel, arrival_date_month) %>%   # group by hotel type and arrival month
+  summarise(mean_adr = mean(adr)) %>%       # calculate mean adr for each group
+  ggplot(aes(
+    x = arrival_date_month,
+    y = mean_adr,                           # y-axis is the mean_adr calculated above
+    group = hotel,                          # group lines by hotel type
+    color = hotel)                          # and color by hotel type
+    ) +
+  geom_line() +                             # use lines to represent data
+  theme_minimal() +                         # use a minimal theme
+  labs(x = "Arrival month",                 # customize labels
+       y = "Mean ADR (average daily rate)",
+       title = "Comparison of resort and city hotel prices across months",
+       subtitle = "Resort hotel prices soar in the summer while ciry hotel prices remain relatively constant throughout the year",
+       color = "Hotel type")
 ```
 
