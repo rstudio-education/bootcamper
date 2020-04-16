@@ -2,6 +2,7 @@ base
 usethis
 devtools
 testthat
+conflicted
 countdown
 tidyverse
 ggplot2
@@ -12,9 +13,8 @@ purrr
 dplyr
 stringr
 forcats
+readxl
 DT
 here
-available
-readxl
-googledrive
-googlesheets4
+skimr
+knitr

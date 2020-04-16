@@ -2,13 +2,18 @@
 title: "Import data <br> `r emo::ji('up_arrow')`"
 output:
   xaringan::moon_reader:
-    css: "../slides.css"
+    css: ["../xaringan-themer.css", "../slides-style.css"]
     lib_dir: libs
     nature:
-      ratio: "16:9"
-      highlightLines: true
       highlightStyle: solarized-light
+      highlightLines: true
       countIncrementalSlides: false
+      ratio: "16:9"
+      slideNumberFormat: |
+        <div class="progress-bar-container">
+          <div class="progress-bar" style="width: calc(%current% / %total% * 100%);">
+          </div>
+        </div>
 ---
 
 ```{r child = "../setup.Rmd"}
@@ -17,6 +22,8 @@ output:
 ```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(readxl)
+library(skimr)
+library(knitr)
 library(DT)
 library(here)
 ```
@@ -57,28 +64,20 @@ knitr::include_graphics("img/readxl.png")
 
 ## Reading data
 
-.small[
 ```{r}
 nobel <- read_csv(file = "data/nobel.csv")
 ```
-]
 
 ---
 
-```{r echo=FALSE}
-width <- options()$width
-options(width = 1000)
-```
-
 .tiny[
-```{r}
-skimr::skim(nobel)
-```
-]
-
-```{r echo=FALSE}
+```{r message=FALSE, results="md", echo=FALSE, render = normal_print}
+width <- options()$width
+options(width=120)
+skim(nobel)
 options(width = width)
 ```
+]
 
 ---
 
@@ -105,9 +104,9 @@ fs::dir_ls("data")
 
 ---
 
-### 06 - Import data / `01-import-export.Rmd`
+.your-turn[
+Start the assignment 07 - Import data and open `01-import-export.Rmd`.
 
-.instructions[
 Read in the `nobels.csv` file from the `data-raw/` folder, split into two (STEM and 
 non-STEM), and write out these two pieces to `data/`.
 
@@ -127,12 +126,12 @@ countdown(minutes = 10, seconds = 0)
 ```
 
 .footnote[
-[rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud)
+RStudio Cloud workspace for this bootcamp  
+is at [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
 ]
-
 ---
 
-class: center, middle
+class: middle
 
 # Variable names
 
@@ -156,6 +155,7 @@ ggplot(edi_airbnb, aes(x = Number of bathrooms, y = Price)) +
 
 ## Option 1 - Define column names
 
+.small[
 ```{r}
 edi_airbnb_col_names <- read_csv("data/edi-airbnb.csv",
   col_names = c("id", "price", "neighbourhood", "accommodates",
@@ -164,6 +164,7 @@ edi_airbnb_col_names <- read_csv("data/edi-airbnb.csv",
 
 names(edi_airbnb_col_names)
 ```
+]
 
 ---
 
@@ -178,13 +179,13 @@ names(edi_airbnb_cleaned_names)
 
 ---
 
-class: center, middle
+class: middle
 
 # Variable types
 
 ---
 
-.question[
+.discussion[
 Which class is `x`? Why?
 ]
 
@@ -257,9 +258,9 @@ read_csv("data/df-na.csv",
 
 ---
 
-### 06 - Import data / `02-read-excel.Rmd`
+.your-turn[
+In the assignment 07 - Import data and open `02-read-excel.Rmd`.
 
-.instructions[
 **Exercise 1**
 * Read in the Excel file called `favourite-food.xlsx` from the `data-raw/` folder.
 * Clean up `NA`s and make sure you're happy with variable types.
@@ -276,7 +277,8 @@ countdown(minutes = 15, seconds = 0)
 ```
 
 .footnote[
-[rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud)
+RStudio Cloud workspace for this bootcamp  
+is at [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
 ]
 
 ---
@@ -295,9 +297,9 @@ write_rds(x, path)
 
 ---
 
-### 06 - Import data / `02-read-excel.Rmd`
+.your-turn[
+In the assignment 07 - Import data, open `02-read-excel.Rmd`.
 
-.instructions[
 **Exercise 2**
 * Repeat the first three steps from Exercise 1.
 * Write out the resulting data frame to `favourite-food.rds` in the `data/` folder.
@@ -310,14 +312,15 @@ countdown(minutes = 5, seconds = 0)
 ```
 
 .footnote[
-[rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud)
+RStudio Cloud workspace for this bootcamp  
+is at [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
 ]
 
 ---
 
-### 06 - Import data / `03-tidy-fun.Rmd`
+.your-turn[
+In the assignment 07 - Import data, open `03-tidy-fun.Rmd`.
 
-.instructions[
 Load the `sales.xlsx` file from the `data-raw/` folder, using appropriate 
 arguments for the `read_excel()` function such that it looks like the following.
 If done, see next slide for stretch goal.
@@ -336,12 +339,15 @@ countdown(minutes = 15, seconds = 0)
 ```
 
 .footnote[
-[rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud)
+RStudio Cloud workspace for this bootcamp  
+is at [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
 ]
 
 ---
 
-.instructions[
+.your-turn[
+07 - Import data / `03-tidy-fun.Rmd`:
+
 **Stretch goal:** Manipulate the sales data such that it looks like the 
 following.
 ]
@@ -365,48 +371,17 @@ sales %>%
 
 ---
 
-class: center, middle
+class: middle
 
-# Importing from Google
-
----
-
-## googledrive * googlesheets4
-
-- The **googledrive** package provides functionality for file level operatons (for any type of file) on your Google drive, such as list, read, write, etc: [googledrive.tidyverse.org](https://googledrive.tidyverse.org/)
-
-- The **googlesheets4** package (soon to be on CRAN) provides functionality specifically for working with Google sheets: [googlesheets4.tidyverse.org](https://googlesheets4.tidyverse.org/)
+# Importing many files
 
 ---
 
-## Live demo: googledrive
 
-```{r eval=FALSE}
-library(googledrive)
-
-drive_find(n_max = 30)
-drive_find(pattern = "rstudio::conf")
-drive_find(type = "spreadsheet") # Google sheets!
-conf_rooming_info <- drive_find(
-  pattern = "rstudio::conf 2020 Rooming List"
-  )
-```
 
 ---
 
-## Live demo: googlesheets4
-
-```{r eval=FALSE}
-library(googlesheets4)
-
-conf_rooming <- read_sheet(conf_rooming_info)
-dim(conf_rooming)
-names(conf_rooming)
-```
-
----
-
-class: center, middle
+class: middle
 
 # Other types of data
 
@@ -414,6 +389,7 @@ class: center, middle
 
 ## Other types of data
 
+- **googlesheets4:** Google Sheets
 - **haven**: SPSS, Stata, and SAS files
 - **DBI**, along with a database specific backend (e.g. RMySQL, RSQLite, RPostgreSQL etc): allows you to run SQL queries against a database and return a data frame
 - **jsonline**: JSON
