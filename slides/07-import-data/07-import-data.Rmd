@@ -26,16 +26,18 @@ library(skimr)
 library(knitr)
 library(DT)
 library(here)
+library(conflicted)
+conflict_prefer("col_double", "readr")
 ```
 
 
-class: center, middle
+class: middle
 
 # Reading rectangular data into R
 
 ---
 
-class: center, middle
+class: middle
 
 .pull-left[
 ```{r echo=FALSE, out.width="80%"}
@@ -377,7 +379,29 @@ class: middle
 
 ---
 
+```{r message=FALSE}
+sales_files <- fs::dir_ls("data/sales")
+sales_files
 
+library(vroom)
+sales <- vroom(sales_files, id = "filename")
+sales
+```
+
+---
+
+## vroom vroom!!
+
+.pull-left[
+```{r echo=FALSE, out.width="80%", fig.align="center"}
+knitr::include_graphics("img/vroom.png")
+```
+]
+.pull-right[
+- **vroom** is most useful for reading large amounts of data in, fast!
+- and it has nice bells-and-whistles like delimiter guessing, reading many files in at once, etc.
+- Learn more at [vroom.r-lib.org](https://vroom.r-lib.org/)
+]
 
 ---
 
