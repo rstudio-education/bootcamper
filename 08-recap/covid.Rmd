@@ -7,20 +7,9 @@ output:
     toc_float: yes
 ---
 
-glue::glue("{wday(x, label = TRUE)}, {month(x, label = TRUE)} {day(x)}, {year(x)} ")
-
-
 In this exercise we will recreate the coronavirus visualisation we started off with, step by step.
 
-## Introduction
-
-Countries around the world are responding to an outbreak of respiratory illness caused by a novel coronavirus, COVID-19. The outbreak first started in Wuhan, China, but cases have been identified in a growing number of other locations internationally, including the United States. In this report we explore how the trajectory of the cumulative deaths in a number of countries.
-
-The data come from the **coronavirus** package, which pulls data from the Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE) Coronavirus repository. The coronavirus package provides a tidy format dataset of the 2019 Novel Coronavirus COVID-19 (2019-nCoV) epidemic. The package is available on GitHub [here](https://github.com/RamiKrispin/coronavirus) and is updated daily.
-
-For our analysis, in addition to the coronavirus package, we will use the **tidyverse** package for data wrangling and visualization and the **ggrepel** package for pretty printing of country labels.
-
-We will make use of two additional packages for formatting output shown throughout the report: the **DT** package for interactive display of tabular output and the **glue** package for formatting text output.
+Let's start by loading the packages we will use. Note that we're using `warning=FALSE` and `message=FALSE` to suppress warnings and messages that get printed out when loading packages. This is useful for keeping your report clean, but you might want to set them to `TRUE` temporarily to see what is printed out.
 
 ```{r load-packages, warning=FALSE, message=FALSE}
 library(coronavirus)
@@ -39,20 +28,25 @@ We will start by making our selection for the countries we want to explore.
 ```{r select-countries}
 countries <- c(
   "US",
-  "UK",
+  "Germany",
   "____" # add another country of your choosing here
 )
 ```
 
-The following are step by step instructions for getting the data formatted for the eventual visualisation we will make.
+glue::glue("{wday(x, label = TRUE)}, {month(x, label = TRUE)} {day(x)}, {year(x)} ")
 
-1. Filter the data for "deaths". Confirm that there are 
+
+The following are step by step instructions for getting the data formatted for the eventual visualisation we will make. Fill in the blanks.
+
+1. Filter the data for "deaths". Note that type can take on the following values: `confirmed`, `death`, `recovered`.
 
 ```{r}
 coronavirus %>%
   # filter for deaths
-  filter(type == "death")
+  filter(type == "___")
 ```
+
+2. Calculate cumulative cases.
 
 
 In the following code chunk we filter the data frame for deaths in the countries we specified above and calculate cumulative number of deaths. We will only visualise data since 10th confirmed death. 
@@ -63,13 +57,6 @@ country_data <- coronavirus %>%
   filter(
     type == "death",
     Country.Region %in% countries
-  ) %>%
-  # fix county labels for pretty plotting
-  mutate(
-    country = case_when(
-      Country.Region == "United Kingdom" ~ "UK",
-      TRUE ~ Country.Region
-    )
   ) %>%
   # calculate cumulative cases
   group_by(country, date) %>%
