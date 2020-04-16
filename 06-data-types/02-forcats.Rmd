@@ -25,8 +25,8 @@ hotels %>%
   group_by(hotel, arrival_date_month) %>%   # group by hotel type and arrival month
   summarise(mean_adr = mean(adr)) %>%       # calculate mean adr for each group
   ggplot(aes(
-    x = arrival_date_month,
-    y = mean_adr,                           # y-axis is the mean_adr calculated above
+    x = arrival_date_month,                 # x-axis = arrival_date_month
+    y = mean_adr,                           # y-axis = mean_adr calculated above
     group = hotel,                          # group lines by hotel type
     color = hotel)                          # and color by hotel type
     ) +
