@@ -41,7 +41,7 @@ Any questions?
 
 ---
 
-class: center, middle
+class: middle
 
 # Data classes and types
 
@@ -309,7 +309,7 @@ countdown(minutes = 10, seconds = 0)
 
 .footnote[
 RStudio Cloud workspace for this bootcamp  
-is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
+is at [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
 ]
 
 ---
@@ -433,7 +433,7 @@ cat_lovers <- cat_lovers %>% #<<
 
 ---
 
-class: center, middle
+class: middle
 
 # Data "set"
 
@@ -609,7 +609,7 @@ include_graphics("img/tibble-part-of-tidyverse.png")
 
 ---
 
-class: center, middle
+class: middle
 
 # Factors
 
@@ -712,12 +712,12 @@ countdown(minutes = 5, seconds = 0)
 
 .footnote[
 RStudio Cloud workspace for this bootcamp  
-is at  [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
+is at [rstd.io/bootcamper-cloud](https://rstd.io/bootcamper-cloud).
 ]
 
 ---
 
-class: center, middle
+class: middle
 
 # Dates
 
